@@ -1,0 +1,92 @@
+@Analysis_Api_HostAddress = http://localhost:5041
+@json = application/json
+@rand = {{$timestamp}}
+
+###
+# Swagger (ping)
+GET {{Analysis_Api_HostAddress}}/swagger/v1/swagger.json
+Accept: {{json}}
+
+################################################################################
+# ANALYSIS
+################################################################################
+
+### Crear análisis
+POST {{Analysis_Api_HostAddress}}/api/analysis
+Content-Type: {{json}}
+
+{
+	"userId": 1,
+	"toolUsed": "axe",
+	"status": "completed",
+	"date": "2025-08-16T12:00:00Z"
+}
+
+### Obtener análisis por ID
+GET {{Analysis_Api_HostAddress}}/api/analysis/1
+Accept: {{json}}
+
+### Obtener análisis por usuario y fecha
+GET {{Analysis_Api_HostAddress}}/api/analysis/by-date?userId=1&date=2025-08-16
+Accept: {{json}}
+
+### Obtener análisis por usuario y herramienta
+GET {{Analysis_Api_HostAddress}}/api/analysis/by-tool?userId=1&toolUsed=axe
+Accept: {{json}}
+
+### Obtener análisis por usuario y status
+GET {{Analysis_Api_HostAddress}}/api/analysis/by-status?userId=1&status=completed
+Accept: {{json}}
+
+### Eliminar análisis
+DELETE {{Analysis_Api_HostAddress}}/api/analysis/1
+
+################################################################################
+# RESULT
+################################################################################
+
+### Crear resultado
+POST {{Analysis_Api_HostAddress}}/api/result
+Content-Type: {{json}}
+
+{
+	"analysisId": 1,
+	"score": 95,
+	"summary": "Sin errores críticos"
+}
+
+### Obtener resultados por analysisId
+GET {{Analysis_Api_HostAddress}}/api/result/by-analysis?analysisId=1
+Accept: {{json}}
+
+### Obtener todos los resultados
+GET {{Analysis_Api_HostAddress}}/api/result
+Accept: {{json}}
+
+### Eliminar resultado
+DELETE {{Analysis_Api_HostAddress}}/api/result/1
+
+################################################################################
+# ERROR
+################################################################################
+
+### Crear error
+POST {{Analysis_Api_HostAddress}}/api/error
+Content-Type: {{json}}
+
+{
+	"resultId": 1,
+	"message": "Falta atributo alt en imagen",
+	"code": "IMG_ALT"
+}
+
+### Obtener errores por resultId
+GET {{Analysis_Api_HostAddress}}/api/error/by-result?resultId=1
+Accept: {{json}}
+
+### Obtener todos los errores
+GET {{Analysis_Api_HostAddress}}/api/error
+Accept: {{json}}
+
+### Eliminar error
+DELETE {{Analysis_Api_HostAddress}}/api/error/1
