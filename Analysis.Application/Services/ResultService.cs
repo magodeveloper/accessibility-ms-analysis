@@ -1,6 +1,6 @@
-using Analysis.Infrastructure;
 using Analysis.Domain.Entities;
 using Analysis.Application.Dtos;
+using Analysis.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Analysis.Application.Services

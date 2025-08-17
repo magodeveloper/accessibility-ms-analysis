@@ -11,18 +11,18 @@ public static class ServiceRegistration
         var cs = config.GetConnectionString("DefaultConnection")
                  ?? "server=127.0.0.1;port=3306;database=ms_analysis;user=msa;password=msapass;TreatTinyAsBoolean=false";
 
-        services.AddDbContext<Analysis.Infrastructure.AnalysisDbContext>(opt =>
-            {
-                opt.UseMySql(
-                    cs,
-                    ServerVersion.AutoDetect(cs),
-                    o => o.EnableRetryOnFailure(
-                        maxRetryCount: 5,
-                        maxRetryDelay: System.TimeSpan.FromSeconds(10),
-                        errorNumbersToAdd: null
-                    )
-                );
-            });
+        services.AddDbContext<Analysis.Infrastructure.Data.AnalysisDbContext>(opt =>
+                {
+                    opt.UseMySql(
+                        cs,
+                        ServerVersion.AutoDetect(cs),
+                        o => o.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: System.TimeSpan.FromSeconds(10),
+                            errorNumbersToAdd: null
+                        )
+                    );
+                });
 
         return services;
     }

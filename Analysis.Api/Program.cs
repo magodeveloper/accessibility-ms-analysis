@@ -1,6 +1,6 @@
-using Analysis.Infrastructure;
 using FluentValidation;
 using System.Globalization;
+using Analysis.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
@@ -34,7 +34,7 @@ var app = builder.Build();
 // Migración automática de la base de datos al iniciar la API (igual que users)
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<Analysis.Infrastructure.AnalysisDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<Analysis.Infrastructure.Data.AnalysisDbContext>();
     await db.Database.MigrateAsync();
 }
 

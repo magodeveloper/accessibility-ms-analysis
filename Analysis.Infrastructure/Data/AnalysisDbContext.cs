@@ -2,7 +2,7 @@ using Analysis.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Analysis.Infrastructure
+namespace Analysis.Infrastructure.Data
 {
     public class AnalysisDbContext : DbContext
     {
