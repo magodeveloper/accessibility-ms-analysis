@@ -1,0 +1,23 @@
+{
+  "Error_InvalidAnalysis": "Invalid analysis.",
+  "Error_AnalysisNotFound": "Analysis not found.",
+  "Error_ResultNotFound": "Result not found.",
+  "Error_ErrorNotFound": "Error not found.",
+  "Error_InternalServer": "An unexpected internal error has occurred.",
+  "Success_AnalysisCreated": "Analysis created successfully.",
+  "Success_AnalysisFound": "Analysis found.",
+  "Success_AnalysisUpdated": "Analysis updated successfully.",
+  "Success_AnalysisDeleted": "Analysis deleted successfully.",
+  "Success_ListAnalysis": "Analysis list retrieved successfully.",
+  "Success_ResultCreated": "Result created successfully.",
+  "Success_ResultFound": "Result found.",
+  "Success_ResultUpdated": "Result updated successfully.",
+  "Success_ResultDeleted": "Result deleted successfully.",
+  "Success_ListResults": "Result list retrieved successfully.",
+  "Success_ErrorCreated": "Error registered successfully.",
+  "Success_ErrorFound": "Error found.",
+  "Success_ErrorUpdated": "Error updated successfully.",
+  "Success_ErrorDeleted": "Error deleted successfully.",
+  "Success_ListErrors": "Error list retrieved successfully.",
+  "Success_PasswordReset": "Password reset successfully."
+}

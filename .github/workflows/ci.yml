@@ -23,7 +23,7 @@ jobs:
         options: >-
           --health-cmd="mysqladmin ping -h localhost -pdevpass" --health-interval=10s --health-timeout=5s --health-retries=10
     env:
-      ConnectionStrings__DefaultConnection: server=127.0.0.1;port=3308;database=analysisdb;user=devuser;password=devpass;TreatTinyAsBoolean=false
+      ConnectionStrings__Default: server=127.0.0.1;port=3308;database=analysisdb;user=devuser;password=devpass;TreatTinyAsBoolean=false
       ASPNETCORE_ENVIRONMENT: Development
     steps:
       - uses: actions/checkout@v4
@@ -32,9 +32,9 @@ jobs:
         with:
           dotnet-version: '9.0.x'
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore Analysis.sln
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build Analysis.sln --no-restore --configuration Release
       - name: Wait for MySQL
         run: |
           for i in {1..30}; do

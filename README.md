@@ -1,10 +1,6 @@
 # accessibility-ms-analysis
 
-accessibility-ms-analysis
 
-Microservicio de gestión de análisis, resultados y errores de accesibilidad, desarrollado en .NET 9 Minimal API, con integración a MySQL y soporte para despliegue en Docker.
-
-## Características principales
 
 - API RESTful para gestión de análisis, resultados y errores.
 - Endpoints para crear, consultar, actualizar y eliminar análisis, resultados y errores.
@@ -25,12 +21,13 @@ Microservicio de gestión de análisis, resultados y errores de accesibilidad, d
 ├── README.md
 ├── Analysis.sln
 ├── src/
-│   ├── Analysis.Api/           # API principal (Minimal API)
+│   ├── Analysis.Api/           # API principal (Minimal API, Swagger, FluentValidation)
 │   ├── Analysis.Application/   # DTOs, validadores y lógica de aplicación
 │   ├── Analysis.Domain/        # Entidades y enums de dominio
-│   ├── Analysis.Infrastructure/# DbContext y servicios de infraestructura
-│   └── Analysis.Tests/         # Pruebas de integración
+│   ├── Analysis.Infrastructure/# DbContext, servicios de infraestructura y acceso a datos
+│   └── Analysis.Tests/         # Pruebas de integración y unitarias (xUnit)
 ```
+
 
 ## Variables de entorno
 
@@ -47,6 +44,7 @@ API_HOST_PORT=8082
 
 > **Nota:** No es necesario definir `DB_HOST` ni `DB_PORT` en los archivos `.env`, ya que la comunicación interna entre contenedores Docker utiliza el nombre del servicio (`analysis-db`) y el puerto por defecto (`3306`). La cadena de conexión ya está configurada correctamente en `docker-compose.yml`.
 
+
 ## Uso con Docker Compose
 
 ```bash
@@ -55,6 +53,17 @@ docker compose --env-file .env.development up --build
 
 # Producción
 docker compose --env-file .env.production up --build
+```
+
+## Compilación y pruebas locales
+
+```bash
+# Restaurar dependencias y compilar
+dotnet restore Analysis.sln
+dotnet build Analysis.sln
+
+# Ejecutar pruebas
+dotnet test src/Analysis.Tests/Analysis.Tests.csproj
 ```
 
 ## Dockerización y despliegue
@@ -87,9 +96,10 @@ services:
 		# ...
 ```
 
+
 ## Pruebas
 
-Las pruebas de integración están ubicadas en `Analysis.Tests/` y se ejecutan automáticamente en el pipeline de CI/CD.
+Las pruebas unitarias y de integración están ubicadas en `src/Analysis.Tests/` y pueden ejecutarse localmente con `dotnet test`. También se ejecutan automáticamente en el pipeline de CI/CD.
 
 ## Endpoints principales
 
@@ -216,14 +226,14 @@ El microservicio usa controladores tradicionales (MVC) para exponer los endpoint
 - `DELETE /api/error/{id}`  
    Elimina un error por ID. Respuesta: 204 No Content.
 
+
 ## Documentación OpenAPI/Swagger
 
-La documentación interactiva está disponible en `/swagger` cuando la API se ejecuta en modo desarrollo.
+La documentación interactiva está disponible en `/swagger` cuando la API se ejecuta en modo desarrollo. Incluye ejemplos, descripciones y validaciones automáticas de los endpoints.
+
+---
+
 
 ---
 
 Desarrollado por magodeveloper | 2025
-
-# accessibility-ms-analysis
-
-accessibility-ms-analysis

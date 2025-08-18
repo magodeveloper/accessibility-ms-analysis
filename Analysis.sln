@@ -2,15 +2,15 @@
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Api", "Analysis.Api\Analysis.Api.csproj", "{A1CB70E4-9F85-4728-8253-9CB044E0D4E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Api", "src/Analysis.Api/Analysis.Api.csproj", "{A1CB70E4-9F85-4728-8253-9CB044E0D4E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Application", "Analysis.Application\Analysis.Application.csproj", "{92C5D1C4-7B02-4801-97FD-DCBFFD4BBC7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Application", "src/Analysis.Application/Analysis.Application.csproj", "{92C5D1C4-7B02-4801-97FD-DCBFFD4BBC7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Domain", "Analysis.Domain\Analysis.Domain.csproj", "{03654703-EA22-41D0-8827-32A5BD4E3FD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Domain", "src/Analysis.Domain/Analysis.Domain.csproj", "{03654703-EA22-41D0-8827-32A5BD4E3FD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Infrastructure", "Analysis.Infrastructure\Analysis.Infrastructure.csproj", "{F8875196-6148-4430-BF10-757248E81770}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Infrastructure", "src/Analysis.Infrastructure/Analysis.Infrastructure.csproj", "{F8875196-6148-4430-BF10-757248E81770}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Tests", "Analysis.Tests\Analysis.Tests.csproj", "{CE79BF49-FE7A-4A50-80E8-324AA6F51567}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis.Tests", "src/Analysis.Tests/Analysis.Tests.csproj", "{CE79BF49-FE7A-4A50-80E8-324AA6F51567}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
