@@ -1,7 +1,5 @@
 # accessibility-ms-analysis
 
-
-
 - API RESTful para gestión de análisis, resultados y errores.
 - Endpoints para crear, consultar, actualizar y eliminar análisis, resultados y errores.
 - Respuestas internacionalizadas (i18n) y manejo global de errores.

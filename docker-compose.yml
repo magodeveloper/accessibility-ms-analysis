@@ -28,7 +28,7 @@ services:
         condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
-      ConnectionStrings__DefaultConnection: 'server=mysql;port=3306;database=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD};TreatTinyAsBoolean=false'
+      ConnectionStrings__Default: 'server=mysql;port=3306;database=${DB_NAME};user=${DB_USER};password=${DB_PASSWORD};TreatTinyAsBoolean=false'
     ports:
       - '${API_HOST_PORT:-8082}:8082'
 

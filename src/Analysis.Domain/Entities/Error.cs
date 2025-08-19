@@ -7,12 +7,12 @@ namespace Analysis.Domain.Entities
         public int Id { get; set; }
         public int ResultId { get; set; }
         public int WcagCriterionId { get; set; }
-        public string ErrorCode { get; set; }
-        public string Description { get; set; }
-        public string Location { get; set; }
+        public required string ErrorCode { get; set; }
+        public required string Description { get; set; }
+        public required string Location { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public Result Result { get; set; }
+        public required Result Result { get; set; }
     }
 }

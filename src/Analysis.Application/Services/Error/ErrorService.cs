@@ -45,7 +45,8 @@ namespace Analysis.Application.Services.Error
                 Description = dto.Description,
                 Location = dto.Location,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
+                Result = null!
             };
             _db.Errors.Add(entity);
             await _db.SaveChangesAsync();

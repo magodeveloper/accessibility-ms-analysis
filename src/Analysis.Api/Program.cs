@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Any;
 using Analysis.Infrastructure;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http;
+using FluentValidation.AspNetCore;
 using Analysis.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -20,19 +21,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi(); // .NET 9
 
-// Registrar controladores MVC
+// Registrar FluentValidation y controladores MVC
 builder.Services.AddControllers(); // Controladores
+builder.Services.AddValidatorsFromAssemblyContaining<Analysis.Application.Dtos.AnalysisCreateDtoValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 builder.Services.AddInfrastructure(builder.Configuration); // Infraestructura
 
 // Servicios de aplicación y dominio
-
 builder.Services.AddScoped<IAnalysisService, AnalysisService>(); // Servicio de análisis
 builder.Services.AddScoped<IResultService, ResultService>(); // Servicio de resultados
 builder.Services.AddScoped<IErrorService, ErrorService>(); // Servicio de errores
-
-// FluentValidation: registra todos los validadores del ensamblado
-// builder.Services.AddValidatorsFromAssemblyContaining<Analysis.Application.AnalysisDtoValidator>(); // Validadores (comentado porque no existe ese tipo)
 
 // Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer(); // Explorador de API

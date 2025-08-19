@@ -4,16 +4,16 @@ WORKDIR /src
 
 COPY Analysis.sln ./
 COPY Directory.Packages.props ./
-COPY Analysis.Api/Analysis.Api.csproj Analysis.Api/
-COPY Analysis.Application/Analysis.Application.csproj Analysis.Application/
-COPY Analysis.Domain/Analysis.Domain.csproj Analysis.Domain/
-COPY Analysis.Infrastructure/Analysis.Infrastructure.csproj Analysis.Infrastructure/
-COPY Analysis.Tests/Analysis.Tests.csproj Analysis.Tests/
+COPY src/Analysis.Api/Analysis.Api.csproj                      src/Analysis.Api/
+COPY src/Analysis.Application/Analysis.Application.csproj      src/Analysis.Application/
+COPY src/Analysis.Domain/Analysis.Domain.csproj                src/Analysis.Domain/
+COPY src/Analysis.Infrastructure/Analysis.Infrastructure.csproj src/Analysis.Infrastructure/
+COPY src/Analysis.Tests/Analysis.Tests.csproj                  src/Analysis.Tests/
 
 RUN dotnet restore Analysis.sln
 
 COPY . .
-RUN dotnet publish ./Analysis.Api/Analysis.Api.csproj -c Release -o /app/publish
+RUN dotnet publish ./src/Analysis.Api/Analysis.Api.csproj -c Release -o /app/publish
 
 # ============ STAGE 2: runtime ============
 FROM mcr.microsoft.com/dotnet/aspnet:9.0

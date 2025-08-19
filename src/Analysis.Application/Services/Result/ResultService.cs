@@ -1,3 +1,4 @@
+using ErrorEntity = Analysis.Domain.Entities.Error;
 using Analysis.Domain.Entities;
 using Analysis.Application.Dtos;
 using Analysis.Infrastructure.Data;
@@ -46,7 +47,9 @@ namespace Analysis.Application.Services.Result
                 Severity = Enum.TryParse<Severity>(dto.Severity, true, out var sev) ? sev : Severity.medium,
                 Description = dto.Description,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
+                Analysis = null!,
+                Errors = new List<ErrorEntity>()
             };
             _db.Results.Add(entity);
             await _db.SaveChangesAsync();

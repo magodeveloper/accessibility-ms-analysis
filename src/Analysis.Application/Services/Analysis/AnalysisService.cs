@@ -1,3 +1,4 @@
+using ResultEntity = Analysis.Domain.Entities.Result;
 using Analysis.Domain.Entities;
 using Analysis.Application.Dtos;
 using Analysis.Infrastructure.Data;
@@ -62,7 +63,8 @@ namespace Analysis.Application.Services.Analysis
                 WcagVersion = dto.WcagVersion,
                 WcagLevel = Enum.TryParse<WcagLevel>(dto.WcagLevel, true, out var wl) ? wl : WcagLevel.A,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
+                Results = new List<ResultEntity>()
             };
             _db.Analyses.Add(entity);
             await _db.SaveChangesAsync();

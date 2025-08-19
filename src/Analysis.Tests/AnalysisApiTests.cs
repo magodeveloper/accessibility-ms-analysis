@@ -20,7 +20,8 @@ namespace Analysis.Tests
         public async Task Create_And_Get_Analysis()
         {
             var client = _factory.CreateClient();
-            var dto = new {
+            var dto = new
+            {
                 UserId = 1,
                 DateAnalysis = System.DateTime.UtcNow,
                 ContentType = "application/json",
@@ -50,7 +51,8 @@ namespace Analysis.Tests
         {
             var client = _factory.CreateClient();
             // Primero crear un análisis válido
-            var analysisDto = new {
+            var analysisDto = new
+            {
                 UserId = 1,
                 DateAnalysis = System.DateTime.UtcNow,
                 ContentType = "application/json",
@@ -73,10 +75,6 @@ namespace Analysis.Tests
             var resultDto = new { AnalysisId = analysisId, Description = "desc", Level = "A", Severity = "low", WcagCriterion = "1.1.1", WcagCriterionId = 1 };
             var createResp = await client.PostAsJsonAsync("/api/result", resultDto);
             Assert.Equal(HttpStatusCode.Created, createResp.StatusCode);
-            var created = await createResp.Content.ReadFromJsonAsync<JsonElement>();
-            var resultData = created.GetProperty("data");
-            int id = resultData.GetProperty("id").GetInt32();
-
             var getResp = await client.GetAsync($"/api/result/by-analysis?analysisId={analysisId}");
             Assert.Equal(HttpStatusCode.OK, getResp.StatusCode);
         }
@@ -86,7 +84,8 @@ namespace Analysis.Tests
         {
             var client = _factory.CreateClient();
             // Crear análisis válido
-            var analysisDto = new {
+            var analysisDto = new
+            {
                 UserId = 1,
                 DateAnalysis = System.DateTime.UtcNow,
                 ContentType = "application/json",
@@ -121,20 +120,18 @@ namespace Analysis.Tests
 
             var getResp = await client.GetAsync($"/api/error/{id}");
             Assert.Equal(HttpStatusCode.OK, getResp.StatusCode);
-    }
+        }
 
         [Fact]
         public async Task Create_Analysis_InvalidData_ReturnsBadRequest()
         {
             var client = _factory.CreateClient();
-            // Falta UserId y ToolUsed vacío
             var dto = new { UserId = 0, ToolUsed = "", Status = "", DateAnalysis = System.DateTime.UtcNow, ContentType = "", ContentInput = "", SourceUrl = "", WcagVersion = "", WcagLevel = "" };
             var createResp = await client.PostAsJsonAsync("/api/analysis", dto);
             Assert.Equal(HttpStatusCode.BadRequest, createResp.StatusCode);
             var content = await createResp.Content.ReadAsStringAsync();
             var json = JsonDocument.Parse(content).RootElement;
             Assert.True(json.TryGetProperty("errors", out var errors));
-            // Verifica que existan los errores requeridos, ignorando mayúsculas/minúsculas
             string[] campos = new[] { "UserId", "ToolUsed", "Status", "ContentType", "ContentInput", "SourceUrl", "WcagVersion", "WcagLevel" };
             var errorProps = errors.EnumerateObject().Select(p => p.Name.ToLowerInvariant()).ToHashSet();
             foreach (var campo in campos)
