@@ -44,10 +44,10 @@ jobs:
           exit 1
         shell: bash
       - name: Run tests with coverage
-        run: dotnet test src/Users.Tests/Users.Tests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
+        run: dotnet test src/Analysis.Tests/Analysis.Tests.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
       - name: Report coverage
         uses: codecov/codecov-action@v4
         with:
-          files: ./Users.Tests/TestResults/**/*.cobertura.xml
+          files: ./Analysis.Tests/TestResults/**/*.cobertura.xml
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
