@@ -24,17 +24,29 @@ namespace Analysis.Tests
             {
                 UserId = 1,
                 DateAnalysis = System.DateTime.UtcNow,
-                ContentType = "application/json",
+                ContentType = "html",
                 ContentInput = "{ }",
                 SourceUrl = "https://example.com",
-                ToolUsed = "axe",
-                Status = "completed",
+                ToolUsed = "axe-core",
+                Status = "pending",
                 SummaryResult = "ok",
                 ResultJson = "{}",
                 ErrorMessage = "",
                 DurationMs = 100,
                 WcagVersion = "2.1",
-                WcagLevel = "AA"
+                WcagLevel = "AA",
+                AxeViolations = 0,
+                AxeNeedsReview = 0,
+                AxeRecommendations = 0,
+                AxePasses = 0,
+                AxeIncomplete = 0,
+                AxeInapplicable = 0,
+                EaViolations = 0,
+                EaNeedsReview = 0,
+                EaRecommendations = 0,
+                EaPasses = 0,
+                EaIncomplete = 0,
+                EaInapplicable = 0
             };
             var createResp = await client.PostAsJsonAsync("/api/analysis", dto);
             Assert.Equal(HttpStatusCode.Created, createResp.StatusCode);
@@ -55,17 +67,29 @@ namespace Analysis.Tests
             {
                 UserId = 1,
                 DateAnalysis = System.DateTime.UtcNow,
-                ContentType = "application/json",
+                ContentType = "html",
                 ContentInput = "{ }",
                 SourceUrl = "https://example.com",
-                ToolUsed = "axe",
-                Status = "completed",
+                ToolUsed = "axe-core",
+                Status = "pending",
                 SummaryResult = "ok",
                 ResultJson = "{}",
                 ErrorMessage = "",
                 DurationMs = 100,
                 WcagVersion = "2.1",
-                WcagLevel = "AA"
+                WcagLevel = "AA",
+                AxeViolations = 0,
+                AxeNeedsReview = 0,
+                AxeRecommendations = 0,
+                AxePasses = 0,
+                AxeIncomplete = 0,
+                AxeInapplicable = 0,
+                EaViolations = 0,
+                EaNeedsReview = 0,
+                EaRecommendations = 0,
+                EaPasses = 0,
+                EaIncomplete = 0,
+                EaInapplicable = 0
             };
             var analysisResp = await client.PostAsJsonAsync("/api/analysis", analysisDto);
             var analysis = await analysisResp.Content.ReadFromJsonAsync<JsonElement>();
@@ -88,17 +112,29 @@ namespace Analysis.Tests
             {
                 UserId = 1,
                 DateAnalysis = System.DateTime.UtcNow,
-                ContentType = "application/json",
+                ContentType = "html",
                 ContentInput = "{ }",
                 SourceUrl = "https://example.com",
-                ToolUsed = "axe",
-                Status = "completed",
+                ToolUsed = "axe-core",
+                Status = "pending",
                 SummaryResult = "ok",
                 ResultJson = "{}",
                 ErrorMessage = "",
                 DurationMs = 100,
                 WcagVersion = "2.1",
-                WcagLevel = "AA"
+                WcagLevel = "AA",
+                AxeViolations = 0,
+                AxeNeedsReview = 0,
+                AxeRecommendations = 0,
+                AxePasses = 0,
+                AxeIncomplete = 0,
+                AxeInapplicable = 0,
+                EaViolations = 0,
+                EaNeedsReview = 0,
+                EaRecommendations = 0,
+                EaPasses = 0,
+                EaIncomplete = 0,
+                EaInapplicable = 0
             };
             var analysisResp = await client.PostAsJsonAsync("/api/analysis", analysisDto);
             var analysis = await analysisResp.Content.ReadFromJsonAsync<JsonElement>();

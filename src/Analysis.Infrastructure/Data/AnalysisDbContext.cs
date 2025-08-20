@@ -50,9 +50,25 @@ namespace Analysis.Infrastructure.Data
                     .HasConversion(new EnumToStringConverter<WcagLevel>())
                     .HasMaxLength(3)
                     .IsRequired();
+                entity.Property(e => e.AxeViolations).HasColumnName("axe_violations").HasDefaultValue(0);
+                entity.Property(e => e.AxeNeedsReview).HasColumnName("axe_needs_review").HasDefaultValue(0);
+                entity.Property(e => e.AxeRecommendations).HasColumnName("axe_recommendations").HasDefaultValue(0);
+                entity.Property(e => e.AxePasses).HasColumnName("axe_passes").HasDefaultValue(0);
+                entity.Property(e => e.AxeIncomplete).HasColumnName("axe_incomplete").HasDefaultValue(0);
+                entity.Property(e => e.AxeInapplicable).HasColumnName("axe_inapplicable").HasDefaultValue(0);
+                entity.Property(e => e.EaViolations).HasColumnName("ea_violations").HasDefaultValue(0);
+                entity.Property(e => e.EaNeedsReview).HasColumnName("ea_needs_review").HasDefaultValue(0);
+                entity.Property(e => e.EaRecommendations).HasColumnName("ea_recommendations").HasDefaultValue(0);
+                entity.Property(e => e.EaPasses).HasColumnName("ea_passes").HasDefaultValue(0);
+                entity.Property(e => e.EaIncomplete).HasColumnName("ea_incomplete").HasDefaultValue(0);
+                entity.Property(e => e.EaInapplicable).HasColumnName("ea_inapplicable").HasDefaultValue(0);
                 entity.Property(e => e.CreatedAt).HasColumnName("created_at");
                 entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
                 entity.HasMany(a => a.Results).WithOne(r => r.Analysis).HasForeignKey(r => r.AnalysisId);
+                // Índices sugeridos
+                entity.HasIndex(e => e.UserId).HasDatabaseName("idx_analysis_user");
+                entity.HasIndex(e => e.Status).HasDatabaseName("idx_analysis_status");
+                entity.HasIndex(e => e.DateAnalysis).HasDatabaseName("idx_analysis_date");
             });
 
             // RESULTS
@@ -76,7 +92,13 @@ namespace Analysis.Infrastructure.Data
                 entity.Property(e => e.Description).HasColumnName("description");
                 entity.Property(e => e.CreatedAt).HasColumnName("created_at");
                 entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
-                entity.HasMany(r => r.Errors).WithOne(e => e.Result).HasForeignKey(e => e.ResultId);
+                entity.HasMany(r => r.Errors)
+                    .WithOne(e => e.Result)
+                    .HasForeignKey(e => e.ResultId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                // Índices sugeridos
+                entity.HasIndex(e => e.AnalysisId).HasDatabaseName("idx_results_analysis");
+                entity.HasIndex(e => e.Severity).HasDatabaseName("idx_results_severity");
             });
 
             // ERRORS
@@ -85,6 +107,8 @@ namespace Analysis.Infrastructure.Data
                 entity.ToTable("ERRORS");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.ResultId).HasColumnName("result_id");
+                // Índices sugeridos
+                entity.HasIndex(e => e.ResultId).HasDatabaseName("idx_errors_result");
                 entity.Property(e => e.WcagCriterionId).HasColumnName("wcag_criterion_id");
                 entity.Property(e => e.ErrorCode).HasColumnName("error_code");
                 entity.Property(e => e.Description).HasColumnName("description");

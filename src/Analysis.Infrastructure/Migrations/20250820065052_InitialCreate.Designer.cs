@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Analysis.Infrastructure.Migrations
 {
     [DbContext(typeof(AnalysisDbContext))]
-    [Migration("20250818004635_InitialCreate")]
+    [Migration("20250820065052_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,6 +32,42 @@ namespace Analysis.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AxeInapplicable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("axe_inapplicable");
+
+                    b.Property<int?>("AxeIncomplete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("axe_incomplete");
+
+                    b.Property<int?>("AxeNeedsReview")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("axe_needs_review");
+
+                    b.Property<int?>("AxePasses")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("axe_passes");
+
+                    b.Property<int?>("AxeRecommendations")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("axe_recommendations");
+
+                    b.Property<int?>("AxeViolations")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("axe_violations");
 
                     b.Property<string>("ContentInput")
                         .IsRequired()
@@ -55,6 +91,42 @@ namespace Analysis.Infrastructure.Migrations
                     b.Property<int?>("DurationMs")
                         .HasColumnType("int")
                         .HasColumnName("duration_ms");
+
+                    b.Property<int?>("EaInapplicable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("ea_inapplicable");
+
+                    b.Property<int?>("EaIncomplete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("ea_incomplete");
+
+                    b.Property<int?>("EaNeedsReview")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("ea_needs_review");
+
+                    b.Property<int?>("EaPasses")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("ea_passes");
+
+                    b.Property<int?>("EaRecommendations")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("ea_recommendations");
+
+                    b.Property<int?>("EaViolations")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("ea_violations");
 
                     b.Property<string>("ErrorMessage")
                         .IsRequired()
@@ -109,6 +181,15 @@ namespace Analysis.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DateAnalysis")
+                        .HasDatabaseName("idx_analysis_date");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("idx_analysis_status");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("idx_analysis_user");
+
                     b.ToTable("ANALYSIS", (string)null);
                 });
 
@@ -153,7 +234,8 @@ namespace Analysis.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ResultId");
+                    b.HasIndex("ResultId")
+                        .HasDatabaseName("idx_errors_result");
 
                     b.ToTable("ERRORS", (string)null);
                 });
@@ -206,7 +288,11 @@ namespace Analysis.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnalysisId");
+                    b.HasIndex("AnalysisId")
+                        .HasDatabaseName("idx_results_analysis");
+
+                    b.HasIndex("Severity")
+                        .HasDatabaseName("idx_results_severity");
 
                     b.ToTable("RESULTS", (string)null);
                 });

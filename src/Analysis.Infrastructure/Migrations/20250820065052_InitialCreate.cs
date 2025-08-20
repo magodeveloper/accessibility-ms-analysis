@@ -44,6 +44,18 @@ namespace Analysis.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     wcag_level = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    axe_violations = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    axe_needs_review = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    axe_recommendations = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    axe_passes = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    axe_incomplete = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    axe_inapplicable = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    ea_violations = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    ea_needs_review = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    ea_recommendations = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    ea_passes = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    ea_incomplete = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
+                    ea_inapplicable = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -114,14 +126,34 @@ namespace Analysis.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ERRORS_result_id",
+                name: "idx_analysis_date",
+                table: "ANALYSIS",
+                column: "date_analysis");
+
+            migrationBuilder.CreateIndex(
+                name: "idx_analysis_status",
+                table: "ANALYSIS",
+                column: "status");
+
+            migrationBuilder.CreateIndex(
+                name: "idx_analysis_user",
+                table: "ANALYSIS",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "idx_errors_result",
                 table: "ERRORS",
                 column: "result_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RESULTS_analysis_id",
+                name: "idx_results_analysis",
                 table: "RESULTS",
                 column: "analysis_id");
+
+            migrationBuilder.CreateIndex(
+                name: "idx_results_severity",
+                table: "RESULTS",
+                column: "severity");
         }
 
         /// <inheritdoc />

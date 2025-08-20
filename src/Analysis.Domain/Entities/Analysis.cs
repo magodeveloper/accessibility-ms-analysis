@@ -19,6 +19,18 @@ namespace Analysis.Domain.Entities
         public int? DurationMs { get; set; }
         public required string WcagVersion { get; set; }
         public WcagLevel WcagLevel { get; set; }
+        public int? AxeViolations { get; set; }
+        public int? AxeNeedsReview { get; set; }
+        public int? AxeRecommendations { get; set; }
+        public int? AxePasses { get; set; }
+        public int? AxeIncomplete { get; set; }
+        public int? AxeInapplicable { get; set; }
+        public int? EaViolations { get; set; }
+        public int? EaNeedsReview { get; set; }
+        public int? EaRecommendations { get; set; }
+        public int? EaPasses { get; set; }
+        public int? EaIncomplete { get; set; }
+        public int? EaInapplicable { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
