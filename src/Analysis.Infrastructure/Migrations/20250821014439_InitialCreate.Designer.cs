@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Analysis.Infrastructure.Migrations
 {
     [DbContext(typeof(AnalysisDbContext))]
-    [Migration("20250820065052_InitialCreate")]
+    [Migration("20250821014439_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -70,7 +70,6 @@ namespace Analysis.Infrastructure.Migrations
                         .HasColumnName("axe_violations");
 
                     b.Property<string>("ContentInput")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("content_input");
 
@@ -128,18 +127,12 @@ namespace Analysis.Infrastructure.Migrations
                         .HasDefaultValue(0)
                         .HasColumnName("ea_violations");
 
-                    b.Property<string>("ErrorMessage")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("error_message");
-
                     b.Property<string>("ResultJson")
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("result_json");
 
                     b.Property<string>("SourceUrl")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("source_url");
 

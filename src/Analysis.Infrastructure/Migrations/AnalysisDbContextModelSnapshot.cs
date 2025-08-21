@@ -67,7 +67,6 @@ namespace Analysis.Infrastructure.Migrations
                         .HasColumnName("axe_violations");
 
                     b.Property<string>("ContentInput")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("content_input");
 
@@ -125,18 +124,12 @@ namespace Analysis.Infrastructure.Migrations
                         .HasDefaultValue(0)
                         .HasColumnName("ea_violations");
 
-                    b.Property<string>("ErrorMessage")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("error_message");
-
                     b.Property<string>("ResultJson")
                         .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("result_json");
 
                     b.Property<string>("SourceUrl")
-                        .IsRequired()
                         .HasColumnType("longtext")
                         .HasColumnName("source_url");
 

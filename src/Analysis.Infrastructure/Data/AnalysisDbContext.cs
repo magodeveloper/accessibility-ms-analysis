@@ -39,7 +39,6 @@ namespace Analysis.Infrastructure.Data
                     .IsRequired();
                 entity.Property(e => e.SummaryResult).HasColumnName("summary_result");
                 entity.Property(e => e.ResultJson).HasColumnName("result_json");
-                entity.Property(e => e.ErrorMessage).HasColumnName("error_message");
                 entity.Property(e => e.DurationMs).HasColumnName("duration_ms");
                 entity.Property(e => e.WcagVersion)
                     .HasColumnName("wcag_version")

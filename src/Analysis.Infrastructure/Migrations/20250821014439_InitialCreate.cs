@@ -25,9 +25,9 @@ namespace Analysis.Infrastructure.Migrations
                     date_analysis = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     content_type = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    content_input = table.Column<string>(type: "longtext", nullable: false)
+                    content_input = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    source_url = table.Column<string>(type: "longtext", nullable: false)
+                    source_url = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     tool_used = table.Column<string>(type: "varchar(12)", maxLength: 12, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -36,8 +36,6 @@ namespace Analysis.Infrastructure.Migrations
                     summary_result = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     result_json = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    error_message = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     duration_ms = table.Column<int>(type: "int", nullable: true),
                     wcag_version = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false)

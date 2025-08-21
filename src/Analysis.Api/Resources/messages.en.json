@@ -18,6 +18,5 @@
   "Success_ErrorFound": "Error found.",
   "Success_ErrorUpdated": "Error updated successfully.",
   "Success_ErrorDeleted": "Error deleted successfully.",
-  "Success_ListErrors": "Error list retrieved successfully.",
-  "Success_PasswordReset": "Password reset successfully."
+  "Success_ListErrors": "Error list retrieved successfully."
 }

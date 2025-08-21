@@ -1,8 +1,8 @@
-using ResultEntity = Analysis.Domain.Entities.Result;
 using Analysis.Domain.Entities;
 using Analysis.Application.Dtos;
 using Analysis.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using ResultEntity = Analysis.Domain.Entities.Result;
 using AnalysisEntity = Analysis.Domain.Entities.Analysis;
 
 namespace Analysis.Application.Services.Analysis
@@ -58,10 +58,21 @@ namespace Analysis.Application.Services.Analysis
                 Status = Enum.TryParse<AnalysisStatus>(dto.Status, true, out var st) ? st : AnalysisStatus.pending,
                 SummaryResult = dto.SummaryResult,
                 ResultJson = dto.ResultJson,
-                ErrorMessage = dto.ErrorMessage,
                 DurationMs = dto.DurationMs,
                 WcagVersion = dto.WcagVersion,
                 WcagLevel = Enum.TryParse<WcagLevel>(dto.WcagLevel, true, out var wl) ? wl : WcagLevel.A,
+                AxeViolations = dto.AxeViolations,
+                AxeNeedsReview = dto.AxeNeedsReview,
+                AxeRecommendations = dto.AxeRecommendations,
+                AxePasses = dto.AxePasses,
+                AxeIncomplete = dto.AxeIncomplete,
+                AxeInapplicable = dto.AxeInapplicable,
+                EaViolations = dto.EaViolations,
+                EaNeedsReview = dto.EaNeedsReview,
+                EaRecommendations = dto.EaRecommendations,
+                EaPasses = dto.EaPasses,
+                EaIncomplete = dto.EaIncomplete,
+                EaInapplicable = dto.EaInapplicable,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 Results = new List<ResultEntity>()
@@ -93,10 +104,21 @@ namespace Analysis.Application.Services.Analysis
             a.Status.ToString(),
             a.SummaryResult,
             a.ResultJson,
-            a.ErrorMessage,
             a.DurationMs,
             a.WcagVersion,
             a.WcagLevel.ToString(),
+            a.AxeViolations,
+            a.AxeNeedsReview,
+            a.AxeRecommendations,
+            a.AxePasses,
+            a.AxeIncomplete,
+            a.AxeInapplicable,
+            a.EaViolations,
+            a.EaNeedsReview,
+            a.EaRecommendations,
+            a.EaPasses,
+            a.EaIncomplete,
+            a.EaInapplicable,
             a.CreatedAt,
             a.UpdatedAt
         );

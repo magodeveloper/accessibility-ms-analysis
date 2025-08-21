@@ -1,20 +1,32 @@
 namespace Analysis.Application.Dtos;
 
+
 public record AnalysisDto(
     int Id,
     int UserId,
     DateTime DateAnalysis,
     string ContentType,
-    string ContentInput,
-    string SourceUrl,
+    string? ContentInput,
+    string? SourceUrl,
     string ToolUsed,
     string Status,
     string SummaryResult,
     string ResultJson,
-    string ErrorMessage,
     int? DurationMs,
     string WcagVersion,
     string WcagLevel,
+    int? AxeViolations,
+    int? AxeNeedsReview,
+    int? AxeRecommendations,
+    int? AxePasses,
+    int? AxeIncomplete,
+    int? AxeInapplicable,
+    int? EaViolations,
+    int? EaNeedsReview,
+    int? EaRecommendations,
+    int? EaPasses,
+    int? EaIncomplete,
+    int? EaInapplicable,
     DateTime CreatedAt,
     DateTime UpdatedAt
 );
@@ -29,10 +41,21 @@ public record AnalysisCreateDto(
     string Status,
     string SummaryResult,
     string ResultJson,
-    string ErrorMessage,
     int? DurationMs,
     string WcagVersion,
-    string WcagLevel
+    string WcagLevel,
+    int? AxeViolations,
+    int? AxeNeedsReview,
+    int? AxeRecommendations,
+    int? AxePasses,
+    int? AxeIncomplete,
+    int? AxeInapplicable,
+    int? EaViolations,
+    int? EaNeedsReview,
+    int? EaRecommendations,
+    int? EaPasses,
+    int? EaIncomplete,
+    int? EaInapplicable
 );
 
 public record AnalysisPatchDto(
@@ -43,8 +66,19 @@ public record AnalysisPatchDto(
     string? Status,
     string? SummaryResult,
     string? ResultJson,
-    string? ErrorMessage,
     int? DurationMs,
     string? WcagVersion,
-    string? WcagLevel
+    string? WcagLevel,
+    int? AxeViolations,
+    int? AxeNeedsReview,
+    int? AxeRecommendations,
+    int? AxePasses,
+    int? AxeIncomplete,
+    int? AxeInapplicable,
+    int? EaViolations,
+    int? EaNeedsReview,
+    int? EaRecommendations,
+    int? EaPasses,
+    int? EaIncomplete,
+    int? EaInapplicable
 );
