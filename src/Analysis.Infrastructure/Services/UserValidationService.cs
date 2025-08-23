@@ -1,7 +1,7 @@
+using System.Text.Json;
 using Analysis.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
-using System.Text.Json;
 
 namespace Analysis.Infrastructure.Services;
 
@@ -25,7 +25,7 @@ public class UserValidationService : IUserValidationService
         _logger = logger;
         _configuration = configuration;
         _usersApiBaseUrl = configuration.GetValue<string>("ExternalServices:UsersApi:BaseUrl")
-            ?? "http://localhost:8081"; // Fallback para desarrollo local
+            ?? throw new InvalidOperationException("Users API base URL is not configured. Please set 'ExternalServices:UsersApi:BaseUrl' in your configuration.");
     }
 
     /// <inheritdoc />
