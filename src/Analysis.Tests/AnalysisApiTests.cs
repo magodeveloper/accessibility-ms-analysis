@@ -4,16 +4,30 @@ using Analysis.Api;
 using System.Text.Json;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Analysis.Tests.Infrastructure;
 
 namespace Analysis.Tests
 {
-    public class AnalysisApiTests : IClassFixture<WebApplicationFactory<Program>>
+    public class AnalysisApiTests : IClassFixture<TestWebApplicationFactory<Program>>, IAsyncLifetime
     {
-        private readonly WebApplicationFactory<Program> _factory;
+        private readonly TestWebApplicationFactory<Program> _factory;
 
-        public AnalysisApiTests(WebApplicationFactory<Program> factory)
+        public AnalysisApiTests(TestWebApplicationFactory<Program> factory)
         {
             _factory = factory;
+        }
+
+        public async Task InitializeAsync()
+        {
+            // Con bases de datos en memoria no necesitamos semilla de datos externos
+            // Los datos se crearán en cada test según se necesiten
+            await Task.CompletedTask;
+        }
+
+        public async Task DisposeAsync()
+        {
+            // Con bases de datos en memoria no necesitamos limpiar
+            await Task.CompletedTask;
         }
 
         [Fact]
