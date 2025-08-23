@@ -36,6 +36,7 @@ namespace Analysis.Api.Controllers
         /// Obtiene todos los errores asociados a un resultado.
         /// </summary>
         /// <response code="200">Lista de errores</response>
+        /// <response code="404">No se encontraron errores</response>
         [HttpGet("by-result")]
         [ProducesResponseType(typeof(IEnumerable<ErrorDto>), 200)]
         public async Task<IActionResult> GetByResultId([FromQuery] int resultId)
@@ -48,6 +49,7 @@ namespace Analysis.Api.Controllers
         /// Obtiene todos los errores.
         /// </summary>
         /// <response code="200">Lista de todos los errores</response>
+        /// <response code="404">No se encontraron errores</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ErrorDto>), 200)]
         public async Task<IActionResult> GetAll()
@@ -61,6 +63,7 @@ namespace Analysis.Api.Controllers
         /// </summary>
         /// <response code="201">Error creado exitosamente</response>
         /// <response code="400">Datos inválidos</response>
+        /// <response code="404">No se encontró el error</response>
         [HttpPost]
         [ProducesResponseType(typeof(ErrorDto), 201)]
         [ProducesResponseType(400)]
@@ -75,6 +78,7 @@ namespace Analysis.Api.Controllers
         /// Elimina un error por su ID.
         /// </summary>
         /// <response code="204">Eliminado exitosamente</response>
+        /// <response code="404">No se encontró el error</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         public async Task<IActionResult> Delete(int id)

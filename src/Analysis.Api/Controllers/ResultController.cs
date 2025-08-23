@@ -16,10 +16,37 @@ namespace Analysis.Api.Controllers
         }
 
         /// <summary>
+        /// Obtiene resultados por nivel (level).
+        /// </summary>
+        /// <response code="200">Lista de resultados filtrados por nivel</response>
+        /// <response code="404">No se encontraron resultados</response>
+        [HttpGet("by-level")]
+        [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
+        public async Task<IActionResult> GetByLevel([FromQuery] string level)
+        {
+            var result = await _service.GetByLevelAsync(level);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Obtiene resultados por severidad (severity).
+        /// </summary>
+        /// <response code="200">Lista de resultados filtrados por severidad</response>
+        /// <response code="404">No se encontraron resultados</response>
+        [HttpGet("by-severity")]
+        [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
+        public async Task<IActionResult> GetBySeverity([FromQuery] string severity)
+        {
+            var result = await _service.GetBySeverityAsync(severity);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Obtiene un resultado por su ID.
         /// </summary>
         /// <response code="200">Resultado encontrado</response>
         /// <response code="404">No se encontró el resultado</response>
+        /// <response code="400">ID inválido</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ResultDto), 200)]
         [ProducesResponseType(404)]
@@ -36,6 +63,7 @@ namespace Analysis.Api.Controllers
         /// Obtiene todos los resultados asociados a un análisis.
         /// </summary>
         /// <response code="200">Lista de resultados</response>
+        /// <response code="404">No se encontraron resultados</response>
         [HttpGet("by-analysis")]
         [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
         public async Task<IActionResult> GetByAnalysisId([FromQuery] int analysisId)
@@ -48,6 +76,7 @@ namespace Analysis.Api.Controllers
         /// Obtiene todos los resultados.
         /// </summary>
         /// <response code="200">Lista de todos los resultados</response>
+        /// <response code="404">No se encontraron resultados</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
         public async Task<IActionResult> GetAll()
@@ -61,6 +90,7 @@ namespace Analysis.Api.Controllers
         /// </summary>
         /// <response code="201">Resultado creado exitosamente</response>
         /// <response code="400">Datos inválidos</response>
+        /// <response code="404">No se encontró el resultado</response>
         [HttpPost]
         [ProducesResponseType(typeof(ResultDto), 201)]
         [ProducesResponseType(400)]
@@ -75,6 +105,7 @@ namespace Analysis.Api.Controllers
         /// Elimina un resultado por su ID.
         /// </summary>
         /// <response code="204">Eliminado exitosamente</response>
+        /// <response code="404">No se encontró el resultado</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         public async Task<IActionResult> Delete(int id)

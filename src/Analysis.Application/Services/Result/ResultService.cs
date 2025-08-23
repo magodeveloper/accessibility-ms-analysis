@@ -15,6 +15,22 @@ namespace Analysis.Application.Services.Result
             _db = db;
         }
 
+        public async Task<IEnumerable<ResultDto>> GetByLevelAsync(string level)
+        {
+            return await _db.Results
+                .Where(r => r.Level.ToString().ToLower() == level.ToLower())
+                .Select(r => ToReadDto(r))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ResultDto>> GetBySeverityAsync(string severity)
+        {
+            return await _db.Results
+                .Where(r => r.Severity.ToString().ToLower() == severity.ToLower())
+                .Select(r => ToReadDto(r))
+                .ToListAsync();
+        }
+
         public async Task<ResultDto?> GetByIdAsync(int id)
         {
             var entity = await _db.Results.FindAsync(id);

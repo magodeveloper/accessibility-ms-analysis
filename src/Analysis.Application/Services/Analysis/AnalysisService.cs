@@ -15,6 +15,21 @@ namespace Analysis.Application.Services.Analysis
             _db = db;
         }
 
+        public async Task<IEnumerable<AnalysisDto>> GetAllAsync()
+        {
+            return await _db.Analyses
+                .Select(a => ToReadDto(a))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<AnalysisDto>> GetByUserIdAsync(int userId)
+        {
+            return await _db.Analyses
+                .Where(a => a.UserId == userId)
+                .Select(a => ToReadDto(a))
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<AnalysisDto>> GetByDateAsync(int userId, DateTime date)
         {
             return await _db.Analyses

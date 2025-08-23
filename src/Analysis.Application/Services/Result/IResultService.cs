@@ -9,6 +9,8 @@ namespace Analysis.Application.Services.Result
         Task<ResultDto?> GetByIdAsync(int id);
         Task<IEnumerable<ResultDto>> GetByAnalysisIdAsync(int analysisId);
         Task<IEnumerable<ResultDto>> GetAllAsync();
+        Task<IEnumerable<ResultDto>> GetByLevelAsync(string level);
+        Task<IEnumerable<ResultDto>> GetBySeverityAsync(string severity);
         Task<ResultDto> CreateAsync(ResultCreateDto dto);
         Task DeleteAsync(int id);
     }

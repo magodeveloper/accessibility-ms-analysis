@@ -16,9 +16,36 @@ namespace Analysis.Api.Controllers
         }
 
         /// <summary>
+        /// Obtiene todos los análisis.
+        /// </summary>
+        /// <response code="200">Lista de análisis</response>
+        /// <response code="404">No se encontraron análisis</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _service.GetAllAsync();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Obtiene análisis por usuario.
+        /// </summary>
+        /// <response code="200">Lista de análisis encontrados</response>
+        /// <response code="404">No se encontraron análisis</response>
+        [HttpGet("by-user")]
+        [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
+        public async Task<IActionResult> GetByUser([FromQuery] int userId)
+        {
+            var result = await _service.GetByUserIdAsync(userId);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Obtiene análisis por fecha y usuario.
         /// </summary>
         /// <response code="200">Lista de análisis encontrados</response>
+        /// <response code="404">No se encontraron análisis</response>
         [HttpGet("by-date")]
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
         public async Task<IActionResult> GetByDate([FromQuery] int userId, [FromQuery] DateTime date)
@@ -31,6 +58,7 @@ namespace Analysis.Api.Controllers
         /// Obtiene análisis por herramienta y usuario.
         /// </summary>
         /// <response code="200">Lista de análisis encontrados</response>
+        /// <response code="404">No se encontraron análisis</response>
         [HttpGet("by-tool")]
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
         public async Task<IActionResult> GetByTool([FromQuery] int userId, [FromQuery] string toolUsed)
@@ -43,6 +71,7 @@ namespace Analysis.Api.Controllers
         /// Obtiene análisis por estado y usuario.
         /// </summary>
         /// <response code="200">Lista de análisis encontrados</response>
+        /// <response code="404">No se encontraron análisis</response>
         [HttpGet("by-status")]
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
         public async Task<IActionResult> GetByStatus([FromQuery] int userId, [FromQuery] string status)
@@ -56,6 +85,7 @@ namespace Analysis.Api.Controllers
         /// </summary>
         /// <response code="200">Análisis encontrado</response>
         /// <response code="404">No se encontró el análisis</response>
+        /// <response code="400">ID inválido</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(AnalysisDto), 200)]
         [ProducesResponseType(404)]
@@ -73,6 +103,7 @@ namespace Analysis.Api.Controllers
         /// </summary>
         /// <response code="201">Análisis creado exitosamente</response>
         /// <response code="400">Datos inválidos</response>
+        /// <response code="404">No se encontró el análisis</response>
         [HttpPost]
         [ProducesResponseType(typeof(AnalysisDto), 201)]
         [ProducesResponseType(400)]
@@ -91,6 +122,7 @@ namespace Analysis.Api.Controllers
         /// Elimina un análisis por ID.
         /// </summary>
         /// <response code="204">Eliminado exitosamente</response>
+        /// <response code="404">No se encontró el análisis</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         public async Task<IActionResult> Delete(int id)
