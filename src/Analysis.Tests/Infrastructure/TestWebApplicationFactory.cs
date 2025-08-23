@@ -11,7 +11,7 @@ namespace Analysis.Tests.Infrastructure
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseEnvironment("TestEnvironment");
+            builder.UseEnvironment("Test");
 
             builder.ConfigureAppConfiguration((context, config) =>
             {
@@ -19,8 +19,8 @@ namespace Analysis.Tests.Infrastructure
                 config.Sources.Clear();
                 config.AddInMemoryCollection(new Dictionary<string, string?>
                 {
-                    ["ASPNETCORE_ENVIRONMENT"] = "TestEnvironment",
-                    ["Environment"] = "TestEnvironment"
+                    ["ASPNETCORE_ENVIRONMENT"] = "Test",
+                    ["Environment"] = "Test"
                 });
             });
 

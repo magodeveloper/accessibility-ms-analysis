@@ -1,4 +1,6 @@
 using Analysis.Infrastructure.Data;
+using Analysis.Infrastructure.Services;
+using Analysis.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +14,7 @@ public static class ServiceRegistration
         // Detectar si estamos en entorno de tests
         var environmentName = config["ASPNETCORE_ENVIRONMENT"] ?? config["Environment"];
 
-        if (environmentName == "TestEnvironment")
+        if (environmentName == "Test" || environmentName == "TestEnvironment")
         {
             // Para tests, usar InMemory database
             services.AddDbContext<AnalysisDbContext>(options =>
@@ -37,6 +39,16 @@ public static class ServiceRegistration
                         );
                     });
         }
+
+        // Registrar servicios de dominio
+        services.AddScoped<IUserValidationService, UserValidationService>();
+
+        // Configurar HttpClient para comunicación con otros microservicios
+        services.AddHttpClient<UserValidationService>(client =>
+        {
+            // Configuración por defecto - puede ser sobrescrita por configuración
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
 
         return services;
     }

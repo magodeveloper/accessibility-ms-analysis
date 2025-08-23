@@ -53,7 +53,7 @@ var app = builder.Build(); // Construcción de la aplicación
 
 // Migración automática de la base de datos al iniciar la API - solo en producción/desarrollo
 var environment = app.Environment.EnvironmentName;
-if (environment != "TestEnvironment")
+if (environment != "Test" && environment != "TestEnvironment")
 {
     using (var scope = app.Services.CreateScope())
     {
