@@ -5,9 +5,9 @@ Write-Host "🔧 Inicializando bases de datos de test..." -ForegroundColor Yello
 
 # Configuración
 $DB_HOST = "localhost"
-$DB_PORT = "3308"
+$DB_PORT = "3306"
 $DB_USER = "root"
-$DB_PASSWORD = "rootpassword"
+$DB_PASSWORD = "Y0urs3cretOrA7"
 
 # Función para ejecutar comandos MySQL
 function Execute-SQL {

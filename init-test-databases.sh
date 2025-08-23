@@ -9,7 +9,7 @@ echo "🔧 Inicializando bases de datos de test..."
 DB_HOST="localhost"
 DB_PORT="3306"
 DB_USER="root"
-DB_PASSWORD="yourpassword"
+DB_PASSWORD="Y0urs3cretOrA7"
 
 # Función para ejecutar comandos MySQL
 execute_sql() {
