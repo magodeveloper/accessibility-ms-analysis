@@ -20,7 +20,9 @@ namespace Analysis.Tests.Infrastructure
                 config.AddInMemoryCollection(new Dictionary<string, string?>
                 {
                     ["ASPNETCORE_ENVIRONMENT"] = "Test",
-                    ["Environment"] = "Test"
+                    ["Environment"] = "Test",
+                    ["ExternalServices:UsersApi:BaseUrl"] = "http://localhost:8081/api",
+                    ["ExternalServices:ReportsApi:BaseUrl"] = "http://localhost:8083/api"
                 });
             });
 
