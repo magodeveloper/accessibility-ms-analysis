@@ -2,6 +2,7 @@ using Analysis.Application;
 using Microsoft.AspNetCore.Mvc;
 using Analysis.Application.Dtos;
 using Analysis.Application.Services.Result;
+using Analysis.Api.Helpers;
 
 namespace Analysis.Api.Controllers
 {
@@ -50,10 +51,10 @@ namespace Analysis.Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ResultDto), 200)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> GetById(int id, [FromHeader(Name = "Accept-Language")] string acceptLanguage = "es")
+        public async Task<IActionResult> GetById(int id)
         {
             var result = await _service.GetByIdAsync(id);
-            var lang = acceptLanguage?.Split(',')[0] ?? "es";
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             if (result == null)
                 return NotFound(new { error = Localization.Get("Error_ResultNotFound", lang) });
             return Ok(result);
@@ -94,10 +95,10 @@ namespace Analysis.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(ResultDto), 201)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Create([FromBody] ResultCreateDto dto, [FromHeader(Name = "Accept-Language")] string acceptLanguage = "es")
+        public async Task<IActionResult> Create([FromBody] ResultCreateDto dto)
         {
             var result = await _service.CreateAsync(dto);
-            var lang = acceptLanguage?.Split(',')[0] ?? "es";
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             return CreatedAtAction(nameof(GetAll), new { id = result.Id }, new { message = Localization.Get("Success_ResultCreated", lang), data = result });
         }
 
