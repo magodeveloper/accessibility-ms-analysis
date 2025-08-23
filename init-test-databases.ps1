@@ -7,7 +7,7 @@ Write-Host "🔧 Inicializando bases de datos de test..." -ForegroundColor Yello
 $DB_HOST = "localhost"
 $DB_PORT = "3306"
 $DB_USER = "root"
-$DB_PASSWORD = "Y0urs3cretOrA7"
+$DB_PASSWORD = "dI5QN4ZxWPKKZbZ4ZzZmpNrV7edEDXjO"
 
 # Función para ejecutar comandos MySQL
 function Execute-SQL {
@@ -36,6 +36,15 @@ Execute-SQL "CREATE DATABASE analysisdb_test CHARACTER SET utf8mb4 COLLATE utf8m
 Write-Host "📊 Creando reportsdb_test..." -ForegroundColor Green
 Execute-SQL "DROP DATABASE IF EXISTS reportsdb_test;"
 Execute-SQL "CREATE DATABASE reportsdb_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# Crear usuario de test con permisos completos
+Write-Host "👤 Creando usuario de test..." -ForegroundColor Green
+Execute-SQL "DROP USER IF EXISTS 'testuser'@'%';"
+Execute-SQL "CREATE USER 'testuser'@'%' IDENTIFIED BY 'TestApp2025SecurePass';"
+Execute-SQL "GRANT ALL PRIVILEGES ON usersdb_test.* TO 'testuser'@'%';"
+Execute-SQL "GRANT ALL PRIVILEGES ON analysisdb_test.* TO 'testuser'@'%';"
+Execute-SQL "GRANT ALL PRIVILEGES ON reportsdb_test.* TO 'testuser'@'%';"
+Execute-SQL "FLUSH PRIVILEGES;"
 
 Write-Host ""
 Write-Host "✅ Bases de datos de test inicializadas correctamente" -ForegroundColor Green

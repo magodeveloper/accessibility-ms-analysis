@@ -9,7 +9,7 @@ echo "🔧 Inicializando bases de datos de test..."
 DB_HOST="localhost"
 DB_PORT="3306"
 DB_USER="root"
-DB_PASSWORD="Y0urs3cretOrA7"
+DB_PASSWORD="dI5QN4ZxWPKKZbZ4ZzZmpNrV7edEDXjO"
 
 # Función para ejecutar comandos MySQL
 execute_sql() {
@@ -31,6 +31,16 @@ echo "📊 Creando reportsdb_test..."
 execute_sql "DROP DATABASE IF EXISTS reportsdb_test;"
 execute_sql "CREATE DATABASE reportsdb_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
+# Crear usuario de test con permisos completos
+echo "👤 Creando usuario de test..."
+execute_sql "DROP USER IF EXISTS 'testuser'@'%';"
+execute_sql "CREATE USER 'testuser'@'%' IDENTIFIED BY 'TestApp2025SecurePass';"
+execute_sql "GRANT ALL PRIVILEGES ON usersdb_test.* TO 'testuser'@'%';"
+execute_sql "GRANT ALL PRIVILEGES ON analysisdb_test.* TO 'testuser'@'%';"
+execute_sql "GRANT ALL PRIVILEGES ON reportsdb_test.* TO 'testuser'@'%';"
+execute_sql "FLUSH PRIVILEGES;"
+
+echo ""
 echo "✅ Bases de datos de test inicializadas correctamente"
 echo ""
 echo "🚀 Ejecutar tests con:"
