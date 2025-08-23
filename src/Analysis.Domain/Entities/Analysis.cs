@@ -13,10 +13,10 @@ namespace Analysis.Domain.Entities
         public string? SourceUrl { get; set; }
         public ToolUsed ToolUsed { get; set; }
         public AnalysisStatus Status { get; set; }
-        public string SummaryResult { get; set; }
-        public string ResultJson { get; set; }
+        public required string SummaryResult { get; set; }
+        public required string ResultJson { get; set; }
+        public required string WcagVersion { get; set; }
         public int? DurationMs { get; set; }
-        public string WcagVersion { get; set; }
         public WcagLevel WcagLevel { get; set; }
         public int? AxeViolations { get; set; }
         public int? AxeNeedsReview { get; set; }

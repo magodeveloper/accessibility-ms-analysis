@@ -64,6 +64,13 @@ namespace Analysis.Application.Services.Error
             }
         }
 
+        public async Task DeleteAllAsync()
+        {
+            var allEntities = await _db.Errors.ToListAsync();
+            _db.Errors.RemoveRange(allEntities);
+            await _db.SaveChangesAsync();
+        }
+
         private static ErrorDto ToReadDto(ErrorEntity e) => new ErrorDto(
             e.Id,
             e.ResultId,

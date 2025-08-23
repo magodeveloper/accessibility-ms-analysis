@@ -82,6 +82,13 @@ namespace Analysis.Application.Services.Result
             }
         }
 
+        public async Task DeleteAllAsync()
+        {
+            var allEntities = await _db.Results.ToListAsync();
+            _db.Results.RemoveRange(allEntities);
+            await _db.SaveChangesAsync();
+        }
+
         private static ResultDto ToReadDto(ResultEntity r) => new ResultDto(
                     r.Id,
                     r.AnalysisId,

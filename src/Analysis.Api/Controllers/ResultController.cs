@@ -113,5 +113,17 @@ namespace Analysis.Api.Controllers
             await _service.DeleteAsync(id);
             return NoContent();
         }
+
+        /// <summary>
+        /// Elimina todos los resultados.
+        /// </summary>
+        /// <response code="204">Todos los resultados eliminados exitosamente</response>
+        [HttpDelete("all")]
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> DeleteAll()
+        {
+            await _service.DeleteAllAsync();
+            return NoContent();
+        }
     }
 }

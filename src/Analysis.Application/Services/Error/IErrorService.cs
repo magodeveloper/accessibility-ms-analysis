@@ -11,5 +11,6 @@ namespace Analysis.Application.Services.Error
         Task<IEnumerable<ErrorDto>> GetAllAsync();
         Task<ErrorDto> CreateAsync(ErrorCreateDto dto);
         Task DeleteAsync(int id);
+        Task DeleteAllAsync();
     }
 }

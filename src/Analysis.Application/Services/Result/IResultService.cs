@@ -13,5 +13,6 @@ namespace Analysis.Application.Services.Result
         Task<IEnumerable<ResultDto>> GetBySeverityAsync(string severity);
         Task<ResultDto> CreateAsync(ResultCreateDto dto);
         Task DeleteAsync(int id);
+        Task DeleteAllAsync();
     }
 }

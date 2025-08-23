@@ -14,5 +14,6 @@ namespace Analysis.Application.Services.Analysis
         Task<AnalysisDto?> GetByIdAsync(int id);
         Task<AnalysisDto> CreateAsync(AnalysisCreateDto dto);
         Task DeleteAsync(int id);
+        Task DeleteAllAsync();
     }
 }
