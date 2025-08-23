@@ -87,6 +87,9 @@ namespace Analysis.Application.Services.Result
             var allEntities = await _db.Results.ToListAsync();
             _db.Results.RemoveRange(allEntities);
             await _db.SaveChangesAsync();
+
+            // Reset AUTO_INCREMENT to 1
+            await _db.Database.ExecuteSqlRawAsync("ALTER TABLE RESULTS AUTO_INCREMENT = 1");
         }
 
         private static ResultDto ToReadDto(ResultEntity r) => new ResultDto(

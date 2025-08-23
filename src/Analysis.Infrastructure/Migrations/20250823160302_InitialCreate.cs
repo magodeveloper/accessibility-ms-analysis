@@ -21,7 +21,7 @@ namespace Analysis.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    user_id = table.Column<int>(type: "int", nullable: false),
                     date_analysis = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     content_type = table.Column<string>(type: "varchar(8)", maxLength: 8, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -37,9 +37,9 @@ namespace Analysis.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     result_json = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    duration_ms = table.Column<int>(type: "int", nullable: true),
                     wcag_version = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    duration_ms = table.Column<int>(type: "int", nullable: true),
                     wcag_level = table.Column<string>(type: "varchar(3)", maxLength: 3, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     axe_violations = table.Column<int>(type: "int", nullable: true, defaultValue: 0),
@@ -136,7 +136,7 @@ namespace Analysis.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_analysis_user",
                 table: "ANALYSIS",
-                column: "UserId");
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "idx_errors_result",

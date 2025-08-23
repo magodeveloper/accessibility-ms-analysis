@@ -19,6 +19,7 @@ namespace Analysis.Infrastructure.Data
             {
                 entity.ToTable("ANALYSIS");
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.UserId).HasColumnName("user_id");
                 entity.Property(e => e.DateAnalysis).HasColumnName("date_analysis");
                 entity.Property(e => e.ContentType)
                     .HasColumnName("content_type")

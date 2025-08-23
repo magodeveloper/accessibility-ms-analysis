@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Analysis.Infrastructure.Migrations
 {
     [DbContext(typeof(AnalysisDbContext))]
-    [Migration("20250821014439_InitialCreate")]
+    [Migration("20250823160302_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -158,7 +158,8 @@ namespace Analysis.Infrastructure.Migrations
                         .HasColumnName("updated_at");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("WcagLevel")
                         .IsRequired()

@@ -155,7 +155,8 @@ namespace Analysis.Infrastructure.Migrations
                         .HasColumnName("updated_at");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("WcagLevel")
                         .IsRequired()

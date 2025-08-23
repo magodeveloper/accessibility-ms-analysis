@@ -69,6 +69,9 @@ namespace Analysis.Application.Services.Error
             var allEntities = await _db.Errors.ToListAsync();
             _db.Errors.RemoveRange(allEntities);
             await _db.SaveChangesAsync();
+
+            // Reset AUTO_INCREMENT to 1
+            await _db.Database.ExecuteSqlRawAsync("ALTER TABLE ERRORS AUTO_INCREMENT = 1");
         }
 
         private static ErrorDto ToReadDto(ErrorEntity e) => new ErrorDto(
