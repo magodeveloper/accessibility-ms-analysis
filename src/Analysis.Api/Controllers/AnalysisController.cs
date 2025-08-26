@@ -25,8 +25,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetAllAsync();
-            return Ok(result);
+            return Ok(new { analyses = result, message = Localization.Get("Success_ListAnalysis", lang) });
         }
 
         /// <summary>
@@ -38,8 +39,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
         public async Task<IActionResult> GetByUser([FromQuery] int userId)
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetByUserIdAsync(userId);
-            return Ok(result);
+            return Ok(new { analyses = result, message = Localization.Get("Success_AnalysesByUser", lang) });
         }
 
         /// <summary>
@@ -51,8 +53,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
         public async Task<IActionResult> GetByDate([FromQuery] int userId, [FromQuery] DateTime date)
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetByDateAsync(userId, date);
-            return Ok(result);
+            return Ok(new { analyses = result, message = Localization.Get("Success_AnalysesByDate", lang) });
         }
 
         /// <summary>
@@ -64,8 +67,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
         public async Task<IActionResult> GetByTool([FromQuery] int userId, [FromQuery] string toolUsed)
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetByToolAsync(userId, toolUsed);
-            return Ok(result);
+            return Ok(new { analyses = result, message = Localization.Get("Success_AnalysesByTool", lang) });
         }
 
         /// <summary>
@@ -77,8 +81,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
         public async Task<IActionResult> GetByStatus([FromQuery] int userId, [FromQuery] string status)
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetByStatusAsync(userId, status);
-            return Ok(result);
+            return Ok(new { analyses = result, message = Localization.Get("Success_AnalysesByStatus", lang) });
         }
 
         /// <summary>
@@ -92,11 +97,11 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _service.GetByIdAsync(id);
             var lang = LanguageHelper.GetRequestLanguage(Request);
+            var result = await _service.GetByIdAsync(id);
             if (result == null)
                 return NotFound(new { error = Localization.Get("Error_AnalysisNotFound", lang) });
-            return Ok(result);
+            return Ok(new { analysis = result, message = Localization.Get("Success_AnalysisFound", lang) });
         }
 
         /// <summary>
@@ -122,26 +127,36 @@ namespace Analysis.Api.Controllers
         /// <summary>
         /// Elimina un análisis por ID.
         /// </summary>
-        /// <response code="204">Eliminado exitosamente</response>
+        /// <response code="200">Análisis eliminado</response>
         /// <response code="404">No se encontró el análisis</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id)
         {
-            await _service.DeleteAsync(id);
-            return NoContent();
+            var lang = LanguageHelper.GetRequestLanguage(Request);
+            try
+            {
+                await _service.DeleteAsync(id);
+                return Ok(new { message = Localization.Get("Success_AnalysisDeleted", lang) });
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound(new { error = Localization.Get("Error_AnalysisNotFound", lang) });
+            }
         }
 
         /// <summary>
         /// Elimina todos los análisis.
         /// </summary>
-        /// <response code="204">Todos los análisis eliminados exitosamente</response>
+        /// <response code="200">Todos los análisis eliminados exitosamente</response>
         [HttpDelete("all")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(object), 200)]
         public async Task<IActionResult> DeleteAll()
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             await _service.DeleteAllAsync();
-            return NoContent();
+            return Ok(new { message = Localization.Get("Success_AllAnalysisDeleted", lang) });
         }
     }
 }

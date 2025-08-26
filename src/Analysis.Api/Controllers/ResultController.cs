@@ -25,8 +25,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
         public async Task<IActionResult> GetByLevel([FromQuery] string level)
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetByLevelAsync(level);
-            return Ok(result);
+            return Ok(new { results = result, message = Localization.Get("Success_ResultsByLevel", lang) });
         }
 
         /// <summary>
@@ -38,8 +39,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
         public async Task<IActionResult> GetBySeverity([FromQuery] string severity)
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetBySeverityAsync(severity);
-            return Ok(result);
+            return Ok(new { results = result, message = Localization.Get("Success_ResultsBySeverity", lang) });
         }
 
         /// <summary>
@@ -53,11 +55,11 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(int id)
         {
-            var result = await _service.GetByIdAsync(id);
             var lang = LanguageHelper.GetRequestLanguage(Request);
+            var result = await _service.GetByIdAsync(id);
             if (result == null)
                 return NotFound(new { error = Localization.Get("Error_ResultNotFound", lang) });
-            return Ok(result);
+            return Ok(new { result = result, message = Localization.Get("Success_ResultFound", lang) });
         }
 
         /// <summary>
@@ -69,8 +71,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
         public async Task<IActionResult> GetByAnalysisId([FromQuery] int analysisId)
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetByAnalysisIdAsync(analysisId);
-            return Ok(result);
+            return Ok(new { results = result, message = Localization.Get("Success_ResultsByAnalysis", lang) });
         }
 
         /// <summary>
@@ -82,8 +85,9 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
         public async Task<IActionResult> GetAll()
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             var result = await _service.GetAllAsync();
-            return Ok(result);
+            return Ok(new { results = result, message = Localization.Get("Success_ListResults", lang) });
         }
 
         /// <summary>
@@ -97,34 +101,44 @@ namespace Analysis.Api.Controllers
         [ProducesResponseType(400)]
         public async Task<IActionResult> Create([FromBody] ResultCreateDto dto)
         {
-            var result = await _service.CreateAsync(dto);
             var lang = LanguageHelper.GetRequestLanguage(Request);
-            return CreatedAtAction(nameof(GetAll), new { id = result.Id }, new { message = Localization.Get("Success_ResultCreated", lang), data = result });
+            var result = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, new { message = Localization.Get("Success_ResultCreated", lang), data = result });
         }
 
         /// <summary>
         /// Elimina un resultado por su ID.
         /// </summary>
-        /// <response code="204">Eliminado exitosamente</response>
+        /// <response code="200">Resultado eliminado</response>
         /// <response code="404">No se encontró el resultado</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(object), 200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id)
         {
-            await _service.DeleteAsync(id);
-            return NoContent();
+            var lang = LanguageHelper.GetRequestLanguage(Request);
+            try
+            {
+                await _service.DeleteAsync(id);
+                return Ok(new { message = Localization.Get("Success_ResultDeleted", lang) });
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound(new { error = Localization.Get("Error_ResultNotFound", lang) });
+            }
         }
 
         /// <summary>
         /// Elimina todos los resultados.
         /// </summary>
-        /// <response code="204">Todos los resultados eliminados exitosamente</response>
+        /// <response code="200">Todos los resultados eliminados exitosamente</response>
         [HttpDelete("all")]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(object), 200)]
         public async Task<IActionResult> DeleteAll()
         {
+            var lang = LanguageHelper.GetRequestLanguage(Request);
             await _service.DeleteAllAsync();
-            return NoContent();
+            return Ok(new { message = Localization.Get("Success_AllResultsDeleted", lang) });
         }
     }
 }
