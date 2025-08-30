@@ -1,8 +1,8 @@
 using Analysis.Application;
+using Analysis.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Analysis.Application.Dtos;
 using Analysis.Application.Services.Analysis;
-using Analysis.Api.Helpers;
 
 namespace Analysis.Api.Controllers
 {
@@ -51,16 +51,17 @@ namespace Analysis.Api.Controllers
         /// <response code="404">No se encontraron análisis</response>
         [HttpGet("by-date")]
         [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
-        public async Task<IActionResult> GetByDate([FromQuery] int userId, [FromQuery] DateTime date)
+        public async Task<IActionResult> GetByDate(
+            [FromQuery] int userId,
+            [FromQuery] DateTime date,
+            [FromQuery] DateTime? from = null,
+            [FromQuery] DateTime? to = null)
         {
             var lang = LanguageHelper.GetRequestLanguage(Request);
             // Permitir parámetros opcionales from y to para rango
-            string? fromStr = Request.Query["from"];
-            string? toStr = Request.Query["to"];
-            if (!string.IsNullOrEmpty(fromStr) && !string.IsNullOrEmpty(toStr)
-                && DateTime.TryParse(fromStr, out var from) && DateTime.TryParse(toStr, out var to))
+            if (from.HasValue && to.HasValue)
             {
-                var result = await _service.GetByDateRangeAsync(userId, from, to);
+                var result = await _service.GetByDateRangeAsync(userId, from.Value, to.Value);
                 return Ok(new { analyses = result, message = Localization.Get("Success_AnalysesByDate", lang) });
             }
             else

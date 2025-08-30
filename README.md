@@ -529,14 +529,20 @@ curl -X DELETE http://localhost:5041/api/error/all
 ### Ejemplo 3: Búsquedas avanzadas
 
 ```bash
-# Análisis por herramienta específica
-curl -X GET "http://localhost:5041/api/analysis/by-tool?userId=123&toolUsed=axe-core"
+# Análisis por herramienta específica (acepta "axe-core", "equal-access" o "both")
+curl -X GET "http://localhost:5041/api/analysis/by-tool?userId=123&toolUsed=equal-access"
 
 # Análisis por estado
 curl -X GET "http://localhost:5041/api/analysis/by-status?userId=123&status=completed"
 
 # Resultados por nivel de violación
 curl -X GET "http://localhost:5041/api/result/by-level?level=violation"
+
+# Análisis por fecha (exacta)
+curl -X GET "http://localhost:5041/api/analysis/by-date?userId=123&date=2025-01-16"
+
+# Análisis por rango de fechas
+curl -X GET "http://localhost:5041/api/analysis/by-date?userId=123&from=2025-01-01&to=2025-01-31"
 ```
 
 ## Documentación OpenAPI/Swagger
