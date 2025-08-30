@@ -104,8 +104,9 @@ namespace Analysis.Application.Services.Analysis
             // Mapear valores del frontend a los enums correctos
             string toolUsedNormalized = dto.ToolUsed?.Trim().ToLower() switch
             {
-                "axe-core" => "axecore",
-                "equal-access" => "equalaccess",
+                "axe-core" or "axecore" => "axecore",
+                "equal-access" or "equalaccess" => "equalaccess",
+                "both" or "ambas" => "both",
                 _ => dto.ToolUsed?.Trim().ToLower() ?? "axecore"
             };
 
