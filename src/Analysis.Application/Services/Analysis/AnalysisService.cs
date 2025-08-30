@@ -107,7 +107,7 @@ namespace Analysis.Application.Services.Analysis
                 "axe-core" or "axecore" => "axecore",
                 "equal-access" or "equalaccess" => "equalaccess",
                 "both" or "ambas" => "both",
-                _ => dto.ToolUsed?.Trim().ToLower() ?? "axecore"
+                _ => dto.ToolUsed?.Trim().ToLower() ?? "both"
             };
 
             var entity = new AnalysisEntity
@@ -117,7 +117,7 @@ namespace Analysis.Application.Services.Analysis
                 ContentType = Enum.TryParse<ContentType>(dto.ContentType, true, out var ct) ? ct : ContentType.url,
                 ContentInput = dto.ContentInput,
                 SourceUrl = dto.SourceUrl,
-                ToolUsed = Enum.TryParse<ToolUsed>(toolUsedNormalized, true, out var tu) ? tu : ToolUsed.axecore,
+                ToolUsed = Enum.TryParse<ToolUsed>(toolUsedNormalized, true, out var tu) ? tu : ToolUsed.both,
                 Status = Enum.TryParse<AnalysisStatus>(dto.Status, true, out var st) ? st : AnalysisStatus.pending,
                 SummaryResult = dto.SummaryResult,
                 ResultJson = dto.ResultJson,
