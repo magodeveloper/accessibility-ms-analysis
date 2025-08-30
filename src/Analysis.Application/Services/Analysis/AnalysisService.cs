@@ -81,6 +81,14 @@ namespace Analysis.Application.Services.Analysis
             return entity == null ? null : ToReadDto(entity);
         }
 
+        public async Task<IEnumerable<AnalysisDto>> GetByDateRangeAsync(int userId, DateTime from, DateTime to)
+        {
+            return await _db.Analyses
+                .Where(a => a.UserId == userId && a.DateAnalysis >= from && a.DateAnalysis <= to)
+                .Select(a => ToReadDto(a))
+                .ToListAsync();
+        }
+
         public async Task<AnalysisDto> CreateAsync(AnalysisCreateDto dto)
         {
             _logger.LogInformation("Creating analysis for UserId: {UserId}", dto.UserId);
@@ -93,6 +101,14 @@ namespace Analysis.Application.Services.Analysis
                 throw new ArgumentException($"User with ID {dto.UserId} does not exist or is not valid.", nameof(dto));
             }
 
+            // Mapear valores del frontend a los enums correctos
+            string toolUsedNormalized = dto.ToolUsed?.Trim().ToLower() switch
+            {
+                "axe-core" => "axecore",
+                "equal-access" => "equalaccess",
+                _ => dto.ToolUsed?.Trim().ToLower() ?? "axecore"
+            };
+
             var entity = new AnalysisEntity
             {
                 UserId = dto.UserId,
@@ -100,7 +116,7 @@ namespace Analysis.Application.Services.Analysis
                 ContentType = Enum.TryParse<ContentType>(dto.ContentType, true, out var ct) ? ct : ContentType.url,
                 ContentInput = dto.ContentInput,
                 SourceUrl = dto.SourceUrl,
-                ToolUsed = Enum.TryParse<ToolUsed>(dto.ToolUsed, true, out var tu) ? tu : ToolUsed.axecore,
+                ToolUsed = Enum.TryParse<ToolUsed>(toolUsedNormalized, true, out var tu) ? tu : ToolUsed.axecore,
                 Status = Enum.TryParse<AnalysisStatus>(dto.Status, true, out var st) ? st : AnalysisStatus.pending,
                 SummaryResult = dto.SummaryResult,
                 ResultJson = dto.ResultJson,

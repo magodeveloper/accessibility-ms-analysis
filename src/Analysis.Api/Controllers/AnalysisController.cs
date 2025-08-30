@@ -54,8 +54,20 @@ namespace Analysis.Api.Controllers
         public async Task<IActionResult> GetByDate([FromQuery] int userId, [FromQuery] DateTime date)
         {
             var lang = LanguageHelper.GetRequestLanguage(Request);
-            var result = await _service.GetByDateAsync(userId, date);
-            return Ok(new { analyses = result, message = Localization.Get("Success_AnalysesByDate", lang) });
+            // Permitir parámetros opcionales from y to para rango
+            string? fromStr = Request.Query["from"];
+            string? toStr = Request.Query["to"];
+            if (!string.IsNullOrEmpty(fromStr) && !string.IsNullOrEmpty(toStr)
+                && DateTime.TryParse(fromStr, out var from) && DateTime.TryParse(toStr, out var to))
+            {
+                var result = await _service.GetByDateRangeAsync(userId, from, to);
+                return Ok(new { analyses = result, message = Localization.Get("Success_AnalysesByDate", lang) });
+            }
+            else
+            {
+                var result = await _service.GetByDateAsync(userId, date);
+                return Ok(new { analyses = result, message = Localization.Get("Success_AnalysesByDate", lang) });
+            }
         }
 
         /// <summary>

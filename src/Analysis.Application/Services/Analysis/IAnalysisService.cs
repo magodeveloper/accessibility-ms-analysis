@@ -9,6 +9,7 @@ namespace Analysis.Application.Services.Analysis
         Task<IEnumerable<AnalysisDto>> GetAllAsync();
         Task<IEnumerable<AnalysisDto>> GetByUserIdAsync(int userId);
         Task<IEnumerable<AnalysisDto>> GetByDateAsync(int userId, DateTime date);
+        Task<IEnumerable<AnalysisDto>> GetByDateRangeAsync(int userId, DateTime from, DateTime to);
         Task<IEnumerable<AnalysisDto>> GetByToolAsync(int userId, string toolUsed);
         Task<IEnumerable<AnalysisDto>> GetByStatusAsync(int userId, string status);
         Task<AnalysisDto?> GetByIdAsync(int id);
