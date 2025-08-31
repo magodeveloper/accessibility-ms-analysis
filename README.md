@@ -29,52 +29,52 @@ Microservicio especializado en análisis de accesibilidad web, desarrollado en .
 
 ### 🚨 Nivel de Resultado (Result Level)
 
-| Valor | Descripción | Uso |
-|-------|-------------|-----|
-| `violation` | Violación de accesibilidad | Criterios WCAG no cumplidos |
-| `pass` | Prueba pasada exitosamente | Criterios WCAG cumplidos |
-| `inapplicable` | Regla no aplicable | No relevante para el contenido |
-| `incomplete` | Prueba incompleta | Requiere revisión manual |
+| Valor          | Descripción                | Uso                            |
+| -------------- | -------------------------- | ------------------------------ |
+| `violation`    | Violación de accesibilidad | Criterios WCAG no cumplidos    |
+| `pass`         | Prueba pasada exitosamente | Criterios WCAG cumplidos       |
+| `inapplicable` | Regla no aplicable         | No relevante para el contenido |
+| `incomplete`   | Prueba incompleta          | Requiere revisión manual       |
 
 ### ⚡ Severidad (Severity)
 
-| Nivel | Descripción | Impacto |
-|-------|-------------|---------|
-| `critical` | Crítico | Bloquea completamente el acceso |
-| `serious` | Serio | Dificulta significativamente el acceso |
-| `moderate` | Moderado | Afecta parcialmente el acceso |
-| `minor` | Menor | Impacto mínimo en accesibilidad |
+| Nivel      | Descripción | Impacto                                |
+| ---------- | ----------- | -------------------------------------- |
+| `critical` | Crítico     | Bloquea completamente el acceso        |
+| `serious`  | Serio       | Dificulta significativamente el acceso |
+| `moderate` | Moderado    | Afecta parcialmente el acceso          |
+| `minor`    | Menor       | Impacto mínimo en accesibilidad        |
 
 ### 📈 Estado de Análisis (Analysis Status)
 
-| Estado | Descripción | Acción |
-|--------|-------------|--------|
-| `pending` | Pendiente de procesamiento | En cola de análisis |
-| `in_progress` | En progreso | Procesándose actualmente |
-| `completed` | Completado exitosamente | Listo para consulta |
-| `failed` | Falló durante el procesamiento | Requiere revisión |
+| Estado        | Descripción                    | Acción                   |
+| ------------- | ------------------------------ | ------------------------ |
+| `pending`     | Pendiente de procesamiento     | En cola de análisis      |
+| `in_progress` | En progreso                    | Procesándose actualmente |
+| `completed`   | Completado exitosamente        | Listo para consulta      |
+| `failed`      | Falló durante el procesamiento | Requiere revisión        |
 
 ### 🛠️ Herramientas de Análisis (Tool Used)
 
-| Herramienta | Descripción | Especialización |
-|-------------|-------------|-----------------|
-| `axe-core` | Biblioteca axe-core de accesibilidad | Motor principal de Deque Systems |
-| `EqualAccess` | IBM Equal Access Accessibility Checker | Herramientas empresariales IBM |
+| Herramienta   | Descripción                            | Especialización                  |
+| ------------- | -------------------------------------- | -------------------------------- |
+| `axe-core`    | Biblioteca axe-core de accesibilidad   | Motor principal de Deque Systems |
+| `EqualAccess` | IBM Equal Access Accessibility Checker | Herramientas empresariales IBM   |
 
 ### 🎯 Nivel WCAG
 
-| Nivel | Descripción | Criterios |
-|-------|-------------|-----------|
-| `A` | Nivel A (básico) | Criterios fundamentales |
-| `AA` | Nivel AA (estándar) | Estándar recomendado |
+| Nivel | Descripción          | Criterios                   |
+| ----- | -------------------- | --------------------------- |
+| `A`   | Nivel A (básico)     | Criterios fundamentales     |
+| `AA`  | Nivel AA (estándar)  | Estándar recomendado        |
 | `AAA` | Nivel AAA (avanzado) | Máximo nivel de conformidad |
 
 ### 📄 Tipo de Contenido
 
-| Tipo | Descripción | Formato |
-|------|-------------|---------|
-| `html` | Código HTML directo | String con markup HTML |
-| `url` | URL para análisis remoto | URL válida para crawling |
+| Tipo   | Descripción              | Formato                  |
+| ------ | ------------------------ | ------------------------ |
+| `html` | Código HTML directo      | String con markup HTML   |
+| `url`  | URL para análisis remoto | URL válida para crawling |
 
 ## 🏗️ Estructura del proyecto
 
@@ -84,7 +84,7 @@ Microservicio especializado en análisis de accesibilidad web, desarrollado en .
 accessibility-ms-analysis/
 ├── 📄 docker-compose.yml        # Orquestación de servicios (API + MySQL)
 ├── 🐳 Dockerfile               # Imagen de contenedor de la API
-├── ⚙️  .env.development        # Variables de entorno para desarrollo  
+├── ⚙️  .env.development        # Variables de entorno para desarrollo
 ├── ⚙️  .env.production         # Variables de entorno para producción
 ├── 📋 README.md                # Documentación completa del proyecto
 ├── 🧪 init-test-databases.ps1  # Script de inicialización de BD de test (Windows)
@@ -100,7 +100,7 @@ accessibility-ms-analysis/
 │   ├── 🏛️  Analysis.Domain/    # Entidades y enums de dominio
 │   │   ├── Entities/         # Analysis, Result, Error
 │   │   └── Enums/            # ResultLevel, Severity, AnalysisStatus, etc.
-│   ├── 🔧 Analysis.Infrastructure/ # DbContext y servicios de infraestructura  
+│   ├── 🔧 Analysis.Infrastructure/ # DbContext y servicios de infraestructura
 │   │   ├── Data/             # ApplicationDbContext, migraciones
 │   │   └── Services/         # Servicios de infraestructura
 │   └── 🧪 Analysis.Tests/      # Pruebas de integración y unitarias
@@ -119,6 +119,7 @@ accessibility-ms-analysis/
 Configura los archivos `.env.development` y `.env.production` para diferentes entornos:
 
 **📄 .env.development**
+
 ```env
 ASPNETCORE_ENVIRONMENT=Development
 ASPNETCORE_URLS=http://+:8082
@@ -131,6 +132,7 @@ DB_PORT=3308
 ```
 
 **📄 .env.production**
+
 ```env
 ASPNETCORE_ENVIRONMENT=Production
 ASPNETCORE_URLS=http://+:8082
@@ -148,8 +150,9 @@ ENABLE_SSL=true
 > **⚠️ Seguridad**: Los passwords mostrados son **ejemplos para desarrollo**. Cambiar obligatoriamente antes de usar en producción.
 >
 > **📋 Variables clave**:
+>
 > - `DB_ROOT_PASSWORD`: Password root de MySQL (32 caracteres seguros)
-> - `DB_PASSWORD`: Password del usuario de aplicación  
+> - `DB_PASSWORD`: Password del usuario de aplicación
 > - `DB_PORT`: Puerto externo para conectividad (**3308** para Analysis)
 > - `API_HOST_PORT`: Puerto de la API (**8082** por defecto)
 
@@ -203,14 +206,15 @@ El microservicio utiliza **MySQL 8.4** con Entity Framework Core y gestiona una 
 
 ```
 📊 ANALYSIS (tabla principal)
-├── 📋 RESULTS (resultados por criterio WCAG)  
+├── 📋 RESULTS (resultados por criterio WCAG)
 │   └── 🚨 ERRORS (errores específicos por resultado)
 └── � Referencia a USERS (cross-microservice)
 ```
 
 **Tablas principales:**
+
 - **ANALYSIS** → Información principal de análisis de accesibilidad
-- **RESULTS** → Resultados específicos por criterio WCAG  
+- **RESULTS** → Resultados específicos por criterio WCAG
 - **ERRORS** → Errores detallados encontrados en el análisis
 
 ### ⚡ Optimizaciones de rendimiento
@@ -223,7 +227,7 @@ CREATE INDEX idx_analysis_user ON ANALYSIS(UserId);
 CREATE INDEX idx_analysis_status_user ON ANALYSIS(status, UserId);
 CREATE INDEX idx_analysis_date_user ON ANALYSIS(date_analysis, UserId);
 
--- Búsquedas por herramienta y estado  
+-- Búsquedas por herramienta y estado
 CREATE INDEX idx_analysis_tool_status ON ANALYSIS(tool_used, status);
 
 -- Resultados optimizados
@@ -241,7 +245,7 @@ CREATE INDEX idx_errors_result_criterion ON ERRORS(result_id, wcag_criterion_id)
 ALTER TABLE RESULTS ADD CONSTRAINT fk_results_analysis
 FOREIGN KEY (analysis_id) REFERENCES ANALYSIS(id) ON DELETE CASCADE;
 
-ALTER TABLE ERRORS ADD CONSTRAINT fk_errors_result  
+ALTER TABLE ERRORS ADD CONSTRAINT fk_errors_result
 FOREIGN KEY (result_id) REFERENCES RESULTS(id) ON DELETE CASCADE;
 
 -- Cross-microservice: Analysis → Users
@@ -261,7 +265,7 @@ dotnet ef migrations add NombreMigracion --project src/Analysis.Infrastructure -
 # Generar script SQL para revisión
 dotnet ef migrations script --project src/Analysis.Infrastructure --startup-project src/Analysis.Api
 
-# Rollback a migración específica  
+# Rollback a migración específica
 dotnet ef database update NombreMigracionAnterior --project src/Analysis.Infrastructure --startup-project src/Analysis.Api
 ```
 
@@ -279,41 +283,42 @@ services:
       MYSQL_USER: testuser
       MYSQL_PASSWORD: TestApp2025SecurePass
     ports:
-      - "3309:3306"
+      - '3309:3306'
     volumes:
       - ./init-test-databases.sql:/docker-entrypoint-initdb.d/init.sql
 ```
 
 **🛠️ Scripts de inicialización disponibles:**
-- `init-test-databases.ps1` (Windows PowerShell)  
+
+- `init-test-databases.ps1` (Windows PowerShell)
 - `init-test-databases.sh` (Linux/macOS)
 
 ## 🌐 API endpoints y ejemplos
 
 ### 📊 Endpoints principales
 
-| 🎯 Acción | Método | Endpoint | Descripción |
-|-----------|--------|-----------|-------------|
-| **Crear análisis** | `POST` | `/api/analysis` | Inicia análisis de accesibilidad con herramienta especificada |
-| **Obtener análisis** | `GET` | `/api/analysis/{id}` | Recupera análisis específico con resultados completos |
-| **Listar análisis** | `GET` | `/api/analysis` | Lista análisis del usuario con paginación |
-| **Análisis por usuario** | `GET` | `/api/analysis/by-user` | Obtiene todos los análisis de un usuario |
-| **Análisis por fecha** | `GET` | `/api/analysis/by-date` | Obtiene análisis por fecha y usuario |
-| **Análisis por herramienta** | `GET` | `/api/analysis/by-tool` | Obtiene análisis filtrados por herramienta |
-| **Análisis por estado** | `GET` | `/api/analysis/by-status` | Obtiene análisis filtrados por estado |
-| **Eliminar análisis** | `DELETE` | `/api/analysis/{id}` | Elimina análisis específico |
-| **Estado del servicio** | `GET` | `/health` | Verificación de salud del microservicio |
+| 🎯 Acción                    | Método   | Endpoint                  | Descripción                                                   |
+| ---------------------------- | -------- | ------------------------- | ------------------------------------------------------------- |
+| **Crear análisis**           | `POST`   | `/api/analysis`           | Inicia análisis de accesibilidad con herramienta especificada |
+| **Obtener análisis**         | `GET`    | `/api/analysis/{id}`      | Recupera análisis específico con resultados completos         |
+| **Listar análisis**          | `GET`    | `/api/analysis`           | Lista análisis del usuario con paginación                     |
+| **Análisis por usuario**     | `GET`    | `/api/analysis/by-user`   | Obtiene todos los análisis de un usuario                      |
+| **Análisis por fecha**       | `GET`    | `/api/analysis/by-date`   | Obtiene análisis por fecha y usuario                          |
+| **Análisis por herramienta** | `GET`    | `/api/analysis/by-tool`   | Obtiene análisis filtrados por herramienta                    |
+| **Análisis por estado**      | `GET`    | `/api/analysis/by-status` | Obtiene análisis filtrados por estado                         |
+| **Eliminar análisis**        | `DELETE` | `/api/analysis/{id}`      | Elimina análisis específico                                   |
+| **Estado del servicio**      | `GET`    | `/health`                 | Verificación de salud del microservicio                       |
 
 ### 🔧 Parámetros de consulta
 
 **Para endpoints con filtros:**
 
-| Parámetro | Tipo | Descripción | Endpoints |
-|-----------|------|-------------|-----------|
-| `userId` | `int` | **Requerido.** ID del usuario | `/by-user`, `/by-date`, `/by-tool`, `/by-status` |
-| `date` | `string` | Fecha en formato ISO 8601 | `/by-date` |
-| `toolUsed` | `enum` | `axe_core` \| `ibm_equal_access` | `/by-tool` |
-| `status` | `enum` | `pending` \| `completed` \| `failed` | `/by-status` |
+| Parámetro  | Tipo     | Descripción                          | Endpoints                                        |
+| ---------- | -------- | ------------------------------------ | ------------------------------------------------ |
+| `userId`   | `int`    | **Requerido.** ID del usuario        | `/by-user`, `/by-date`, `/by-tool`, `/by-status` |
+| `date`     | `string` | Fecha en formato ISO 8601            | `/by-date`                                       |
+| `toolUsed` | `enum`   | `axe_core` \| `ibm_equal_access`     | `/by-tool`                                       |
+| `status`   | `enum`   | `pending` \| `completed` \| `failed` | `/by-status`                                     |
 
 ### 📝 Ejemplos de análisis completo
 
@@ -382,15 +387,15 @@ curl "https://api.accessibility.local/api/analysis/456"
 
 ### 📋 Endpoints de resultados específicos
 
-| 🎯 Acción | Método | Endpoint | Descripción |
-|-----------|--------|-----------|-------------|
-| **Listar resultados** | `GET` | `/api/result` | Obtiene todos los resultados |
-| **Resultado específico** | `GET` | `/api/result/{id}` | Obtiene un resultado por ID |
-| **Resultados por análisis** | `GET` | `/api/result/by-analysis` | Resultados de un análisis específico |
-| **Resultados por nivel** | `GET` | `/api/result/by-level` | Filtrar por: `violation` \| `pass` \| `inapplicable` \| `incomplete` |
-| **Resultados por severidad** | `GET` | `/api/result/by-severity` | Filtrar por: `critical` \| `serious` \| `moderate` \| `minor` |
-| **Crear resultado** | `POST` | `/api/result` | Crear nuevo resultado |
-| **Eliminar resultado** | `DELETE` | `/api/result/{id}` | Eliminar resultado específico |
+| 🎯 Acción                    | Método   | Endpoint                  | Descripción                                                          |
+| ---------------------------- | -------- | ------------------------- | -------------------------------------------------------------------- |
+| **Listar resultados**        | `GET`    | `/api/result`             | Obtiene todos los resultados                                         |
+| **Resultado específico**     | `GET`    | `/api/result/{id}`        | Obtiene un resultado por ID                                          |
+| **Resultados por análisis**  | `GET`    | `/api/result/by-analysis` | Resultados de un análisis específico                                 |
+| **Resultados por nivel**     | `GET`    | `/api/result/by-level`    | Filtrar por: `violation` \| `pass` \| `inapplicable` \| `incomplete` |
+| **Resultados por severidad** | `GET`    | `/api/result/by-severity` | Filtrar por: `critical` \| `serious` \| `moderate` \| `minor`        |
+| **Crear resultado**          | `POST`   | `/api/result`             | Crear nuevo resultado                                                |
+| **Eliminar resultado**       | `DELETE` | `/api/result/{id}`        | Eliminar resultado específico                                        |
 
 **📊 Ejemplo de resultados por análisis:**
 
@@ -427,13 +432,13 @@ curl "https://api.accessibility.local/api/result/by-analysis?analysisId=456"
 
 ### 🚨 Endpoints de errores detallados
 
-| 🎯 Acción | Método | Endpoint | Descripción |
-|-----------|--------|-----------|-------------|
-| **Listar errores** | `GET` | `/api/error` | Obtiene todos los errores |
-| **Error específico** | `GET` | `/api/error/{id}` | Obtiene un error por ID |
-| **Errores por resultado** | `GET` | `/api/error/by-result` | Errores de un resultado específico |
-| **Crear error** | `POST` | `/api/error` | Crear nuevo error |
-| **Eliminar error** | `DELETE` | `/api/error/{id}` | Eliminar error específico |
+| 🎯 Acción                 | Método   | Endpoint               | Descripción                        |
+| ------------------------- | -------- | ---------------------- | ---------------------------------- |
+| **Listar errores**        | `GET`    | `/api/error`           | Obtiene todos los errores          |
+| **Error específico**      | `GET`    | `/api/error/{id}`      | Obtiene un error por ID            |
+| **Errores por resultado** | `GET`    | `/api/error/by-result` | Errores de un resultado específico |
+| **Crear error**           | `POST`   | `/api/error`           | Crear nuevo error                  |
+| **Eliminar error**        | `DELETE` | `/api/error/{id}`      | Eliminar error específico          |
 
 **🔍 Ejemplo de errores detallados:**
 
@@ -496,7 +501,7 @@ curl "https://api.accessibility.local/api/result/by-level?level=violation"
   "path": "/api/analysis/by-user"
 }
 
-// Error 404: Recurso no encontrado  
+// Error 404: Recurso no encontrado
 {
   "error": "NotFound",
   "message": "Análisis con ID 999 no encontrado",
@@ -516,13 +521,14 @@ curl "https://api.accessibility.local/api/result/by-level?level=violation"
 **🎯 Códigos de estado HTTP:**
 
 - `200 OK` → Operación exitosa
-- `201 Created` → Recurso creado correctamente  
+- `201 Created` → Recurso creado correctamente
 - `204 No Content` → Eliminación exitosa
 - `400 Bad Request` → Parámetros inválidos
 - `404 Not Found` → Recurso no encontrado
 - `500 Internal Server Error` → Error interno del servidor
 
 ## 🐳 Despliegue y containerización
+
 ### 🐳 Configuración de Docker
 
 **📦 Docker Compose para desarrollo:**
@@ -531,14 +537,14 @@ curl "https://api.accessibility.local/api/result/by-level?level=violation"
 # docker-compose.dev.yml
 services:
   analysis-api:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     image: magodeveloper/accessibility-ms-analysis:dev
     container_name: accessibility-analysis-dev
     ports:
-      - "5002:8080"
-      - "5102:8081"  # HTTPS
+      - '5002:8080'
+      - '5102:8081' # HTTPS
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080;https://+:8081
@@ -556,7 +562,7 @@ services:
     image: mysql:8.4
     container_name: accessibility-analysis-db-dev
     ports:
-      - "3308:3306"
+      - '3308:3306'
     environment:
       MYSQL_ROOT_PASSWORD: dI5QN4ZxWPKKZbZ4ZzZmpNrV7edEDXjO
       MYSQL_DATABASE: analysisdb
@@ -699,18 +705,21 @@ POST http://accessibility-ms-reports:5003/api/reports/analysis-completed
 **GitHub Actions configurado para:**
 
 ✅ **Build y Tests automáticos**
+
 - Compilación en .NET 9
 - Ejecución de tests unitarios e integración
 - Reporte de cobertura de código
 - Análisis de calidad con SonarQube
 
 ✅ **Despliegue automatizado**
+
 - Build de imagen Docker multi-stage
 - Push a registry (Docker Hub / Azure Container Registry)
 - Deploy automático a staging
 - Deploy manual a producción con aprobaciones
 
 ✅ **Validaciones de seguridad**
+
 - Escaneo de vulnerabilidades en dependencias
 - Análisis SAST del código fuente
 - Validación de configuraciones de Docker
@@ -746,18 +755,21 @@ dotnet run --environment Development --verbosity diagnostic
 ### 🛡️ Protecciones implementadas
 
 ✅ **Autenticación y autorización:**
+
 - JWT tokens para autenticación
 - Validación de API Keys
 - Rate limiting por usuario y IP
 - CORS configurado restrictivamente
 
 ✅ **Validación de entrada:**
+
 - Sanitización de URLs de análisis
 - Validación de tamaño de contenido HTML
 - Protección contra inyección SQL con EF Core
 - Validación de parámetros de entrada
 
 ✅ **Protección de datos:**
+
 - Encriptación de datos sensibles en BD
 - Logs sanitizados sin información PII
 - Configuración segura de conexiones HTTPS
@@ -797,7 +809,7 @@ dotnet run --environment Development --verbosity diagnostic
 ### 👥 Equipo de desarrollo
 
 - **Arquitecto de Software**: Diseño y arquitectura del microservicio
-- **Desarrollador Backend**: Implementación de lógica de negocio  
+- **Desarrollador Backend**: Implementación de lógica de negocio
 - **Especialista en Accesibilidad**: Validación de herramientas y criterios WCAG
 - **DevOps Engineer**: CI/CD y despliegue en contenedores
 
@@ -811,7 +823,7 @@ dotnet run --environment Development --verbosity diagnostic
 ### ✨ Contribuir al proyecto
 
 1. **Fork** del repositorio
-2. **Branch** para nueva funcionalidad: `git checkout -b feature/nueva-funcionalidad`  
+2. **Branch** para nueva funcionalidad: `git checkout -b feature/nueva-funcionalidad`
 3. **Commit** siguiendo [Conventional Commits](https://conventionalcommits.org/)
 4. **Tests** para nueva funcionalidad con cobertura >80%
 5. **Pull Request** con descripción detallada de cambios
