@@ -1,6 +1,5 @@
 namespace Analysis.Application.Dtos;
 
-
 public record AnalysisDto(
     int Id,
     int UserId,

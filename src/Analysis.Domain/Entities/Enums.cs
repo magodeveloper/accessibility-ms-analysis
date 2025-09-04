@@ -3,7 +3,13 @@ namespace Analysis.Domain.Entities
     public enum ContentType
     { url, html }
     public enum ToolUsed
-    { axecore, equalaccess, both }
+    {
+        [System.Text.Json.Serialization.JsonStringEnumMemberName("axe-core")]
+        axecore,
+        [System.Text.Json.Serialization.JsonStringEnumMemberName("equal-access")]
+        equalaccess,
+        both
+    }
     public enum AnalysisStatus
     { pending, success, error }
     public enum WcagLevel

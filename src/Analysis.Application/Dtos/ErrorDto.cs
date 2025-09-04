@@ -7,8 +7,6 @@ public record ErrorDto(
     string ErrorCode,
     string Description,
     string Location,
-    string Message,
-    string Code,
     DateTime CreatedAt,
     DateTime UpdatedAt
 );
@@ -18,15 +16,11 @@ public record ErrorCreateDto(
     int WcagCriterionId,
     string ErrorCode,
     string Description,
-    string Location,
-    string Message,
-    string Code
+    string Location
 );
 
 public record ErrorPatchDto(
     string? ErrorCode,
     string? Description,
-    string? Location,
-    string? Message,
-    string? Code
+    string? Location
 );
