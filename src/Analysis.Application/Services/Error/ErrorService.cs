@@ -70,8 +70,11 @@ namespace Analysis.Application.Services.Error
             _db.Errors.RemoveRange(allEntities);
             await _db.SaveChangesAsync();
 
-            // Reset AUTO_INCREMENT to 1
-            await _db.Database.ExecuteSqlRawAsync("ALTER TABLE ERRORS AUTO_INCREMENT = 1");
+            // Reset AUTO_INCREMENT to 1 (only for relational databases)
+            if (_db.Database.IsRelational())
+            {
+                await _db.Database.ExecuteSqlRawAsync("ALTER TABLE ERRORS AUTO_INCREMENT = 1");
+            }
         }
 
         private static ErrorDto ToReadDto(ErrorEntity e) => new ErrorDto(
@@ -81,8 +84,6 @@ namespace Analysis.Application.Services.Error
             e.ErrorCode,
             e.Description,
             e.Location,
-            string.Empty, // Message no existe en entidad
-            string.Empty, // Code no existe en entidad
             e.CreatedAt,
             e.UpdatedAt
         );

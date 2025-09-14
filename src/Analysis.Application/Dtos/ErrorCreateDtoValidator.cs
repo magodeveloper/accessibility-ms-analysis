@@ -11,7 +11,5 @@ public class ErrorCreateDtoValidator : AbstractValidator<ErrorCreateDto>
         RuleFor(x => x.ErrorCode).NotEmpty();
         RuleFor(x => x.Description).NotEmpty();
         RuleFor(x => x.Location).NotEmpty();
-        RuleFor(x => x.Message).NotEmpty();
-        RuleFor(x => x.Code).NotEmpty();
     }
 }

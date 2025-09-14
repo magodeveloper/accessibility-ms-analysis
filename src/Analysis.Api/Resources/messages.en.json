@@ -3,7 +3,7 @@
   "Error_AnalysisNotFound": "Analysis not found.",
   "Error_ResultNotFound": "Result not found.",
   "Error_ErrorNotFound": "Error not found.",
-  "Error_InternalServer": "An unexpected internal error has occurred.",
+  "Error_InternalServer": "Internal server error",
   "Success_AnalysisCreated": "Analysis created successfully.",
   "Success_AnalysisFound": "Analysis found.",
   "Success_AnalysisUpdated": "Analysis updated successfully.",

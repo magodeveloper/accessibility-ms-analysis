@@ -167,8 +167,11 @@ namespace Analysis.Application.Services.Analysis
             _db.Analyses.RemoveRange(allEntities);
             await _db.SaveChangesAsync();
 
-            // Reset AUTO_INCREMENT to 1
-            await _db.Database.ExecuteSqlRawAsync("ALTER TABLE ANALYSIS AUTO_INCREMENT = 1");
+            // Reset AUTO_INCREMENT to 1 - solo para bases de datos relacionales
+            if (!_db.Database.IsInMemory())
+            {
+                await _db.Database.ExecuteSqlRawAsync("ALTER TABLE ANALYSIS AUTO_INCREMENT = 1");
+            }
         }
 
         private static AnalysisDto ToReadDto(AnalysisEntity a) => new AnalysisDto(
