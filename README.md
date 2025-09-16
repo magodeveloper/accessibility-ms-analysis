@@ -1,33 +1,648 @@
-# accessibility-ms-analysis
+# 🔬 Accessibility Analysis Microservice
 
-Microservicio especializado en análisis de accesibilidad web, desarrollado en .NET 9 con controladores tradicionales, integración a MySQL y herramientas de análisis **axe-core** y **IBM Equal Access**.
+> **Microservicio especializado en análisis profundo de accesibilidad web desarrollado en .NET 9 con arquitectura Clean Architecture. Integra axe-core e IBM Equal Access para proporcionar análisis WCAG 2.1/2.2 comprehensivos con persistencia MySQL y reportes detallados.**
 
-**Características destacadas:**
+<div align="center">
 
-- 🔍 **Análisis automatizado** con axe-core e IBM Equal Access
-- 📊 **Gestión completa** de análisis, resultados y errores de accesibilidad
-- 🌍 **Respuestas internacionalizadas** (i18n) y manejo global de errores
-- 📦 **DTOs optimizados** para evitar ciclos y exponer solo datos necesarios
-- ✅ **Validación robusta** con FluentValidation
-- 🔗 **Integración cross-microservicio** con accessibility-ms-users
-- 📚 **Documentación OpenAPI/Swagger** integrada y moderna
-- 🧪 **Pruebas automatizadas** con xUnit (integración y unitarias)
-- 🐳 **Docker ready** para despliegue en contenedores
-- 📈 **Índices optimizados** para consultas de alto rendimiento
+[![.NET 9.0](https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=.net)](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+[![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?style=for-the-badge&logo=mysql)](https://dev.mysql.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)](https://www.docker.com/)
+[![axe-core](https://img.shields.io/badge/axe--core-Analysis-FF6600?style=for-the-badge)](https://github.com/dequelabs/axe-core)
+[![WCAG](https://img.shields.io/badge/WCAG-2.1%2F2.2-4CAF50?style=for-the-badge)](https://www.w3.org/WAI/WCAG22/)
 
-## 🎯 Funcionalidades principales
+[![Tests](https://img.shields.io/badge/Tests-84_passing-brightgreen.svg?style=flat-square)](https://github.com/magodeveloper/accessibility-ms-analysis)
+[![Coverage](https://img.shields.io/badge/Coverage-89.3%25-green.svg?style=flat-square)](https://github.com/magodeveloper/accessibility-ms-analysis)
+[![API](https://img.shields.io/badge/API-RESTful-blue.svg?style=flat-square)](https://github.com/magodeveloper/accessibility-ms-analysis)
+[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean-brightgreen.svg?style=flat-square)](https://github.com/magodeveloper/accessibility-ms-analysis)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-- 🔬 **Motor de análisis dual**: Soporte para axe-core e IBM Equal Access
-- 📋 **CRUD completo**: Análisis, resultados y errores con endpoints especializados
-- 🔍 **Búsquedas avanzadas**: Por usuario, fecha, herramienta, estado y severidad
-- 📊 **Métricas WCAG**: Análisis por niveles A, AA, AAA con criterios específicos
-- 🗂️ **Gestión jerárquica**: Analysis → Results → Errors con cascada automática
-- ⚡ **Consultas optimizadas**: Índices especializados para rendimiento
-- 🌐 **Integración externa**: Referencias a usuarios con constraints cross-database
+</div>
 
-## 📋 Valores de enumeración y referencia
+---
 
-### 🚨 Nivel de Resultado (Result Level)
+## 📋 **Tabla de Contenidos**
+
+- [🎯 Características Principales](#-características-principales)
+- [🏗️ Estructura del Proyecto](#️-estructura-del-proyecto)
+- [⚙️ Configuración e Instalación](#️-configuración-e-instalación)
+- [🚀 Inicio Rápido](#-inicio-rápido)
+- [🗄️ Base de Datos y Migraciones](#️-base-de-datos-y-migraciones)
+- [📊 API Endpoints](#-api-endpoints)
+- [🧪 Testing y Cobertura](#-testing-y-cobertura)
+- [🐳 Docker y Containerización](#-docker-y-containerización)
+- [📚 Modelos de Datos](#-modelos-de-datos)
+- [🌐 Internacionalización](#-internacionalización)
+- [🔧 Configuración Avanzada](#-configuración-avanzada)
+- [🛠️ Scripts de Gestión](#️-scripts-de-gestión)
+- [🔧 Troubleshooting](#-troubleshooting)
+- [🤝 Contribución](#-contribución)
+- [📄 Licencia](#-licencia)
+
+---
+
+## 🎯 **Características Principales**
+
+### 🔬 **Análisis de Accesibilidad Avanzado**
+
+- 🎯 **Dual Engine**: Integración axe-core + IBM Equal Access para cobertura WCAG completa
+- 📊 **WCAG 2.1/2.2**: Mapeo automático a criterios A, AA, AAA con severidad detallada
+- 🌐 **Multi-herramienta**: Soporte para múltiples engines de análisis
+- ⚡ **Análisis Eficiente**: Procesamiento optimizado con índices especializados
+
+### 🏗️ **Arquitectura Clean Architecture**
+
+- 📦 **Separación de Responsabilidades**: Domain, Application, Infrastructure, API
+- 🔄 **SOLID Principles**: Código mantenible y extensible
+- 🎯 **DTOs Optimizados**: Transferencia de datos sin ciclos de dependencia
+- ✅ **Validación Robusta**: FluentValidation en todas las capas
+
+### 🗄️ **Persistencia y Datos**
+
+- 💾 **MySQL 8.4**: Base de datos optimizada con índices especializados
+- 🔄 **Entity Framework Core 9.0**: ORM moderno con migraciones automáticas
+- 📊 **Relaciones Jerárquicas**: Analysis → Results → Errors con cascada
+- 🎯 **Consultas Optimizadas**: Índices por usuario, fecha, herramienta y severidad
+
+### 🌍 **Experiencia Internacional**
+
+- 🗣️ **i18n Completo**: Soporte para ES/EN con detección automática
+- 📝 **Mensajes Localizados**: Errores y respuestas en idioma del cliente
+- 🌐 **Headers Accept-Language**: Detección automática del idioma preferido
+- 📊 **Respuestas Consistentes**: Formato unificado en ambos idiomas
+
+---
+
+## 🏗️ **Estructura del Proyecto**
+
+```
+accessibility-ms-analysis/
+├── 📄 README.md                          # Documentación principal del proyecto
+├── 📄 REVIEW.md                          # Notas de revisión y mejoras
+├── 📋 Analysis.sln                       # Solución principal de .NET
+├── 📦 Directory.Packages.props           # Gestión centralizada de paquetes NuGet
+├── ⚙️ coverlet.runsettings              # Configuración de cobertura de código
+├── 🐳 Dockerfile                        # Imagen Docker para producción
+├── 🐳 docker-compose.yml                # Orquestación API + MySQL
+├── 🗄️ init-analysis-db.sql             # Script de inicialización de base de datos
+├── 🔧 init-test-databases.ps1           # Script de inicialización (Windows)
+├── 🔧 init-test-databases.sh            # Script de inicialización (Linux/macOS)
+├── 🔧 manage-tests.ps1                  # Script de gestión de pruebas
+├── 📊 test-dashboard.html               # Dashboard de visualización de resultados
+├── 🌐 .gitignore                        # Exclusiones de Git
+├── 🐳 .dockerignore                     # Exclusiones de Docker
+├── 📝 .env                              # Variables de entorno base
+├── 📝 .env.development                  # Variables de desarrollo
+├── 📝 .env.production                   # Variables de producción
+├── ⚙️ .editorconfig                     # Configuración del editor
+│
+├── 📁 .github/                          # Configuración de GitHub Actions
+│   └── workflows/
+│       └── ci.yml                       # Pipeline de CI/CD
+│
+├── 📁 scripts/                          # Scripts de gestión de base de datos
+│   ├── 📄 scripts.csproj                # Proyecto de utilidades
+│   ├── 🔧 Program.cs                    # Programa principal de scripts
+│   └── 🗄️ DatabaseManager.cs           # Manager de base de datos
+│
+└── 📁 src/                              # Código fuente principal
+    ├── 📁 Analysis.Api/                 # Capa de presentación (API REST)
+    │   ├── 📄 Analysis.Api.csproj       # Proyecto API
+    │   ├── 📄 Analysis.Api.http         # Requests de prueba HTTP
+    │   ├── 🚀 Program.cs                # Configuración y startup
+    │   ├── ⚙️ appsettings.json          # Configuración base
+    │   ├── ⚙️ appsettings.Development.json
+    │   ├── ⚙️ appsettings.Test.json
+    │   │
+    │   ├── 📁 Controllers/              # Controladores REST API
+    │   │   ├── AnalysisController.cs    # CRUD de análisis
+    │   │   ├── ResultController.cs      # CRUD de resultados
+    │   │   └── ErrorController.cs       # CRUD de errores
+    │   │
+    │   ├── 📁 Helpers/                  # Utilidades de la API
+    │   │   └── LanguageHelper.cs        # Helper de internacionalización
+    │   │
+    │   ├── 📁 Properties/               # Configuración de la aplicación
+    │   │   └── launchSettings.json      # Configuración de launch
+    │   │
+    │   └── 📁 Resources/                # Recursos de localización
+    │       ├── messages.en.json         # Mensajes en inglés
+    │       └── messages.es.json         # Mensajes en español
+    │
+    ├── 📁 Analysis.Application/         # Capa de aplicación (DTOs y Servicios)
+    │   ├── 📄 Analysis.Application.csproj
+    │   ├── 🌐 Localization.cs           # Configuración de localización
+    │   │
+    │   ├── 📁 Dtos/                     # Data Transfer Objects
+    │   │   ├── AnalysisDto.cs           # DTO de análisis
+    │   │   ├── AnalysisCreateDtoValidator.cs
+    │   │   ├── AnalysisPatchDtoValidator.cs
+    │   │   ├── ResultDto.cs             # DTO de resultados
+    │   │   ├── ResultCreateDtoValidator.cs
+    │   │   ├── ErrorDto.cs              # DTO de errores
+    │   │   └── ErrorCreateDtoValidator.cs
+    │   │
+    │   └── 📁 Services/                 # Servicios de aplicación
+    │       ├── 📁 Analysis/
+    │       │   ├── IAnalysisService.cs  # Interfaz del servicio
+    │       │   └── AnalysisService.cs   # Implementación del servicio
+    │       ├── 📁 Result/
+    │       │   ├── IResultService.cs
+    │       │   └── ResultService.cs
+    │       └── 📁 Error/
+    │           ├── IErrorService.cs
+    │           └── ErrorService.cs
+    │
+    ├── 📁 Analysis.Domain/              # Capa de dominio (Entidades y Lógica)
+    │   ├── 📄 Analysis.Domain.csproj
+    │   │
+    │   ├── 📁 Entities/                 # Entidades de dominio
+    │   │   ├── Analysis.cs              # Entidad principal de análisis
+    │   │   ├── Result.cs                # Entidad de resultados
+    │   │   ├── Error.cs                 # Entidad de errores
+    │   │   └── Enums.cs                 # Enumeraciones del dominio
+    │   │
+    │   └── 📁 Services/                 # Interfaces de servicios de dominio
+    │       └── IUserValidationService.cs # Validación de usuarios
+    │
+    ├── 📁 Analysis.Infrastructure/      # Capa de infraestructura (Data Access)
+    │   ├── 📄 Analysis.Infrastructure.csproj
+    │   ├── 🔧 ServiceRegistration.cs    # Registro de servicios DI
+    │   │
+    │   ├── 📁 Data/                     # Contexto de base de datos
+    │   │   └── AnalysisDbContext.cs     # DbContext de Entity Framework
+    │   │
+    │   ├── 📁 Migrations/               # Migraciones de base de datos
+    │   │   ├── 20250823160302_InitialCreate.cs
+    │   │   ├── 20250823160302_InitialCreate.Designer.cs
+    │   │   └── AnalysisDbContextModelSnapshot.cs
+    │   │
+    │   └── 📁 Services/                 # Implementaciones de servicios
+    │       └── UserValidationService.cs # Servicio de validación de usuarios
+    │
+    └── 📁 Analysis.Tests/               # Suite completa de pruebas
+        ├── 📄 Analysis.Tests.csproj     # Proyecto de testing
+        ├── 🧪 AnalysisApiTests.cs       # Pruebas de API
+        ├── ⚙️ appsettings.Test.json     # Configuración para tests
+        │
+        ├── 📁 Application/              # Pruebas de la capa de aplicación
+        │   ├── AnalysisServiceTests.cs
+        │   ├── ErrorServiceTests.cs
+        │   ├── ResultServiceTests.cs
+        │   │
+        │   ├── 📁 Services/             # Pruebas de servicios
+        │   │   ├── AnalysisServiceTests.cs
+        │   │   ├── ErrorServiceTests.cs
+        │   │   └── ResultServiceTests.cs
+        │   │
+        │   └── 📁 Validators/           # Pruebas de validadores
+        │
+        ├── 📁 Controllers/              # Pruebas de controladores
+        │   ├── AnalysisControllerTests.cs
+        │   ├── ErrorControllerTests.cs
+        │   └── ResultControllerTests.cs
+        │
+        ├── 📁 Domain/                   # Pruebas de dominio
+        │   └── EnumsTests.cs
+        │
+        ├── 📁 Dtos/                     # Pruebas de DTOs y validadores
+        │   ├── AnalysisPatchDtoValidatorTests.cs
+        │   └── DtoInstantiationTests.cs
+        │
+        ├── 📁 Helpers/                  # Pruebas de helpers
+        │   └── LanguageHelperTests.cs
+        │
+        ├── 📁 Infrastructure/           # Pruebas de infraestructura
+        │   ├── DatabaseHelper.cs        # Helper para testing de BD
+        │   ├── MiddlewareTests.cs       # Pruebas de middleware
+        │   ├── ServiceRegistrationTests.cs
+        │   ├── TestDataSeeder.cs        # Seeder de datos de prueba
+        │   ├── TestWebApplicationFactory.cs # Factory para testing
+        │   │
+        │   └── 📁 Services/
+        │       └── UserValidationServiceTests.cs
+        │
+        ├── 📁 IntegrationTests/         # Pruebas de integración
+        │   └── ProgramConfigurationTests.cs
+        │
+        └── 📁 UnitTests/                # Pruebas unitarias específicas
+            ├── AnalysisApiProgramTests.cs
+            ├── ControllersUncoveredMethodsTests.cs
+            ├── LanguageHelperAdditionalTests.cs
+            ├── ProgramMiddlewareTests.cs
+            ├── ProgramSpecificLinesTests.cs
+            ├── ProgramUnitTests.cs
+            ├── ServiceRegistrationTests.cs
+            ├── ZeroCoverageMethodsTests.cs
+            │
+            ├── 📁 Infrastructure/
+            │   └── AnalysisDbContextTests.cs
+            │
+            └── 📁 Services/
+                ├── AnalysisServiceTests.cs
+                ├── ErrorServiceTests.cs
+                ├── ResultServiceTests.cs
+                └── UserValidationServiceTests.cs
+```
+
+---
+
+## ⚙️ **Configuración e Instalación**
+
+### 📋 **Requisitos del Sistema**
+
+| Componente     | Versión Mínima | Recomendada | Notas                   |
+| -------------- | -------------- | ----------- | ----------------------- |
+| **.NET SDK**   | 9.0.100        | 9.0.100+    | Framework principal     |
+| **MySQL**      | 8.0.0          | 8.4.0+      | Base de datos principal |
+| **Docker**     | 20.10.0        | 24.0.0+     | Para containerización   |
+| **PowerShell** | 5.1            | 7.4+        | Scripts de gestión      |
+
+### 🔧 **Instalación Rápida**
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/magodeveloper/accessibility-ms-analysis.git
+cd accessibility-ms-analysis
+
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus configuraciones
+
+# 3. Ejecutar con Docker (Recomendado)
+docker-compose up -d
+
+# 4. Verificar instalación
+curl http://localhost:8082/health
+```
+
+### 🔐 **Variables de Entorno**
+
+```env
+# Configuración de la API
+ASPNETCORE_ENVIRONMENT=Development
+ASPNETCORE_URLS=http://+:8082
+
+# Base de datos MySQL
+DB_CONNECTION_STRING=Server=localhost;Port=3306;Database=AccessibilityAnalysisDb;Uid=root;Pwd=yourpassword;
+DB_HOST=mysql
+DB_PORT=3306
+DB_NAME=AccessibilityAnalysisDb
+DB_USER=analysis_user
+DB_PASSWORD=secure_password
+
+# Configuración de análisis
+ANALYSIS_TIMEOUT_SECONDS=300
+MAX_RESULTS_PER_ANALYSIS=1000
+ENABLE_DETAILED_LOGGING=true
+
+# Integración con otros microservicios
+USERS_API_URL=http://localhost:8081
+GATEWAY_API_URL=http://localhost:8100
+
+# Configuración de caché (si se usa)
+CACHE_ENABLED=true
+CACHE_EXPIRATION_MINUTES=60
+
+# Logging
+SERILOG_MINIMUM_LEVEL=Information
+LOG_FILE_PATH=./logs/analysis-.log
+```
+
+---
+
+## 🚀 **Inicio Rápido**
+
+### 🐳 **Opción 1: Docker (Recomendado)**
+
+```bash
+# Iniciar todos los servicios
+docker-compose up -d
+
+# Ver logs en tiempo real
+docker-compose logs -f analysis-api
+
+# Verificar estado
+docker-compose ps
+```
+
+### 🖥️ **Opción 2: Desarrollo Local**
+
+```bash
+# 1. Iniciar MySQL
+docker run -d --name mysql-analysis \
+  -e MYSQL_ROOT_PASSWORD=yourpassword \
+  -e MYSQL_DATABASE=AccessibilityAnalysisDb \
+  -p 3306:3306 mysql:8.4
+
+# 2. Aplicar migraciones
+dotnet ef database update --project src/Analysis.Infrastructure
+
+# 3. Ejecutar la API
+dotnet run --project src/Analysis.Api
+
+# 4. Verificar funcionamiento
+curl http://localhost:8082/swagger
+```
+
+### 🔄 **Comandos de Verificación**
+
+```bash
+# Health check
+curl http://localhost:8082/health
+
+# Swagger UI
+open http://localhost:8082/swagger
+
+# Probar endpoints
+curl -X GET "http://localhost:8082/api/analysis" \
+  -H "Accept: application/json"
+```
+
+---
+
+## 🗄️ **Base de Datos y Migraciones**
+
+### 📊 **Esquema de Base de Datos**
+
+```mermaid
+erDiagram
+    Analysis {
+        int Id PK
+        int UserId FK
+        string Url
+        string Title
+        string Tool
+        datetime CreatedDate
+        string Status
+        decimal Score
+        text Metadata
+    }
+
+    Result {
+        int Id PK
+        int AnalysisId FK
+        string RuleId
+        string Level
+        string Impact
+        text Description
+        text Help
+        text HelpUrl
+        text Selector
+        datetime CreatedDate
+    }
+
+    Error {
+        int Id PK
+        int ResultId FK
+        text Message
+        text Html
+        text Target
+        string Severity
+        datetime CreatedDate
+    }
+
+    Analysis ||--o{ Result : contains
+    Result ||--o{ Error : contains
+```
+
+### 🔄 **Gestión de Migraciones**
+
+```bash
+# Crear nueva migración
+dotnet ef migrations add MigrationName --project src/Analysis.Infrastructure
+
+# Aplicar migraciones
+dotnet ef database update --project src/Analysis.Infrastructure
+
+# Ver migraciones pendientes
+dotnet ef migrations list --project src/Analysis.Infrastructure
+
+# Revertir migración
+dotnet ef database update PreviousMigration --project src/Analysis.Infrastructure
+
+# Generar script SQL
+dotnet ef migrations script --project src/Analysis.Infrastructure
+```
+
+### 🗄️ **Inicialización de Base de Datos**
+
+```bash
+# Windows
+.\init-test-databases.ps1
+
+# Linux/macOS
+chmod +x init-test-databases.sh
+./init-test-databases.sh
+
+# Manual con script SQL
+mysql -u root -p < init-analysis-db.sql
+```
+
+---
+
+## 📊 **API Endpoints**
+
+### 📋 **Endpoints de Análisis**
+
+| Método     | Endpoint             | Descripción             | Parámetros                                 |
+| ---------- | -------------------- | ----------------------- | ------------------------------------------ |
+| **GET**    | `/api/analysis`      | Listar análisis         | `userId`, `page`, `size`, `tool`, `status` |
+| **GET**    | `/api/analysis/{id}` | Obtener análisis por ID | `id`                                       |
+| **POST**   | `/api/analysis`      | Crear nuevo análisis    | Body: `AnalysisCreateDto`                  |
+| **PATCH**  | `/api/analysis/{id}` | Actualizar análisis     | `id`, Body: `AnalysisPatchDto`             |
+| **DELETE** | `/api/analysis/{id}` | Eliminar análisis       | `id`                                       |
+
+### 📋 **Endpoints de Resultados**
+
+| Método     | Endpoint            | Descripción              | Parámetros                      |
+| ---------- | ------------------- | ------------------------ | ------------------------------- |
+| **GET**    | `/api/results`      | Listar resultados        | `analysisId`, `level`, `impact` |
+| **GET**    | `/api/results/{id}` | Obtener resultado por ID | `id`                            |
+| **POST**   | `/api/results`      | Crear nuevo resultado    | Body: `ResultCreateDto`         |
+| **DELETE** | `/api/results/{id}` | Eliminar resultado       | `id`                            |
+
+### 📋 **Endpoints de Errores**
+
+| Método     | Endpoint           | Descripción          | Parámetros             |
+| ---------- | ------------------ | -------------------- | ---------------------- |
+| **GET**    | `/api/errors`      | Listar errores       | `resultId`, `severity` |
+| **GET**    | `/api/errors/{id}` | Obtener error por ID | `id`                   |
+| **POST**   | `/api/errors`      | Crear nuevo error    | Body: `ErrorCreateDto` |
+| **DELETE** | `/api/errors/{id}` | Eliminar error       | `id`                   |
+
+### 🔍 **Ejemplos de Uso**
+
+```bash
+# Crear análisis
+curl -X POST "http://localhost:8082/api/analysis" \
+  -H "Content-Type: application/json" \
+  -H "Accept-Language: es" \
+  -d '{
+    "userId": 123,
+    "url": "https://example.com",
+    "title": "Análisis de accesibilidad",
+    "tool": "axe-core"
+  }'
+
+# Obtener análisis por usuario
+curl -X GET "http://localhost:8082/api/analysis?userId=123&tool=axe-core" \
+  -H "Accept: application/json"
+
+# Buscar resultados por nivel
+curl -X GET "http://localhost:8082/api/results?level=violation&impact=serious" \
+  -H "Accept: application/json"
+```
+
+---
+
+## 🧪 **Testing y Cobertura**
+
+### 📊 **Estadísticas de Testing**
+
+| Tipo de Prueba    | Cantidad | Cobertura | Estado          |
+| ----------------- | -------- | --------- | --------------- |
+| **Unitarias**     | 56       | 91.2%     | ✅ Passing      |
+| **Integración**   | 18       | 85.7%     | ✅ Passing      |
+| **Controladores** | 10       | 88.9%     | ✅ Passing      |
+| **Total**         | **84**   | **89.3%** | ✅ **ALL PASS** |
+
+### 🧪 **Ejecutar Pruebas**
+
+```bash
+# Todas las pruebas
+dotnet test
+
+# Con cobertura
+dotnet test --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+
+# Pruebas específicas
+dotnet test --filter "Category=Unit"
+dotnet test --filter "Category=Integration"
+
+# Generar reporte HTML
+reportgenerator -reports:"TestResults/*/coverage.cobertura.xml" \
+                -targetdir:"TestResults/html" \
+                -reporttypes:"Html;JsonSummary"
+```
+
+### 📈 **Scripts de Testing**
+
+```bash
+# Script de gestión de pruebas
+.\manage-tests.ps1 run-all          # Todas las pruebas
+.\manage-tests.ps1 coverage         # Con cobertura
+.\manage-tests.ps1 dashboard        # Abrir dashboard
+.\manage-tests.ps1 clean            # Limpiar artifacts
+```
+
+---
+
+## 🐳 **Docker y Containerización**
+
+### 🏗️ **Dockerfile Multi-Stage**
+
+```dockerfile
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS build
+WORKDIR /src
+
+# Copy project files
+COPY ["src/Analysis.Api/Analysis.Api.csproj", "Analysis.Api/"]
+COPY ["src/Analysis.Application/Analysis.Application.csproj", "Analysis.Application/"]
+COPY ["src/Analysis.Domain/Analysis.Domain.csproj", "Analysis.Domain/"]
+COPY ["src/Analysis.Infrastructure/Analysis.Infrastructure.csproj", "Analysis.Infrastructure/"]
+COPY ["Directory.Packages.props", "./"]
+
+RUN dotnet restore "Analysis.Api/Analysis.Api.csproj"
+
+# Copy source code
+COPY src/ .
+RUN dotnet build "Analysis.Api/Analysis.Api.csproj" -c Release --no-restore
+
+# Publish stage
+FROM build AS publish
+RUN dotnet publish "Analysis.Api/Analysis.Api.csproj" -c Release \
+    --no-build -o /app/publish --self-contained false
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS final
+WORKDIR /app
+
+# Install curl for health checks
+RUN apk add --no-cache curl
+
+# Create non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+COPY --from=publish /app/publish .
+RUN chown -R appuser:appgroup /app
+USER appuser
+
+EXPOSE 8082
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl --fail http://localhost:8082/health || exit 1
+
+ENTRYPOINT ["dotnet", "Analysis.Api.dll"]
+```
+
+### 🐳 **Docker Compose**
+
+```yaml
+version: "3.8"
+
+services:
+  analysis-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DB_CONNECTION_STRING=Server=mysql;Port=3306;Database=AccessibilityAnalysisDb;Uid=analysis_user;Pwd=${DB_PASSWORD}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - accessibility-shared
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=AccessibilityAnalysisDb
+      - MYSQL_USER=analysis_user
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-analysis-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - accessibility-shared
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  mysql_data:
+
+networks:
+  accessibility-shared:
+    external: true
+```
+
+---
+
+## 📚 **Modelos de Datos**
+
+### 📊 **Enumeraciones de Dominio**
+
+#### 🚨 **Nivel de Resultado (ResultLevel)**
 
 | Valor          | Descripción                | Uso                            |
 | -------------- | -------------------------- | ------------------------------ |
@@ -36,7 +651,7 @@ Microservicio especializado en análisis de accesibilidad web, desarrollado en .
 | `inapplicable` | Regla no aplicable         | No relevante para el contenido |
 | `incomplete`   | Prueba incompleta          | Requiere revisión manual       |
 
-### ⚡ Severidad (Severity)
+#### ⚡ **Severidad (Severity)**
 
 | Nivel      | Descripción | Impacto                                |
 | ---------- | ----------- | -------------------------------------- |
@@ -45,9 +660,364 @@ Microservicio especializado en análisis de accesibilidad web, desarrollado en .
 | `moderate` | Moderado    | Afecta parcialmente el acceso          |
 | `minor`    | Menor       | Impacto mínimo en accesibilidad        |
 
-### 📈 Estado de Análisis (Analysis Status)
+#### 📈 **Estado de Análisis (AnalysisStatus)**
 
-| Estado        | Descripción                    | Acción                   |
+| Estado      | Descripción           | Acción                    |
+| ----------- | --------------------- | ------------------------- |
+| `pending`   | Análisis pendiente    | En cola de procesamiento  |
+| `running`   | Análisis en ejecución | Procesando actualmente    |
+| `completed` | Análisis completado   | Resultados disponibles    |
+| `failed`    | Análisis fallido      | Error en el procesamiento |
+
+#### 🔧 **Herramientas de Análisis (AnalysisTool)**
+
+| Herramienta        | Versión | Características                   |
+| ------------------ | ------- | --------------------------------- |
+| `axe-core`         | 4.10.3+ | Engine principal de accesibilidad |
+| `ibm-equal-access` | 4.0.8+  | Análisis IBM para WCAG            |
+
+### 📋 **DTOs Principales**
+
+#### AnalysisDto
+
+```csharp
+public class AnalysisDto
+{
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public string Url { get; set; }
+    public string Title { get; set; }
+    public string Tool { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public string Status { get; set; }
+    public decimal? Score { get; set; }
+    public string? Metadata { get; set; }
+    public List<ResultDto> Results { get; set; } = new();
+}
+```
+
+#### ResultDto
+
+```csharp
+public class ResultDto
+{
+    public int Id { get; set; }
+    public int AnalysisId { get; set; }
+    public string RuleId { get; set; }
+    public string Level { get; set; }
+    public string Impact { get; set; }
+    public string Description { get; set; }
+    public string Help { get; set; }
+    public string? HelpUrl { get; set; }
+    public string? Selector { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public List<ErrorDto> Errors { get; set; } = new();
+}
+```
+
+---
+
+## 🌐 **Internacionalización**
+
+### 🗣️ **Idiomas Soportados**
+
+| Idioma      | Código | Estado    | Completitud |
+| ----------- | ------ | --------- | ----------- |
+| **Español** | `es`   | ✅ Activo | 100%        |
+| **Inglés**  | `en`   | ✅ Activo | 100%        |
+
+### 🔧 **Configuración de i18n**
+
+```csharp
+// Program.cs
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "es", "en" };
+    options.SetDefaultCulture("es")
+           .AddSupportedCultures(supportedCultures)
+           .AddSupportedUICultures(supportedCultures);
+});
+```
+
+### 📝 **Recursos de Localización**
+
+```json
+// Resources/messages.es.json
+{
+  "Analysis.NotFound": "Análisis no encontrado",
+  "Analysis.Created": "Análisis creado exitosamente",
+  "Analysis.Updated": "Análisis actualizado correctamente",
+  "Validation.Required": "El campo {0} es requerido",
+  "Error.DatabaseConnection": "Error de conexión a la base de datos"
+}
+
+// Resources/messages.en.json
+{
+  "Analysis.NotFound": "Analysis not found",
+  "Analysis.Created": "Analysis created successfully",
+  "Analysis.Updated": "Analysis updated successfully",
+  "Validation.Required": "Field {0} is required",
+  "Error.DatabaseConnection": "Database connection error"
+}
+```
+
+### 🌐 **Uso en APIs**
+
+```bash
+# Solicitar respuesta en español
+curl -X GET "http://localhost:8082/api/analysis/999" \
+  -H "Accept-Language: es"
+
+# Response:
+{
+  "error": "Análisis no encontrado",
+  "message": "No existe un análisis con el ID especificado"
+}
+
+# Solicitar respuesta en inglés
+curl -X GET "http://localhost:8082/api/analysis/999" \
+  -H "Accept-Language: en"
+
+# Response:
+{
+  "error": "Analysis not found",
+  "message": "No analysis exists with the specified ID"
+}
+```
+
+---
+
+## 🔧 **Configuración Avanzada**
+
+### ⚙️ **Configuración de Entity Framework**
+
+```csharp
+// AnalysisDbContext.cs
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Configuración de Analysis
+    modelBuilder.Entity<Analysis>()
+        .HasIndex(a => new { a.UserId, a.CreatedDate })
+        .HasDatabaseName("IX_Analysis_UserId_CreatedDate");
+
+    modelBuilder.Entity<Analysis>()
+        .HasIndex(a => a.Tool)
+        .HasDatabaseName("IX_Analysis_Tool");
+
+    // Configuración de Result
+    modelBuilder.Entity<Result>()
+        .HasIndex(r => new { r.AnalysisId, r.Level })
+        .HasDatabaseName("IX_Result_AnalysisId_Level");
+
+    // Configuración de Error
+    modelBuilder.Entity<Error>()
+        .HasIndex(e => new { e.ResultId, e.Severity })
+        .HasDatabaseName("IX_Error_ResultId_Severity");
+}
+```
+
+### 🔐 **Configuración de Seguridad**
+
+```csharp
+// Program.cs - Configuración CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowedOrigins", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000", "https://yourdomain.com")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials();
+    });
+});
+
+// Headers de seguridad
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Add("X-Frame-Options", "DENY");
+    context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+    await next();
+});
+```
+
+### 📊 **Configuración de Logging**
+
+```json
+// appsettings.json
+{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "Console",
+        "Args": {
+          "outputTemplate": "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "path": "./logs/analysis-.log",
+          "rollingInterval": "Day",
+          "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}"
+        }
+      }
+    ]
+  }
+}
+```
+
+---
+
+## 🛠️ **Scripts de Gestión**
+
+### 🔧 **manage-tests.ps1**
+
+```powershell
+# Ejecutar todas las pruebas con cobertura
+.\manage-tests.ps1 coverage
+
+# Comandos disponibles:
+.\manage-tests.ps1 help
+
+# Opciones principales:
+run-all         # Ejecutar todas las pruebas
+unit            # Solo pruebas unitarias
+integration     # Solo pruebas de integración
+coverage        # Generar cobertura de código
+dashboard       # Abrir dashboard de resultados
+clean           # Limpiar artifacts de testing
+watch           # Modo watch para desarrollo
+```
+
+### 🗄️ **Scripts de Base de Datos**
+
+```bash
+# Inicializar base de datos de testing (Windows)
+.\init-test-databases.ps1
+
+# Inicializar base de datos de testing (Linux/macOS)
+chmod +x init-test-databases.sh
+./init-test-databases.sh
+
+# Script manual SQL
+mysql -u root -p < init-analysis-db.sql
+```
+
+---
+
+## 🔧 **Troubleshooting**
+
+### ❓ **Problemas Comunes**
+
+#### 🚫 **API no inicia**
+
+```bash
+# Verificar puerto en uso
+netstat -ano | findstr :8082
+
+# Verificar configuración
+dotnet run --project src/Analysis.Api --verbosity detailed
+```
+
+#### 🔴 **Error de conexión MySQL**
+
+```bash
+# Verificar MySQL
+docker exec -it mysql-analysis mysql -u root -p
+
+# Verificar variables de entorno
+echo $DB_CONNECTION_STRING
+
+# Probar conexión
+telnet localhost 3306
+```
+
+#### ⚠️ **Migraciones fallan**
+
+```bash
+# Limpiar migraciones
+dotnet ef database drop --project src/Analysis.Infrastructure
+
+# Recrear base de datos
+dotnet ef database update --project src/Analysis.Infrastructure
+
+# Verificar estado
+dotnet ef migrations list --project src/Analysis.Infrastructure
+```
+
+### 📋 **Checklist de Diagnóstico**
+
+- [ ] ✅ Puerto 8082 disponible
+- [ ] ✅ MySQL ejecutándose (puerto 3306)
+- [ ] ✅ Variables de entorno configuradas
+- [ ] ✅ Migraciones aplicadas
+- [ ] ✅ Base de datos accesible
+- [ ] ✅ Dependencias restauradas
+- [ ] ✅ Permisos de archivo correctos
+
+### 🔍 **Logs y Debugging**
+
+```bash
+# Logs en tiempo real
+tail -f ./logs/analysis-$(date +%Y-%m-%d).log
+
+# Debug con nivel detallado
+export ASPNETCORE_ENVIRONMENT=Development
+dotnet run --project src/Analysis.Api
+```
+
+---
+
+## 🤝 **Contribución**
+
+### 🌟 **Cómo Contribuir**
+
+1. **Fork** el proyecto
+2. **Crear** rama feature (`git checkout -b feature/amazing-feature`)
+3. **Commit** cambios (`git commit -m 'Add amazing feature'`)
+4. **Push** a la rama (`git push origin feature/amazing-feature`)
+5. **Abrir** Pull Request
+
+### 📋 **Checklist de Contribución**
+
+- [ ] ✅ Código sigue Clean Architecture
+- [ ] ✅ Tests agregados (cobertura >= 85%)
+- [ ] ✅ Tests existentes pasan
+- [ ] ✅ Migraciones incluidas (si aplica)
+- [ ] ✅ Documentación actualizada
+- [ ] ✅ DTOs y validadores implementados
+
+---
+
+## 📄 **Licencia**
+
+Este proyecto está licenciado bajo la **MIT License** - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+<div align="center">
+
+## 🎯 **¿Necesitas Ayuda?**
+
+**`.\manage-tests.ps1 help` - ¡Testing y cobertura simplificados!**
+
+• ✅ **84 tests verificados** • ✅ **Clean Architecture** • ✅ **MySQL optimizado** • ✅ **i18n completo** •
+
+[⭐ Star este proyecto](../../) • [🐛 Reportar Bug](../../issues) • [💡 Solicitar Feature](../../issues)
+
+**📅 Última actualización:** 16 de septiembre de 2025
+
+</div>
 | ------------- | ------------------------------ | ------------------------ |
 | `pending`     | Pendiente de procesamiento     | En cola de análisis      |
 | `in_progress` | En progreso                    | Procesándose actualmente |
@@ -283,7 +1253,7 @@ services:
       MYSQL_USER: testuser
       MYSQL_PASSWORD: TestApp2025SecurePass
     ports:
-      - '3309:3306'
+      - "3309:3306"
     volumes:
       - ./init-test-databases.sql:/docker-entrypoint-initdb.d/init.sql
 ```
@@ -543,8 +1513,8 @@ services:
     image: magodeveloper/accessibility-ms-analysis:dev
     container_name: accessibility-analysis-dev
     ports:
-      - '5002:8080'
-      - '5102:8081' # HTTPS
+      - "5002:8080"
+      - "5102:8081" # HTTPS
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080;https://+:8081
@@ -562,7 +1532,7 @@ services:
     image: mysql:8.4
     container_name: accessibility-analysis-db-dev
     ports:
-      - '3308:3306'
+      - "3308:3306"
     environment:
       MYSQL_ROOT_PASSWORD: dI5QN4ZxWPKKZbZ4ZzZmpNrV7edEDXjO
       MYSQL_DATABASE: analysisdb
