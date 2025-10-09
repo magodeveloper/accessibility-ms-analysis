@@ -1,6 +1,5 @@
-using Analysis.Application.Dtos;
 using FluentAssertions;
-using Xunit;
+using Analysis.Application.Dtos;
 
 namespace Analysis.Tests.Dtos;
 
@@ -36,29 +35,29 @@ public class DtoInstantiationTests
         );
 
         // Assert
-        dto.Should().NotBeNull();
-        dto.ContentType.Should().Be("text/html");
-        dto.ContentInput.Should().Be("<html><body>Test content</body></html>");
-        dto.SourceUrl.Should().Be("https://example.com");
-        dto.ToolUsed.Should().Be("axe-core");
-        dto.Status.Should().Be("completed");
-        dto.SummaryResult.Should().Be("Analysis completed successfully");
-        dto.ResultJson.Should().Be("{}");
-        dto.DurationMs.Should().Be(1500);
-        dto.WcagVersion.Should().Be("2.1");
-        dto.WcagLevel.Should().Be("AA");
-        dto.AxeViolations.Should().Be(5);
-        dto.AxeNeedsReview.Should().Be(2);
-        dto.AxeRecommendations.Should().Be(8);
-        dto.AxePasses.Should().Be(15);
-        dto.AxeIncomplete.Should().Be(1);
-        dto.AxeInapplicable.Should().Be(3);
-        dto.EaViolations.Should().Be(4);
-        dto.EaNeedsReview.Should().Be(1);
-        dto.EaRecommendations.Should().Be(6);
-        dto.EaPasses.Should().Be(12);
-        dto.EaIncomplete.Should().Be(0);
-        dto.EaInapplicable.Should().Be(2);
+        _ = dto.Should().NotBeNull();
+        _ = dto.ContentType.Should().Be("text/html");
+        _ = dto.ContentInput.Should().Be("<html><body>Test content</body></html>");
+        _ = dto.SourceUrl.Should().Be("https://example.com");
+        _ = dto.ToolUsed.Should().Be("axe-core");
+        _ = dto.Status.Should().Be("completed");
+        _ = dto.SummaryResult.Should().Be("Analysis completed successfully");
+        _ = dto.ResultJson.Should().Be("{}");
+        _ = dto.DurationMs.Should().Be(1500);
+        _ = dto.WcagVersion.Should().Be("2.1");
+        _ = dto.WcagLevel.Should().Be("AA");
+        _ = dto.AxeViolations.Should().Be(5);
+        _ = dto.AxeNeedsReview.Should().Be(2);
+        _ = dto.AxeRecommendations.Should().Be(8);
+        _ = dto.AxePasses.Should().Be(15);
+        _ = dto.AxeIncomplete.Should().Be(1);
+        _ = dto.AxeInapplicable.Should().Be(3);
+        _ = dto.EaViolations.Should().Be(4);
+        _ = dto.EaNeedsReview.Should().Be(1);
+        _ = dto.EaRecommendations.Should().Be(6);
+        _ = dto.EaPasses.Should().Be(12);
+        _ = dto.EaIncomplete.Should().Be(0);
+        _ = dto.EaInapplicable.Should().Be(2);
     }
 
     [Fact]
@@ -91,29 +90,29 @@ public class DtoInstantiationTests
         );
 
         // Assert
-        dto.Should().NotBeNull();
-        dto.ContentType.Should().BeNull();
-        dto.ContentInput.Should().BeNull();
-        dto.SourceUrl.Should().BeNull();
-        dto.ToolUsed.Should().BeNull();
-        dto.Status.Should().BeNull();
-        dto.SummaryResult.Should().BeNull();
-        dto.ResultJson.Should().BeNull();
-        dto.DurationMs.Should().BeNull();
-        dto.WcagVersion.Should().BeNull();
-        dto.WcagLevel.Should().BeNull();
-        dto.AxeViolations.Should().BeNull();
-        dto.AxeNeedsReview.Should().BeNull();
-        dto.AxeRecommendations.Should().BeNull();
-        dto.AxePasses.Should().BeNull();
-        dto.AxeIncomplete.Should().BeNull();
-        dto.AxeInapplicable.Should().BeNull();
-        dto.EaViolations.Should().BeNull();
-        dto.EaNeedsReview.Should().BeNull();
-        dto.EaRecommendations.Should().BeNull();
-        dto.EaPasses.Should().BeNull();
-        dto.EaIncomplete.Should().BeNull();
-        dto.EaInapplicable.Should().BeNull();
+        _ = dto.Should().NotBeNull();
+        _ = dto.ContentType.Should().BeNull();
+        _ = dto.ContentInput.Should().BeNull();
+        _ = dto.SourceUrl.Should().BeNull();
+        _ = dto.ToolUsed.Should().BeNull();
+        _ = dto.Status.Should().BeNull();
+        _ = dto.SummaryResult.Should().BeNull();
+        _ = dto.ResultJson.Should().BeNull();
+        _ = dto.DurationMs.Should().BeNull();
+        _ = dto.WcagVersion.Should().BeNull();
+        _ = dto.WcagLevel.Should().BeNull();
+        _ = dto.AxeViolations.Should().BeNull();
+        _ = dto.AxeNeedsReview.Should().BeNull();
+        _ = dto.AxeRecommendations.Should().BeNull();
+        _ = dto.AxePasses.Should().BeNull();
+        _ = dto.AxeIncomplete.Should().BeNull();
+        _ = dto.AxeInapplicable.Should().BeNull();
+        _ = dto.EaViolations.Should().BeNull();
+        _ = dto.EaNeedsReview.Should().BeNull();
+        _ = dto.EaRecommendations.Should().BeNull();
+        _ = dto.EaPasses.Should().BeNull();
+        _ = dto.EaIncomplete.Should().BeNull();
+        _ = dto.EaInapplicable.Should().BeNull();
     }
 
     [Fact]
@@ -127,10 +126,10 @@ public class DtoInstantiationTests
         );
 
         // Assert
-        dto.Should().NotBeNull();
-        dto.ErrorCode.Should().Be("WCAG21_AA_001");
-        dto.Description.Should().Be("Missing alt text for image");
-        dto.Location.Should().Be("element[img]:nth-child(1)");
+        _ = dto.Should().NotBeNull();
+        _ = dto.ErrorCode.Should().Be("WCAG21_AA_001");
+        _ = dto.Description.Should().Be("Missing alt text for image");
+        _ = dto.Location.Should().Be("element[img]:nth-child(1)");
     }
 
     [Fact]
@@ -144,10 +143,10 @@ public class DtoInstantiationTests
         );
 
         // Assert
-        dto.Should().NotBeNull();
-        dto.ErrorCode.Should().BeNull();
-        dto.Description.Should().BeNull();
-        dto.Location.Should().BeNull();
+        _ = dto.Should().NotBeNull();
+        _ = dto.ErrorCode.Should().BeNull();
+        _ = dto.Description.Should().BeNull();
+        _ = dto.Location.Should().BeNull();
     }
 
     [Fact]
@@ -162,11 +161,11 @@ public class DtoInstantiationTests
         );
 
         // Assert
-        dto.Should().NotBeNull();
-        dto.WcagCriterion.Should().Be("1.1.1 Non-text Content");
-        dto.Level.Should().Be("A");
-        dto.Severity.Should().Be("critical");
-        dto.Description.Should().Be("Images must have alternative text");
+        _ = dto.Should().NotBeNull();
+        _ = dto.WcagCriterion.Should().Be("1.1.1 Non-text Content");
+        _ = dto.Level.Should().Be("A");
+        _ = dto.Severity.Should().Be("critical");
+        _ = dto.Description.Should().Be("Images must have alternative text");
     }
 
     [Fact]
@@ -181,11 +180,11 @@ public class DtoInstantiationTests
         );
 
         // Assert
-        dto.Should().NotBeNull();
-        dto.WcagCriterion.Should().BeNull();
-        dto.Level.Should().BeNull();
-        dto.Severity.Should().BeNull();
-        dto.Description.Should().BeNull();
+        _ = dto.Should().NotBeNull();
+        _ = dto.WcagCriterion.Should().BeNull();
+        _ = dto.Level.Should().BeNull();
+        _ = dto.Severity.Should().BeNull();
+        _ = dto.Description.Should().BeNull();
     }
 
     [Fact]
@@ -218,28 +217,28 @@ public class DtoInstantiationTests
         );
 
         // Act & Assert
-        dto.ContentType.Should().Be("application/json");
-        dto.ContentInput.Should().Be("{}");
-        dto.SourceUrl.Should().Be("https://test.com");
-        dto.ToolUsed.Should().Be("lighthouse");
-        dto.Status.Should().Be("in_progress");
-        dto.SummaryResult.Should().Be("Running analysis");
-        dto.ResultJson.Should().Be("{\"result\": \"pending\"}");
-        dto.DurationMs.Should().Be(800);
-        dto.WcagVersion.Should().Be("2.2");
-        dto.WcagLevel.Should().Be("AAA");
-        dto.AxeViolations.Should().Be(10);
-        dto.AxeNeedsReview.Should().Be(5);
-        dto.AxeRecommendations.Should().Be(15);
-        dto.AxePasses.Should().Be(20);
-        dto.AxeIncomplete.Should().Be(2);
-        dto.AxeInapplicable.Should().Be(4);
-        dto.EaViolations.Should().Be(8);
-        dto.EaNeedsReview.Should().Be(3);
-        dto.EaRecommendations.Should().Be(12);
-        dto.EaPasses.Should().Be(18);
-        dto.EaIncomplete.Should().Be(1);
-        dto.EaInapplicable.Should().Be(3);
+        _ = dto.ContentType.Should().Be("application/json");
+        _ = dto.ContentInput.Should().Be("{}");
+        _ = dto.SourceUrl.Should().Be("https://test.com");
+        _ = dto.ToolUsed.Should().Be("lighthouse");
+        _ = dto.Status.Should().Be("in_progress");
+        _ = dto.SummaryResult.Should().Be("Running analysis");
+        _ = dto.ResultJson.Should().Be("{\"result\": \"pending\"}");
+        _ = dto.DurationMs.Should().Be(800);
+        _ = dto.WcagVersion.Should().Be("2.2");
+        _ = dto.WcagLevel.Should().Be("AAA");
+        _ = dto.AxeViolations.Should().Be(10);
+        _ = dto.AxeNeedsReview.Should().Be(5);
+        _ = dto.AxeRecommendations.Should().Be(15);
+        _ = dto.AxePasses.Should().Be(20);
+        _ = dto.AxeIncomplete.Should().Be(2);
+        _ = dto.AxeInapplicable.Should().Be(4);
+        _ = dto.EaViolations.Should().Be(8);
+        _ = dto.EaNeedsReview.Should().Be(3);
+        _ = dto.EaRecommendations.Should().Be(12);
+        _ = dto.EaPasses.Should().Be(18);
+        _ = dto.EaIncomplete.Should().Be(1);
+        _ = dto.EaInapplicable.Should().Be(3);
     }
 
     [Fact]
@@ -253,9 +252,9 @@ public class DtoInstantiationTests
         );
 
         // Act & Assert
-        dto.ErrorCode.Should().Be("WCAG21_A_002");
-        dto.Description.Should().Be("Form controls must have labels");
-        dto.Location.Should().Be("input[type='text']:nth-child(2)");
+        _ = dto.ErrorCode.Should().Be("WCAG21_A_002");
+        _ = dto.Description.Should().Be("Form controls must have labels");
+        _ = dto.Location.Should().Be("input[type='text']:nth-child(2)");
     }
 
     [Fact]
@@ -270,9 +269,9 @@ public class DtoInstantiationTests
         );
 
         // Act & Assert
-        dto.WcagCriterion.Should().Be("2.4.3 Focus Order");
-        dto.Level.Should().Be("A");
-        dto.Severity.Should().Be("moderate");
-        dto.Description.Should().Be("Focusable elements must receive focus in logical order");
+        _ = dto.WcagCriterion.Should().Be("2.4.3 Focus Order");
+        _ = dto.Level.Should().Be("A");
+        _ = dto.Severity.Should().Be("moderate");
+        _ = dto.Description.Should().Be("Focusable elements must receive focus in logical order");
     }
 }

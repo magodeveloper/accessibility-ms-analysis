@@ -1,10 +1,9 @@
-using Xunit;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using Analysis.Application.Services.Error;
+using Analysis.Domain.Entities;
 using Analysis.Application.Dtos;
 using Analysis.Infrastructure.Data;
-using Analysis.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Analysis.Application.Services.Error;
 
 namespace Analysis.Tests.Application.Services;
 
@@ -12,6 +11,7 @@ public class ErrorServiceTests : IDisposable
 {
     private readonly AnalysisDbContext _context;
     private readonly ErrorService _service;
+    private bool _disposed;
 
     public ErrorServiceTests()
     {
@@ -23,9 +23,27 @@ public class ErrorServiceTests : IDisposable
         _service = new ErrorService(_context);
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            _disposed = true;
+        }
+    }
+
     public void Dispose()
     {
-        _context.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    ~ErrorServiceTests()
+    {
+        Dispose(false);
     }
 
     [Fact]
@@ -35,7 +53,7 @@ public class ErrorServiceTests : IDisposable
         var result = await _service.GetAllAsync();
 
         // Assert
-        result.Should().BeEmpty();
+        _ = result.Should().BeEmpty();
     }
 
     [Fact]
@@ -48,7 +66,7 @@ public class ErrorServiceTests : IDisposable
         var result = await _service.GetAllAsync();
 
         // Assert
-        result.Should().HaveCount(2);
+        _ = result.Should().HaveCount(2);
     }
 
     [Fact]
@@ -61,8 +79,8 @@ public class ErrorServiceTests : IDisposable
         var result = await _service.GetByIdAsync(1);
 
         // Assert
-        result.Should().NotBeNull();
-        result!.Id.Should().Be(1);
+        _ = result.Should().NotBeNull();
+        _ = result!.Id.Should().Be(1);
     }
 
     [Fact]
@@ -75,7 +93,7 @@ public class ErrorServiceTests : IDisposable
         var result = await _service.GetByIdAsync(999);
 
         // Assert
-        result.Should().BeNull();
+        _ = result.Should().BeNull();
     }
 
     [Fact]
@@ -88,8 +106,8 @@ public class ErrorServiceTests : IDisposable
         var result = await _service.GetByResultIdAsync(1);
 
         // Assert
-        result.Should().HaveCount(1);
-        result.First().ResultId.Should().Be(1);
+        _ = result.Should().HaveCount(1);
+        _ = result.First().ResultId.Should().Be(1);
     }
 
     [Fact]
@@ -102,7 +120,7 @@ public class ErrorServiceTests : IDisposable
         var result = await _service.GetByResultIdAsync(999);
 
         // Assert
-        result.Should().BeEmpty();
+        _ = result.Should().BeEmpty();
     }
 
     [Fact]
@@ -121,13 +139,13 @@ public class ErrorServiceTests : IDisposable
         var result = await _service.CreateAsync(dto);
 
         // Assert
-        result.Should().NotBeNull();
-        result.ResultId.Should().Be(dto.ResultId);
-        result.Description.Should().Be(dto.Description);
-        result.ErrorCode.Should().Be(dto.ErrorCode);
+        _ = result.Should().NotBeNull();
+        _ = result.ResultId.Should().Be(dto.ResultId);
+        _ = result.Description.Should().Be(dto.Description);
+        _ = result.ErrorCode.Should().Be(dto.ErrorCode);
 
         var savedEntity = await _context.Errors.FindAsync(result.Id);
-        savedEntity.Should().NotBeNull();
+        _ = savedEntity.Should().NotBeNull();
     }
 
     [Fact]
@@ -141,7 +159,7 @@ public class ErrorServiceTests : IDisposable
 
         // Assert
         var deletedEntity = await _context.Errors.FindAsync(1);
-        deletedEntity.Should().BeNull();
+        _ = deletedEntity.Should().BeNull();
     }
 
     [Fact]
@@ -149,7 +167,7 @@ public class ErrorServiceTests : IDisposable
     {
         // Act & Assert
         var act = async () => await _service.DeleteAsync(999);
-        await act.Should().NotThrowAsync();
+        _ = await act.Should().NotThrowAsync();
     }
 
     [Fact]
@@ -163,7 +181,7 @@ public class ErrorServiceTests : IDisposable
 
         // Assert
         var count = await _context.Errors.CountAsync();
-        count.Should().Be(0);
+        _ = count.Should().Be(0);
     }
 
     private async Task SeedTestData()
@@ -197,6 +215,6 @@ public class ErrorServiceTests : IDisposable
         };
 
         _context.Errors.AddRange(errors);
-        await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync();
     }
 }

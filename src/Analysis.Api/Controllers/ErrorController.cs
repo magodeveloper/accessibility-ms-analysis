@@ -1,115 +1,121 @@
 using Analysis.Application;
+using Analysis.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Analysis.Application.Dtos;
 using Analysis.Application.Services.Error;
-using Analysis.Api.Helpers;
+using Analysis.Application.Services.UserContext;
 
-namespace Analysis.Api.Controllers
+namespace Analysis.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ErrorController(IErrorService service, IUserContext userContext) : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ErrorController : ControllerBase
+    private readonly IErrorService _service = service;
+    private readonly IUserContext _userContext = userContext;
+
+    /// <summary>
+    /// Obtiene un error por su ID.
+    /// </summary>
+    /// <response code="200">Error encontrado</response>
+    /// <response code="404">No se encontró el error</response>
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ErrorDto), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetById(int id)
     {
-        private readonly IErrorService _service;
-        public ErrorController(IErrorService service)
+        var lang = LanguageHelper.GetRequestLanguage(Request);
+        var result = await _service.GetByIdAsync(id);
+        if (result == null)
         {
-            _service = service;
+            return NotFound(new { error = Localization.Get("Error_ErrorNotFound", lang) });
         }
 
-        /// <summary>
-        /// Obtiene un error por su ID.
-        /// </summary>
-        /// <response code="200">Error encontrado</response>
-        /// <response code="404">No se encontró el error</response>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ErrorDto), 200)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> GetById(int id)
+        return Ok(new { error = result, message = Localization.Get("Success_ErrorFound", lang) });
+    }
+
+    /// <summary>
+    /// Obtiene todos los errores asociados a un resultado.
+    /// </summary>
+    /// <response code="200">Lista de errores</response>
+    /// <response code="404">No se encontraron errores</response>
+    [HttpGet("by-result")]
+    [ProducesResponseType(typeof(IEnumerable<ErrorDto>), 200)]
+    public async Task<IActionResult> GetByResultId([FromQuery] int resultId)
+    {
+        var lang = LanguageHelper.GetRequestLanguage(Request);
+        var result = await _service.GetByResultIdAsync(resultId);
+        return Ok(new { errors = result, message = Localization.Get("Success_ErrorsByResult", lang) });
+    }
+
+    /// <summary>
+    /// Obtiene todos los errores.
+    /// </summary>
+    /// <response code="200">Lista de todos los errores</response>
+    /// <response code="404">No se encontraron errores</response>
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<ErrorDto>), 200)]
+    public async Task<IActionResult> GetAll()
+    {
+        var lang = LanguageHelper.GetRequestLanguage(Request);
+        var result = await _service.GetAllAsync();
+        return Ok(new { errors = result, message = Localization.Get("Success_ListErrors", lang) });
+    }
+
+    /// <summary>
+    /// Crea un nuevo error.
+    /// </summary>
+    /// <response code="201">Error creado exitosamente</response>
+    /// <response code="400">Datos inválidos</response>
+    /// <response code="404">No se encontró el error</response>
+    [HttpPost]
+    [ProducesResponseType(typeof(ErrorDto), 201)]
+    [ProducesResponseType(400)]
+    public async Task<IActionResult> Create([FromBody] ErrorCreateDto dto)
+    {
+        // Validar autenticación
+        if (!_userContext.IsAuthenticated)
         {
-            var lang = LanguageHelper.GetRequestLanguage(Request);
-            var result = await _service.GetByIdAsync(id);
-            if (result == null)
-                return NotFound(new { error = Localization.Get("Error_ErrorNotFound", lang) });
-            return Ok(new { error = result, message = Localization.Get("Success_ErrorFound", lang) });
+            return Unauthorized(new { message = "Authentication required" });
         }
 
-        /// <summary>
-        /// Obtiene todos los errores asociados a un resultado.
-        /// </summary>
-        /// <response code="200">Lista de errores</response>
-        /// <response code="404">No se encontraron errores</response>
-        [HttpGet("by-result")]
-        [ProducesResponseType(typeof(IEnumerable<ErrorDto>), 200)]
-        public async Task<IActionResult> GetByResultId([FromQuery] int resultId)
-        {
-            var lang = LanguageHelper.GetRequestLanguage(Request);
-            var result = await _service.GetByResultIdAsync(resultId);
-            return Ok(new { errors = result, message = Localization.Get("Success_ErrorsByResult", lang) });
-        }
+        var lang = LanguageHelper.GetRequestLanguage(Request);
+        var result = await _service.CreateAsync(dto);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, new { message = Localization.Get("Success_ErrorCreated", lang), data = result });
+    }
 
-        /// <summary>
-        /// Obtiene todos los errores.
-        /// </summary>
-        /// <response code="200">Lista de todos los errores</response>
-        /// <response code="404">No se encontraron errores</response>
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ErrorDto>), 200)]
-        public async Task<IActionResult> GetAll()
+    /// <summary>
+    /// Elimina un error por su ID.
+    /// </summary>
+    /// <response code="200">Error eliminado</response>
+    /// <response code="404">No se encontró el error</response>
+    [HttpDelete("{id}")]
+    [ProducesResponseType(typeof(object), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var lang = LanguageHelper.GetRequestLanguage(Request);
+        try
         {
-            var lang = LanguageHelper.GetRequestLanguage(Request);
-            var result = await _service.GetAllAsync();
-            return Ok(new { errors = result, message = Localization.Get("Success_ListErrors", lang) });
+            await _service.DeleteAsync(id);
+            return Ok(new { message = Localization.Get("Success_ErrorDeleted", lang) });
         }
+        catch (InvalidOperationException)
+        {
+            return NotFound(new { error = Localization.Get("Error_ErrorNotFound", lang) });
+        }
+    }
 
-        /// <summary>
-        /// Crea un nuevo error.
-        /// </summary>
-        /// <response code="201">Error creado exitosamente</response>
-        /// <response code="400">Datos inválidos</response>
-        /// <response code="404">No se encontró el error</response>
-        [HttpPost]
-        [ProducesResponseType(typeof(ErrorDto), 201)]
-        [ProducesResponseType(400)]
-        public async Task<IActionResult> Create([FromBody] ErrorCreateDto dto)
-        {
-            var lang = LanguageHelper.GetRequestLanguage(Request);
-            var result = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, new { message = Localization.Get("Success_ErrorCreated", lang), data = result });
-        }
-
-        /// <summary>
-        /// Elimina un error por su ID.
-        /// </summary>
-        /// <response code="200">Error eliminado</response>
-        /// <response code="404">No se encontró el error</response>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(object), 200)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var lang = LanguageHelper.GetRequestLanguage(Request);
-            try
-            {
-                await _service.DeleteAsync(id);
-                return Ok(new { message = Localization.Get("Success_ErrorDeleted", lang) });
-            }
-            catch (InvalidOperationException)
-            {
-                return NotFound(new { error = Localization.Get("Error_ErrorNotFound", lang) });
-            }
-        }
-
-        /// <summary>
-        /// Elimina todos los errores.
-        /// </summary>
-        /// <response code="200">Todos los errores eliminados exitosamente</response>
-        [HttpDelete("all")]
-        [ProducesResponseType(typeof(object), 200)]
-        public async Task<IActionResult> DeleteAll()
-        {
-            var lang = LanguageHelper.GetRequestLanguage(Request);
-            await _service.DeleteAllAsync();
-            return Ok(new { message = Localization.Get("Success_AllErrorsDeleted", lang) });
-        }
+    /// <summary>
+    /// Elimina todos los errores.
+    /// </summary>
+    /// <response code="200">Todos los errores eliminados exitosamente</response>
+    [HttpDelete("all")]
+    [ProducesResponseType(typeof(object), 200)]
+    public async Task<IActionResult> DeleteAll()
+    {
+        var lang = LanguageHelper.GetRequestLanguage(Request);
+        await _service.DeleteAllAsync();
+        return Ok(new { message = Localization.Get("Success_AllErrorsDeleted", lang) });
     }
 }

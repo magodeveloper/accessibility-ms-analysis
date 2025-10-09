@@ -1,28 +1,15 @@
-using System.Net;
-using System.Text;
-using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Xunit;
-using FluentAssertions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Analysis.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using Moq;
+using System.Net;
 using Analysis.Api;
+using System.Text.Json;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Analysis.Tests.Infrastructure;
 
-public class MiddlewareTests : IClassFixture<TestWebApplicationFactory<Program>>
+public class MiddlewareTests(TestWebApplicationFactory<Program> factory) : IClassFixture<TestWebApplicationFactory<Program>>
 {
-    private readonly TestWebApplicationFactory<Program> _factory;
-
-    public MiddlewareTests(TestWebApplicationFactory<Program> factory)
-    {
-        _factory = factory;
-    }
+    private readonly TestWebApplicationFactory<Program> _factory = factory;
 
     [Theory]
     [InlineData("es", "Error interno del servidor")]
@@ -33,33 +20,39 @@ public class MiddlewareTests : IClassFixture<TestWebApplicationFactory<Program>>
         // Arrange
         var client = _factory.WithWebHostBuilder(builder =>
         {
-            builder.ConfigureServices(services =>
+            _ = builder.ConfigureServices(services =>
             {
                 // Reemplazar el servicio de análisis con uno que lance excepción
                 var descriptor = services.Single(d => d.ServiceType == typeof(Analysis.Application.Services.Analysis.IAnalysisService));
-                services.Remove(descriptor);
+                _ = services.Remove(descriptor);
 
                 var mockService = new Mock<Analysis.Application.Services.Analysis.IAnalysisService>();
-                mockService.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
+                _ = mockService.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                     .ThrowsAsync(new InvalidOperationException("Test exception"));
 
-                services.AddSingleton(mockService.Object);
+                _ = services.AddSingleton(mockService.Object);
             });
         }).CreateClient();
 
+        // Agregar headers de autenticación (X-Gateway-Secret y X-User-*)
+        client.DefaultRequestHeaders.Add("X-Gateway-Secret", "test-gateway-secret-key");
+        client.DefaultRequestHeaders.Add("X-User-Id", "1");
+        client.DefaultRequestHeaders.Add("X-User-Email", "test@example.com");
+        client.DefaultRequestHeaders.Add("X-User-Role", "admin");
+        client.DefaultRequestHeaders.Add("X-User-Name", "Test User");
         client.DefaultRequestHeaders.Add("Accept-Language", language);
 
         // Act
         var response = await client.GetAsync("/api/analysis/1");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
-        response.Content.Headers.ContentType?.MediaType.Should().Be("application/json");
+        _ = response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        _ = (response.Content.Headers.ContentType?.MediaType.Should().Be("application/json"));
 
         var content = await response.Content.ReadAsStringAsync();
         var jsonResponse = JsonDocument.Parse(content);
 
-        jsonResponse.RootElement.GetProperty("error").GetString().Should().Be(expectedMessage);
+        _ = jsonResponse.RootElement.GetProperty("error").GetString().Should().Be(expectedMessage);
     }
 
     [Fact]
@@ -68,32 +61,37 @@ public class MiddlewareTests : IClassFixture<TestWebApplicationFactory<Program>>
         // Arrange
         var client = _factory.WithWebHostBuilder(builder =>
         {
-            builder.ConfigureServices(services =>
+            _ = builder.ConfigureServices(services =>
             {
                 // Reemplazar el servicio de análisis con uno que lance excepción
                 var descriptor = services.Single(d => d.ServiceType == typeof(Analysis.Application.Services.Analysis.IAnalysisService));
-                services.Remove(descriptor);
+                _ = services.Remove(descriptor);
 
                 var mockService = new Mock<Analysis.Application.Services.Analysis.IAnalysisService>();
-                mockService.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
+                _ = mockService.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                     .ThrowsAsync(new InvalidOperationException("Test exception"));
 
-                services.AddSingleton(mockService.Object);
+                _ = services.AddSingleton(mockService.Object);
             });
         }).CreateClient();
 
-        // No agregar Accept-Language header
+        // Agregar headers de autenticación pero NO Accept-Language
+        client.DefaultRequestHeaders.Add("X-Gateway-Secret", "test-gateway-secret-key");
+        client.DefaultRequestHeaders.Add("X-User-Id", "1");
+        client.DefaultRequestHeaders.Add("X-User-Email", "test@example.com");
+        client.DefaultRequestHeaders.Add("X-User-Role", "admin");
+        client.DefaultRequestHeaders.Add("X-User-Name", "Test User");
 
         // Act
         var response = await client.GetAsync("/api/analysis/1");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        _ = response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
 
         var content = await response.Content.ReadAsStringAsync();
         var jsonResponse = JsonDocument.Parse(content);
 
-        jsonResponse.RootElement.GetProperty("error").GetString().Should().Be("Error interno del servidor");
+        _ = jsonResponse.RootElement.GetProperty("error").GetString().Should().Be("Error interno del servidor");
     }
 
     [Fact]
@@ -102,32 +100,37 @@ public class MiddlewareTests : IClassFixture<TestWebApplicationFactory<Program>>
         // Arrange
         var client = _factory.WithWebHostBuilder(builder =>
         {
-            builder.ConfigureServices(services =>
+            _ = builder.ConfigureServices(services =>
             {
                 var descriptor = services.Single(d => d.ServiceType == typeof(Analysis.Application.Services.Analysis.IAnalysisService));
-                services.Remove(descriptor);
+                _ = services.Remove(descriptor);
 
                 var mockService = new Mock<Analysis.Application.Services.Analysis.IAnalysisService>();
-                mockService.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
+                _ = mockService.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                     .ThrowsAsync(new InvalidOperationException("Test exception"));
 
-                services.AddSingleton(mockService.Object);
+                _ = services.AddSingleton(mockService.Object);
             });
         }).CreateClient();
 
-        // Simular un header complejo como "en-US,en;q=0.9,es;q=0.8"
+        // Agregar headers de autenticación y Accept-Language complejo
+        client.DefaultRequestHeaders.Add("X-Gateway-Secret", "test-gateway-secret-key");
+        client.DefaultRequestHeaders.Add("X-User-Id", "1");
+        client.DefaultRequestHeaders.Add("X-User-Email", "test@example.com");
+        client.DefaultRequestHeaders.Add("X-User-Role", "admin");
+        client.DefaultRequestHeaders.Add("X-User-Name", "Test User");
         client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9,es;q=0.8");
 
         // Act
         var response = await client.GetAsync("/api/analysis/1");
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        _ = response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
 
         var content = await response.Content.ReadAsStringAsync();
         var jsonResponse = JsonDocument.Parse(content);
 
         // Debería tomar "en-US" y devolver el mensaje en inglés
-        jsonResponse.RootElement.GetProperty("error").GetString().Should().Be("Internal server error");
+        _ = jsonResponse.RootElement.GetProperty("error").GetString().Should().Be("Internal server error");
     }
 }

@@ -1,10 +1,9 @@
-using Xunit;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using Analysis.Application.Services.Result;
+using Analysis.Domain.Entities;
 using Analysis.Application.Dtos;
 using Analysis.Infrastructure.Data;
-using Analysis.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Analysis.Application.Services.Result;
 
 namespace Analysis.Tests.Application.Services;
 
@@ -12,6 +11,7 @@ public class ResultServiceTests : IDisposable
 {
     private readonly AnalysisDbContext _context;
     private readonly ResultService _service;
+    private bool _disposed;
 
     public ResultServiceTests()
     {
@@ -23,9 +23,22 @@ public class ResultServiceTests : IDisposable
         _service = new ResultService(_context);
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            _disposed = true;
+        }
+    }
+
     public void Dispose()
     {
-        _context.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
     [Fact]
@@ -35,7 +48,7 @@ public class ResultServiceTests : IDisposable
         var result = await _service.GetAllAsync();
 
         // Assert
-        result.Should().BeEmpty();
+        _ = result.Should().BeEmpty();
     }
 
     [Fact]
@@ -48,7 +61,7 @@ public class ResultServiceTests : IDisposable
         var result = await _service.GetAllAsync();
 
         // Assert
-        result.Should().HaveCount(2);
+        _ = result.Should().HaveCount(2);
     }
 
     [Fact]
@@ -61,8 +74,8 @@ public class ResultServiceTests : IDisposable
         var result = await _service.GetByIdAsync(1);
 
         // Assert
-        result.Should().NotBeNull();
-        result!.Id.Should().Be(1);
+        _ = result.Should().NotBeNull();
+        _ = result!.Id.Should().Be(1);
     }
 
     [Fact]
@@ -75,7 +88,7 @@ public class ResultServiceTests : IDisposable
         var result = await _service.GetByIdAsync(999);
 
         // Assert
-        result.Should().BeNull();
+        _ = result.Should().BeNull();
     }
 
     [Fact]
@@ -88,8 +101,8 @@ public class ResultServiceTests : IDisposable
         var result = await _service.GetByAnalysisIdAsync(1);
 
         // Assert
-        result.Should().HaveCount(1);
-        result.First().AnalysisId.Should().Be(1);
+        _ = result.Should().HaveCount(1);
+        _ = result.First().AnalysisId.Should().Be(1);
     }
 
     [Fact]
@@ -102,7 +115,7 @@ public class ResultServiceTests : IDisposable
         var result = await _service.GetByAnalysisIdAsync(999);
 
         // Assert
-        result.Should().BeEmpty();
+        _ = result.Should().BeEmpty();
     }
 
     [Fact]
@@ -115,8 +128,8 @@ public class ResultServiceTests : IDisposable
         var result = await _service.GetByLevelAsync("violation");
 
         // Assert
-        result.Should().HaveCount(1);
-        result.First().Level.Should().Be("violation");
+        _ = result.Should().HaveCount(1);
+        _ = result.First().Level.Should().Be("violation");
     }
 
     [Fact]
@@ -129,8 +142,8 @@ public class ResultServiceTests : IDisposable
         var result = await _service.GetBySeverityAsync("high");
 
         // Assert
-        result.Should().HaveCount(1);
-        result.First().Severity.Should().Be("high");
+        _ = result.Should().HaveCount(1);
+        _ = result.First().Severity.Should().Be("high");
     }
 
     [Fact]
@@ -150,12 +163,12 @@ public class ResultServiceTests : IDisposable
         var result = await _service.CreateAsync(dto);
 
         // Assert
-        result.Should().NotBeNull();
-        result.AnalysisId.Should().Be(dto.AnalysisId);
-        result.Description.Should().Be(dto.Description);
+        _ = result.Should().NotBeNull();
+        _ = result.AnalysisId.Should().Be(dto.AnalysisId);
+        _ = result.Description.Should().Be(dto.Description);
 
         var savedEntity = await _context.Results.FindAsync(result.Id);
-        savedEntity.Should().NotBeNull();
+        _ = savedEntity.Should().NotBeNull();
     }
 
     [Fact]
@@ -169,7 +182,7 @@ public class ResultServiceTests : IDisposable
 
         // Assert
         var deletedEntity = await _context.Results.FindAsync(1);
-        deletedEntity.Should().BeNull();
+        _ = deletedEntity.Should().BeNull();
     }
 
     [Fact]
@@ -177,7 +190,7 @@ public class ResultServiceTests : IDisposable
     {
         // Act & Assert
         var act = async () => await _service.DeleteAsync(999);
-        await act.Should().NotThrowAsync();
+        _ = await act.Should().NotThrowAsync();
     }
 
     [Fact]
@@ -191,7 +204,7 @@ public class ResultServiceTests : IDisposable
 
         // Assert
         var count = await _context.Results.CountAsync();
-        count.Should().Be(0);
+        _ = count.Should().Be(0);
     }
 
     private async Task SeedTestData()
@@ -210,7 +223,7 @@ public class ResultServiceTests : IDisposable
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 Analysis = null!, // Required navigation property - set to null! for test
-                Errors = new List<Error>() // Required collection
+                Errors = [] // Required collection
             },
             new Result
             {
@@ -224,11 +237,11 @@ public class ResultServiceTests : IDisposable
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
                 Analysis = null!, // Required navigation property - set to null! for test
-                Errors = new List<Error>() // Required collection
+                Errors = [] // Required collection
             }
         };
 
         _context.Results.AddRange(results);
-        await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync();
     }
 }

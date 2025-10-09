@@ -6,10 +6,10 @@ public class ErrorCreateDtoValidator : AbstractValidator<ErrorCreateDto>
 {
     public ErrorCreateDtoValidator()
     {
-        RuleFor(x => x.ResultId).GreaterThan(0);
-        RuleFor(x => x.WcagCriterionId).GreaterThan(0);
-        RuleFor(x => x.ErrorCode).NotEmpty();
-        RuleFor(x => x.Description).NotEmpty();
-        RuleFor(x => x.Location).NotEmpty();
+        _ = RuleFor(x => x.ResultId).GreaterThan(0);
+        _ = RuleFor(x => x.WcagCriterionId).GreaterThan(0);
+        _ = RuleFor(x => x.ErrorCode).NotEmpty();
+        _ = RuleFor(x => x.Description).NotEmpty();
+        _ = RuleFor(x => x.Location).NotEmpty();
     }
 }

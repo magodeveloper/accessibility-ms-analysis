@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Xunit;
 
 namespace Analysis.Tests.UnitTests;
 
@@ -20,16 +19,16 @@ public class ControllersUncoveredMethodsTests
         var resultControllerType = typeof(Analysis.Api.Controllers.ResultController);
 
         // Assert
-        analysisControllerType.Should().NotBeNull();
-        errorControllerType.Should().NotBeNull();
-        resultControllerType.Should().NotBeNull();
+        _ = analysisControllerType.Should().NotBeNull();
+        _ = errorControllerType.Should().NotBeNull();
+        _ = resultControllerType.Should().NotBeNull();
 
         // Verificar que los métodos existen
-        analysisControllerType.GetMethod("GetByStatus").Should().NotBeNull();
-        analysisControllerType.GetMethod("GetByTool").Should().NotBeNull();
-        errorControllerType.GetMethod("Delete").Should().NotBeNull();
-        resultControllerType.GetMethod("Delete").Should().NotBeNull();
-        resultControllerType.GetMethod("GetById").Should().NotBeNull();
+        _ = analysisControllerType.GetMethod("GetByStatus").Should().NotBeNull();
+        _ = analysisControllerType.GetMethod("GetByTool").Should().NotBeNull();
+        _ = errorControllerType.GetMethod("Delete").Should().NotBeNull();
+        _ = resultControllerType.GetMethod("Delete").Should().NotBeNull();
+        _ = resultControllerType.GetMethod("GetById").Should().NotBeNull();
     }
 
     [Theory]
@@ -40,8 +39,8 @@ public class ControllersUncoveredMethodsTests
     {
         // Test simple para valores de status
         // Act & Assert
-        status.Should().NotBeNullOrEmpty();
-        status.Should().BeOneOf("completed", "pending", "failed");
+        _ = status.Should().NotBeNullOrEmpty();
+        _ = status.Should().BeOneOf("completed", "pending", "failed");
     }
 
     [Theory]
@@ -52,8 +51,8 @@ public class ControllersUncoveredMethodsTests
     {
         // Test simple para valores de tool
         // Act & Assert
-        tool.Should().NotBeNullOrEmpty();
-        tool.Should().BeOneOf("axe", "lighthouse", "pa11y");
+        _ = tool.Should().NotBeNullOrEmpty();
+        _ = tool.Should().BeOneOf("axe", "lighthouse", "pa11y");
     }
 
     [Fact]
@@ -69,8 +68,8 @@ public class ControllersUncoveredMethodsTests
         var getByToolMethod = analysisControllerType.GetMethod("GetByTool");
 
         // Assert
-        getByStatusMethod.Should().NotBeNull();
-        getByToolMethod.Should().NotBeNull();
+        _ = getByStatusMethod.Should().NotBeNull();
+        _ = getByToolMethod.Should().NotBeNull();
     }
 
     [Fact]
@@ -83,8 +82,8 @@ public class ControllersUncoveredMethodsTests
         var headerValue = "es-ES";
 
         // Act & Assert
-        headerKey.Should().Be("Accept-Language");
-        headerValue.Should().Be("es-ES");
+        _ = headerKey.Should().Be("Accept-Language");
+        _ = headerValue.Should().Be("es-ES");
     }
 
     [Fact]
@@ -99,7 +98,7 @@ public class ControllersUncoveredMethodsTests
         // Act & Assert
         foreach (var methodName in methodNames)
         {
-            methodName.Should().EndWith(expectedAsyncSuffix);
+            _ = methodName.Should().EndWith(expectedAsyncSuffix);
         }
     }
 
@@ -114,9 +113,9 @@ public class ControllersUncoveredMethodsTests
         var resultControllerType = typeof(Analysis.Api.Controllers.ResultController);
 
         // Act & Assert
-        analysisControllerType.BaseType.Should().NotBeNull();
-        errorControllerType.BaseType.Should().NotBeNull();
-        resultControllerType.BaseType.Should().NotBeNull();
+        _ = analysisControllerType.BaseType.Should().NotBeNull();
+        _ = errorControllerType.BaseType.Should().NotBeNull();
+        _ = resultControllerType.BaseType.Should().NotBeNull();
     }
 
     [Theory]
@@ -128,9 +127,9 @@ public class ControllersUncoveredMethodsTests
         // Test simple para IDs de controlador
 
         // Act & Assert
-        id.Should().BeGreaterThanOrEqualTo(0);
+        _ = id.Should().BeGreaterThanOrEqualTo(0);
         var isPositive = id > 0;
-        (isPositive || !isPositive).Should().BeTrue();
+        _ = (isPositive || !isPositive).Should().BeTrue();
     }
 
     [Fact]
@@ -143,6 +142,6 @@ public class ControllersUncoveredMethodsTests
         var analysisControllerType = typeof(Analysis.Api.Controllers.AnalysisController);
 
         // Act & Assert
-        analysisControllerType.Namespace.Should().Be(expectedNamespace);
+        _ = analysisControllerType.Namespace.Should().Be(expectedNamespace);
     }
 }

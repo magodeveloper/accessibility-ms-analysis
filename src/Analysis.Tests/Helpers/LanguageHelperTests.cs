@@ -1,8 +1,7 @@
-using Xunit;
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Analysis.Api.Helpers;
 using Moq;
+using FluentAssertions;
+using Analysis.Api.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace Analysis.Tests.Helpers;
 
@@ -19,7 +18,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Fact]
@@ -33,7 +32,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("en");
+        _ = result.Should().Be("en");
     }
 
     [Fact]
@@ -47,7 +46,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Fact]
@@ -61,7 +60,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Fact]
@@ -75,7 +74,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Fact]
@@ -89,7 +88,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Fact]
@@ -103,7 +102,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Fact]
@@ -117,7 +116,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("en");
+        _ = result.Should().Be("en");
     }
 
     [Fact]
@@ -131,7 +130,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("en");
+        _ = result.Should().Be("en");
     }
 
     [Fact]
@@ -145,7 +144,7 @@ public class LanguageHelperTests
         var result = LanguageHelper.GetRequestLanguage(context.Request);
 
         // Assert
-        result.Should().Be("en");
+        _ = result.Should().Be("en");
     }
 
     [Fact]
@@ -153,13 +152,13 @@ public class LanguageHelperTests
     {
         // Arrange
         var mockRequest = new Mock<HttpRequest>();
-        mockRequest.Setup(x => x.Headers)
+        _ = mockRequest.Setup(x => x.Headers)
             .Throws(new InvalidOperationException("Simulated exception"));
 
         // Act
         var result = LanguageHelper.GetRequestLanguage(mockRequest.Object);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 }

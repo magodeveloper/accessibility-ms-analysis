@@ -1,12 +1,11 @@
+using FluentAssertions;
+using Analysis.Infrastructure;
+using Analysis.Domain.Services;
+using Analysis.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Analysis.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Analysis.Infrastructure;
-using Analysis.Infrastructure.Data;
-using Analysis.Domain.Services;
-using Analysis.Infrastructure.Services;
-using Microsoft.EntityFrameworkCore;
-using FluentAssertions;
-using Xunit;
 
 namespace Analysis.Tests.Infrastructure;
 
@@ -35,12 +34,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Theory]
@@ -58,12 +57,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -77,12 +76,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -96,16 +95,16 @@ public class ServiceRegistrationTests
         });
 
         // Add IHttpClientFactory dependency
-        services.AddHttpClient();
+        _ = services.AddHttpClient();
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var serviceDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(IUserValidationService));
-        serviceDescriptor.Should().NotBeNull();
-        serviceDescriptor!.ImplementationType.Should().Be(typeof(UserValidationService));
-        serviceDescriptor.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = serviceDescriptor.Should().NotBeNull();
+        _ = serviceDescriptor!.ImplementationType.Should().Be<UserValidationService>();
+        _ = serviceDescriptor.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -119,12 +118,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var serviceDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        serviceDescriptor.Should().NotBeNull();
-        serviceDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = serviceDescriptor.Should().NotBeNull();
+        _ = serviceDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -138,13 +137,13 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var serviceDescriptor = services.FirstOrDefault(x =>
             x.ServiceType == typeof(DbContextOptions<AnalysisDbContext>));
-        serviceDescriptor.Should().NotBeNull();
-        serviceDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = serviceDescriptor.Should().NotBeNull();
+        _ = serviceDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -158,12 +157,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var serviceDescriptor = services.FirstOrDefault(x =>
             x.ServiceType.Name.Contains("IHttpClientFactory"));
-        serviceDescriptor.Should().NotBeNull();
+        _ = serviceDescriptor.Should().NotBeNull();
     }
 
     [Fact]
@@ -177,18 +176,18 @@ public class ServiceRegistrationTests
         });
 
         // Add required dependencies
-        services.AddHttpClient();
+        _ = services.AddHttpClient();
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var registeredServices = services.Select(x => x.ServiceType.Name).ToList();
 
-        registeredServices.Should().Contain("AnalysisDbContext");
-        registeredServices.Should().Contain("IUserValidationService");
-        registeredServices.Should().Contain(x => x.Contains("IHttpClientFactory"));
-        registeredServices.Should().Contain(x => x.Contains("DbContextOptions"));
+        _ = registeredServices.Should().Contain("AnalysisDbContext");
+        _ = registeredServices.Should().Contain("IUserValidationService");
+        _ = registeredServices.Should().Contain(x => x.Contains("IHttpClientFactory"));
+        _ = registeredServices.Should().Contain(x => x.Contains("DbContextOptions"));
     }
 
     [Fact]
@@ -202,12 +201,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -221,12 +220,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var httpClientFactoryDescriptor = services.FirstOrDefault(x =>
             x.ServiceType.Name.Contains("IHttpClientFactory"));
-        httpClientFactoryDescriptor.Should().NotBeNull();
+        _ = httpClientFactoryDescriptor.Should().NotBeNull();
     }
 
     [Fact]
@@ -242,12 +241,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -262,12 +261,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -281,12 +280,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -302,12 +301,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -315,7 +314,7 @@ public class ServiceRegistrationTests
     {
         // Arrange
         var services = new ServiceCollection();
-        services.AddHttpClient(); // Pre-register HttpClient
+        _ = services.AddHttpClient(); // Pre-register HttpClient
         var configuration = CreateConfiguration(new Dictionary<string, string>
         {
             ["ASPNETCORE_ENVIRONMENT"] = "Test"
@@ -325,9 +324,9 @@ public class ServiceRegistrationTests
         var result = services.AddInfrastructure(configuration);
 
         // Assert
-        result.Should().NotBeNull();
+        _ = result.Should().NotBeNull();
         var userValidationServiceDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(IUserValidationService));
-        userValidationServiceDescriptor.Should().NotBeNull();
+        _ = userValidationServiceDescriptor.Should().NotBeNull();
     }
 
     [Theory]
@@ -350,12 +349,12 @@ public class ServiceRegistrationTests
         var configuration = CreateConfiguration(settings);
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -363,17 +362,17 @@ public class ServiceRegistrationTests
     {
         // Arrange
         var services = new ServiceCollection();
-        var configuration = CreateConfiguration(new Dictionary<string, string>());
+        var configuration = CreateConfiguration([]);
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var registeredServices = services.Select(x => x.ServiceType.Name).ToList();
 
-        registeredServices.Should().Contain("AnalysisDbContext");
-        registeredServices.Should().Contain("IUserValidationService");
-        registeredServices.Should().Contain(x => x.Contains("IHttpClientFactory"));
+        _ = registeredServices.Should().Contain("AnalysisDbContext");
+        _ = registeredServices.Should().Contain("IUserValidationService");
+        _ = registeredServices.Should().Contain(x => x.Contains("IHttpClientFactory"));
     }
 
     [Fact]
@@ -388,16 +387,16 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
 
         // Verificar que se registró un DbContext
         var registeredServices = services.Select(x => x.ServiceType.Name).ToList();
-        registeredServices.Should().Contain("AnalysisDbContext");
+        _ = registeredServices.Should().Contain("AnalysisDbContext");
     }
 
     [Fact]
@@ -412,12 +411,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -432,12 +431,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -452,17 +451,17 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
 
         // Additional assertion to differentiate from AddInfrastructure_WithNoConnectionString_ShouldUseDefaultConnectionString
         var registeredServices = services.Select(x => x.ServiceType.Name).ToList();
-        registeredServices.Should().Contain("AnalysisDbContext");
-        registeredServices.Should().Contain("IUserValidationService");
+        _ = registeredServices.Should().Contain("AnalysisDbContext");
+        _ = registeredServices.Should().Contain("IUserValidationService");
     }
 
     [Fact]
@@ -477,14 +476,14 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var httpClientDescriptor = services.FirstOrDefault(x => x.ServiceType.Name.Contains("IHttpClientFactory"));
-        httpClientDescriptor.Should().NotBeNull();
+        _ = httpClientDescriptor.Should().NotBeNull();
 
         var userValidationServiceDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(IUserValidationService));
-        userValidationServiceDescriptor.Should().NotBeNull();
+        _ = userValidationServiceDescriptor.Should().NotBeNull();
     }
 
     [Theory]
@@ -503,12 +502,12 @@ public class ServiceRegistrationTests
         });
 
         // Act
-        services.AddInfrastructure(configuration);
+        _ = services.AddInfrastructure(configuration);
 
         // Assert
         var dbContextDescriptor = services.FirstOrDefault(x => x.ServiceType == typeof(AnalysisDbContext));
-        dbContextDescriptor.Should().NotBeNull();
-        dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
+        _ = dbContextDescriptor.Should().NotBeNull();
+        _ = dbContextDescriptor!.Lifetime.Should().Be(ServiceLifetime.Scoped);
     }
 
     [Fact]
@@ -526,7 +525,7 @@ public class ServiceRegistrationTests
         var result = services.AddInfrastructure(configuration);
 
         // Assert
-        result.Should().BeSameAs(services);
-        result.Should().NotBeNull();
+        _ = result.Should().BeSameAs(services);
+        _ = result.Should().NotBeNull();
     }
 }

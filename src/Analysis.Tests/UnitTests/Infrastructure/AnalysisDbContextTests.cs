@@ -1,8 +1,7 @@
-using Microsoft.EntityFrameworkCore;
+using FluentAssertions;
 using Analysis.Domain.Entities;
 using Analysis.Infrastructure.Data;
-using Xunit;
-using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Analysis.Tests.UnitTests.Infrastructure;
 
@@ -23,9 +22,9 @@ public class AnalysisDbContextTests : IDisposable
     public void DbContext_ShouldCreateAnalysisDbSets()
     {
         // Assert
-        _context.Analyses.Should().NotBeNull();
-        _context.Results.Should().NotBeNull();
-        _context.Errors.Should().NotBeNull();
+        _ = _context.Analyses.Should().NotBeNull();
+        _ = _context.Results.Should().NotBeNull();
+        _ = _context.Errors.Should().NotBeNull();
     }
 
     [Fact]
@@ -46,18 +45,18 @@ public class AnalysisDbContextTests : IDisposable
             WcagLevel = WcagLevel.AA,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Results = new List<Result>()
+            Results = []
         };
 
         // Act
-        _context.Analyses.Add(analysis);
-        await _context.SaveChangesAsync();
+        _ = _context.Analyses.Add(analysis);
+        _ = await _context.SaveChangesAsync();
 
         // Assert
         var savedAnalysis = await _context.Analyses.FirstOrDefaultAsync(a => a.SourceUrl == "https://test.com");
-        savedAnalysis.Should().NotBeNull();
-        savedAnalysis!.UserId.Should().Be(100);
-        savedAnalysis.Status.Should().Be(AnalysisStatus.success);
+        _ = savedAnalysis.Should().NotBeNull();
+        _ = savedAnalysis!.UserId.Should().Be(100);
+        _ = savedAnalysis.Status.Should().Be(AnalysisStatus.success);
     }
 
     [Fact]
@@ -78,7 +77,7 @@ public class AnalysisDbContextTests : IDisposable
             WcagLevel = WcagLevel.AA,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Results = new List<Result>()
+            Results = []
         };
 
         var result = new Result
@@ -91,27 +90,27 @@ public class AnalysisDbContextTests : IDisposable
             Description = "Missing alt text on image",
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Errors = new List<Error>()
+            Errors = []
         };
 
         // Act
-        _context.Analyses.Add(analysis);
-        await _context.SaveChangesAsync();
+        _ = _context.Analyses.Add(analysis);
+        _ = await _context.SaveChangesAsync();
 
         result.AnalysisId = analysis.Id;
-        _context.Results.Add(result);
-        await _context.SaveChangesAsync();
+        _ = _context.Results.Add(result);
+        _ = await _context.SaveChangesAsync();
 
         // Assert
         var savedResult = await _context.Results
             .Include(r => r.Analysis)
             .FirstOrDefaultAsync(r => r.WcagCriterion == "1.1.1 Non-text Content");
 
-        savedResult.Should().NotBeNull();
-        savedResult!.Description.Should().Be("Missing alt text on image");
-        savedResult.Severity.Should().Be(Severity.high);
-        savedResult.Analysis.Should().NotBeNull();
-        savedResult.Analysis.SourceUrl.Should().Be("https://result-test.com");
+        _ = savedResult.Should().NotBeNull();
+        _ = savedResult!.Description.Should().Be("Missing alt text on image");
+        _ = savedResult.Severity.Should().Be(Severity.high);
+        _ = savedResult.Analysis.Should().NotBeNull();
+        _ = savedResult.Analysis.SourceUrl.Should().Be("https://result-test.com");
     }
 
     [Fact]
@@ -132,7 +131,7 @@ public class AnalysisDbContextTests : IDisposable
             WcagLevel = WcagLevel.AA,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Results = new List<Result>()
+            Results = []
         };
 
         var result1 = new Result
@@ -145,7 +144,7 @@ public class AnalysisDbContextTests : IDisposable
             Description = "Missing alt text on image",
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Errors = new List<Error>()
+            Errors = []
         };
 
         var result2 = new Result
@@ -158,25 +157,25 @@ public class AnalysisDbContextTests : IDisposable
             Description = "Missing label for input",
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Errors = new List<Error>()
+            Errors = []
         };
 
         analysis.Results.Add(result1);
         analysis.Results.Add(result2);
 
         // Act
-        _context.Analyses.Add(analysis);
-        await _context.SaveChangesAsync();
+        _ = _context.Analyses.Add(analysis);
+        _ = await _context.SaveChangesAsync();
 
         // Assert
         var savedAnalysis = await _context.Analyses
             .Include(a => a.Results)
             .FirstOrDefaultAsync(a => a.SourceUrl == "https://relationship-test.com");
 
-        savedAnalysis.Should().NotBeNull();
-        savedAnalysis!.Results.Should().HaveCount(2);
-        savedAnalysis.Results.Should().Contain(r => r.WcagCriterion == "1.1.1 Non-text Content");
-        savedAnalysis.Results.Should().Contain(r => r.WcagCriterion == "1.3.1 Info and Relationships");
+        _ = savedAnalysis.Should().NotBeNull();
+        _ = savedAnalysis!.Results.Should().HaveCount(2);
+        _ = savedAnalysis.Results.Should().Contain(r => r.WcagCriterion == "1.1.1 Non-text Content");
+        _ = savedAnalysis.Results.Should().Contain(r => r.WcagCriterion == "1.3.1 Info and Relationships");
     }
 
     [Fact]
@@ -197,11 +196,11 @@ public class AnalysisDbContextTests : IDisposable
             WcagLevel = WcagLevel.AA,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Results = new List<Result>()
+            Results = []
         };
 
-        _context.Analyses.Add(analysis);
-        await _context.SaveChangesAsync();
+        _ = _context.Analyses.Add(analysis);
+        _ = await _context.SaveChangesAsync();
 
         var originalUpdatedAt = analysis.UpdatedAt;
 
@@ -211,13 +210,13 @@ public class AnalysisDbContextTests : IDisposable
         // Act
         analysis.Status = AnalysisStatus.success;
         analysis.UpdatedAt = DateTime.UtcNow;
-        await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync();
 
         // Assert
         var updatedAnalysis = await _context.Analyses.FindAsync(analysis.Id);
-        updatedAnalysis.Should().NotBeNull();
-        updatedAnalysis!.Status.Should().Be(AnalysisStatus.success);
-        updatedAnalysis.UpdatedAt.Should().BeAfter(originalUpdatedAt);
+        _ = updatedAnalysis.Should().NotBeNull();
+        _ = updatedAnalysis!.Status.Should().Be(AnalysisStatus.success);
+        _ = updatedAnalysis.UpdatedAt.Should().BeAfter(originalUpdatedAt);
     }
 
     public void Dispose()

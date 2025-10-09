@@ -1,13 +1,12 @@
-using Xunit;
-using FluentAssertions;
 using Moq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Analysis.Application.Services.Analysis;
-using Analysis.Application.Dtos;
-using Analysis.Infrastructure.Data;
+using FluentAssertions;
 using Analysis.Domain.Services;
 using Analysis.Domain.Entities;
+using Analysis.Application.Dtos;
+using Microsoft.Extensions.Logging;
+using Analysis.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Analysis.Application.Services.Analysis;
 
 namespace Analysis.Tests.Application.Services;
 
@@ -17,6 +16,7 @@ public class AnalysisServiceTests : IDisposable
     private readonly Mock<IUserValidationService> _mockUserValidationService;
     private readonly Mock<ILogger<AnalysisService>> _mockLogger;
     private readonly AnalysisService _service;
+    private bool _disposed;
 
     public AnalysisServiceTests()
     {
@@ -31,14 +31,27 @@ public class AnalysisServiceTests : IDisposable
         _service = new AnalysisService(_context, _mockUserValidationService.Object, _mockLogger.Object);
 
         // Setup default user validation to return true
-        _mockUserValidationService
+        _ = _mockUserValidationService
             .Setup(x => x.ValidateUserExistsAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
     }
 
     public void Dispose()
     {
-        _context.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            _disposed = true;
+        }
     }
 
     [Fact]
@@ -48,7 +61,7 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetAllAsync();
 
         // Assert
-        result.Should().BeEmpty();
+        _ = result.Should().BeEmpty();
     }
 
     [Fact]
@@ -61,7 +74,7 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetAllAsync();
 
         // Assert
-        result.Should().HaveCount(2);
+        _ = result.Should().HaveCount(2);
     }
 
     [Fact]
@@ -74,8 +87,8 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetByUserIdAsync(1);
 
         // Assert
-        result.Should().HaveCount(1);
-        result.First().UserId.Should().Be(1);
+        _ = result.Should().HaveCount(1);
+        _ = result.First().UserId.Should().Be(1);
     }
 
     [Fact]
@@ -88,7 +101,7 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetByUserIdAsync(999);
 
         // Assert
-        result.Should().BeEmpty();
+        _ = result.Should().BeEmpty();
     }
 
     [Fact]
@@ -101,8 +114,8 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetByIdAsync(1);
 
         // Assert
-        result.Should().NotBeNull();
-        result!.Id.Should().Be(1);
+        _ = result.Should().NotBeNull();
+        _ = result!.Id.Should().Be(1);
     }
 
     [Fact]
@@ -115,7 +128,7 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetByIdAsync(999);
 
         // Assert
-        result.Should().BeNull();
+        _ = result.Should().BeNull();
     }
 
     [Fact]
@@ -129,8 +142,8 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetByDateAsync(1, testDate);
 
         // Assert
-        result.Should().HaveCount(1);
-        result.First().DateAnalysis.Date.Should().Be(testDate);
+        _ = result.Should().HaveCount(1);
+        _ = result.First().DateAnalysis.Date.Should().Be(testDate);
     }
 
     [Fact]
@@ -145,8 +158,8 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetByDateRangeAsync(1, startDate, endDate);
 
         // Assert
-        result.Should().HaveCount(2);
-        result.All(a => a.DateAnalysis >= startDate && a.DateAnalysis <= endDate).Should().BeTrue();
+        _ = result.Should().HaveCount(2);
+        _ = result.All(a => a.DateAnalysis >= startDate && a.DateAnalysis <= endDate).Should().BeTrue();
     }
 
     [Fact]
@@ -159,8 +172,8 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetByToolAsync(1, "axecore");
 
         // Assert
-        result.Should().HaveCount(1);
-        result.First().ToolUsed.Should().Be("axecore");
+        _ = result.Should().HaveCount(1);
+        _ = result.First().ToolUsed.Should().Be("axecore");
     }
 
     [Fact]
@@ -173,8 +186,8 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.GetByStatusAsync(1, "pending");
 
         // Assert
-        result.Should().HaveCount(1);
-        result.First().Status.Should().Be("pending");
+        _ = result.Should().HaveCount(1);
+        _ = result.First().Status.Should().Be("pending");
     }
 
     [Fact]
@@ -187,13 +200,13 @@ public class AnalysisServiceTests : IDisposable
         var result = await _service.CreateAsync(dto);
 
         // Assert
-        result.Should().NotBeNull();
-        result.UserId.Should().Be(dto.UserId);
-        result.ContentType.Should().Be(dto.ContentType);
-        result.ToolUsed.Should().Be(dto.ToolUsed);
+        _ = result.Should().NotBeNull();
+        _ = result.UserId.Should().Be(dto.UserId);
+        _ = result.ContentType.Should().Be(dto.ContentType);
+        _ = result.ToolUsed.Should().Be(dto.ToolUsed);
 
         var savedEntity = await _context.Analyses.FindAsync(result.Id);
-        savedEntity.Should().NotBeNull();
+        _ = savedEntity.Should().NotBeNull();
     }
 
     [Fact]
@@ -207,7 +220,7 @@ public class AnalysisServiceTests : IDisposable
 
         // Assert
         var deletedEntity = await _context.Analyses.FindAsync(1);
-        deletedEntity.Should().BeNull();
+        _ = deletedEntity.Should().BeNull();
     }
 
     [Fact]
@@ -215,7 +228,7 @@ public class AnalysisServiceTests : IDisposable
     {
         // Act & Assert
         var act = async () => await _service.DeleteAsync(999);
-        await act.Should().NotThrowAsync();
+        _ = await act.Should().NotThrowAsync();
     }
 
     [Fact]
@@ -229,7 +242,7 @@ public class AnalysisServiceTests : IDisposable
 
         // Assert
         var count = await _context.Analyses.CountAsync();
-        count.Should().Be(0);
+        _ = count.Should().Be(0);
     }
 
     private async Task SeedTestData()
@@ -252,7 +265,7 @@ public class AnalysisServiceTests : IDisposable
                 WcagLevel = WcagLevel.AA,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                Results = new List<Result>() // Required collection
+                Results = [] // Required collection
             },
             new Analysis.Domain.Entities.Analysis
             {
@@ -270,12 +283,12 @@ public class AnalysisServiceTests : IDisposable
                 WcagLevel = WcagLevel.A,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                Results = new List<Result>() // Required collection
+                Results = [] // Required collection
             }
         };
 
         _context.Analyses.AddRange(analyses);
-        await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync();
     }
 
     private async Task SeedTestDataWithSpecificDate(DateTime date)
@@ -296,11 +309,11 @@ public class AnalysisServiceTests : IDisposable
             WcagLevel = WcagLevel.AA,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            Results = new List<Result>() // Required collection
+            Results = [] // Required collection
         };
 
-        _context.Analyses.Add(analysis);
-        await _context.SaveChangesAsync();
+        _ = _context.Analyses.Add(analysis);
+        _ = await _context.SaveChangesAsync();
     }
 
     private async Task SeedTestDataWithDateRange(DateTime startDate, DateTime endDate)
@@ -323,7 +336,7 @@ public class AnalysisServiceTests : IDisposable
                 WcagLevel = WcagLevel.AA,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                Results = new List<Result>() // Required collection
+                Results = [] // Required collection
             },
             new Analysis.Domain.Entities.Analysis
             {
@@ -341,12 +354,12 @@ public class AnalysisServiceTests : IDisposable
                 WcagLevel = WcagLevel.AA,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                Results = new List<Result>() // Required collection
+                Results = [] // Required collection
             }
         };
 
         _context.Analyses.AddRange(analyses);
-        await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync();
     }
 
     private static AnalysisCreateDto CreateValidAnalysisCreateDto() => new(

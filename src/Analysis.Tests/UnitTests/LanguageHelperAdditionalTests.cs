@@ -1,9 +1,8 @@
-using Analysis.Api.Helpers;
+using Moq;
 using FluentAssertions;
+using Analysis.Api.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Moq;
-using Xunit;
 
 namespace Analysis.Tests.UnitTests;
 
@@ -21,13 +20,13 @@ public class LanguageHelperAdditionalTests
         {
             ["Accept-Language"] = new StringValues("")
         };
-        mockRequest.Setup(r => r.Headers).Returns(headers);
+        _ = mockRequest.Setup(r => r.Headers).Returns(headers);
 
         // Act
         var result = LanguageHelper.GetRequestLanguage(mockRequest.Object);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Fact]
@@ -36,13 +35,13 @@ public class LanguageHelperAdditionalTests
         // Arrange
         var mockRequest = new Mock<HttpRequest>();
         var headers = new HeaderDictionary();
-        mockRequest.Setup(r => r.Headers).Returns(headers);
+        _ = mockRequest.Setup(r => r.Headers).Returns(headers);
 
         // Act
         var result = LanguageHelper.GetRequestLanguage(mockRequest.Object);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Theory]
@@ -60,13 +59,13 @@ public class LanguageHelperAdditionalTests
         {
             ["Accept-Language"] = new StringValues(acceptLanguage)
         };
-        mockRequest.Setup(r => r.Headers).Returns(headers);
+        _ = mockRequest.Setup(r => r.Headers).Returns(headers);
 
         // Act
         var result = LanguageHelper.GetRequestLanguage(mockRequest.Object);
 
         // Assert
-        result.Should().Be(expectedLanguage);
+        _ = result.Should().Be(expectedLanguage);
     }
 
     [Fact]
@@ -78,13 +77,13 @@ public class LanguageHelperAdditionalTests
         {
             ["Accept-Language"] = new StringValues("   ")
         };
-        mockRequest.Setup(r => r.Headers).Returns(headers);
+        _ = mockRequest.Setup(r => r.Headers).Returns(headers);
 
         // Act
         var result = LanguageHelper.GetRequestLanguage(mockRequest.Object);
 
         // Assert
-        result.Should().Be("es");
+        _ = result.Should().Be("es");
     }
 
     [Fact]
@@ -96,12 +95,12 @@ public class LanguageHelperAdditionalTests
         {
             ["Accept-Language"] = new StringValues("zh-CN,zh;q=0.9,en;q=0.8,es;q=0.7")
         };
-        mockRequest.Setup(r => r.Headers).Returns(headers);
+        _ = mockRequest.Setup(r => r.Headers).Returns(headers);
 
         // Act
         var result = LanguageHelper.GetRequestLanguage(mockRequest.Object);
 
         // Assert
-        result.Should().Be("es"); // zh no soportado, fallback a es
+        _ = result.Should().Be("es"); // zh no soportado, fallback a es
     }
 }

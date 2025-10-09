@@ -1,6 +1,5 @@
-using Analysis.Application.Dtos;
 using FluentAssertions;
-using Xunit;
+using Analysis.Application.Dtos;
 
 namespace Analysis.Tests.Dtos;
 
@@ -45,7 +44,7 @@ public class AnalysisPatchDtoValidatorTests
         var result = _validator.Validate(dto);
 
         // Assert
-        result.IsValid.Should().BeTrue();
+        _ = result.IsValid.Should().BeTrue();
     }
 
     [Theory]
@@ -85,7 +84,7 @@ public class AnalysisPatchDtoValidatorTests
         var result = _validator.Validate(dto);
 
         // Assert
-        result.IsValid.Should().BeTrue();
+        _ = result.IsValid.Should().BeTrue();
     }
 
     [Theory]
@@ -125,8 +124,8 @@ public class AnalysisPatchDtoValidatorTests
         var result = _validator.Validate(dto);
 
         // Assert
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(e => e.PropertyName == "WcagVersion");
+        _ = result.IsValid.Should().BeFalse();
+        _ = result.Errors.Should().Contain(e => e.PropertyName == "WcagVersion");
     }
 
     [Theory]
@@ -166,8 +165,8 @@ public class AnalysisPatchDtoValidatorTests
         var result = _validator.Validate(dto);
 
         // Assert
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(e => e.PropertyName == "WcagLevel");
+        _ = result.IsValid.Should().BeFalse();
+        _ = result.Errors.Should().Contain(e => e.PropertyName == "WcagLevel");
     }
 
     [Fact]
@@ -203,7 +202,7 @@ public class AnalysisPatchDtoValidatorTests
         var result = _validator.Validate(dto);
 
         // Assert
-        result.IsValid.Should().BeTrue();
+        _ = result.IsValid.Should().BeTrue();
     }
 
     [Fact]
@@ -239,8 +238,8 @@ public class AnalysisPatchDtoValidatorTests
         var result = _validator.Validate(dto);
 
         // Assert
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(e => e.PropertyName == "WcagVersion");
-        result.Errors.Should().Contain(e => e.PropertyName == "WcagLevel");
+        _ = result.IsValid.Should().BeFalse();
+        _ = result.Errors.Should().Contain(e => e.PropertyName == "WcagVersion");
+        _ = result.Errors.Should().Contain(e => e.PropertyName == "WcagLevel");
     }
 }

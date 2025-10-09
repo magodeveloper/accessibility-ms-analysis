@@ -1,120 +1,122 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Analysis.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Analysis.Tests.Infrastructure
+namespace Analysis.Tests.Infrastructure;
+
+/// <summary>
+/// Helper para manejo dinámico de bases de datos en tests
+/// </summary>
+public static class DatabaseHelper
 {
     /// <summary>
-    /// Helper para manejo dinámico de bases de datos en tests
+    /// Asegura que la base de datos esté lista para tests
     /// </summary>
-    public static class DatabaseHelper
+    public static async Task<bool> EnsureDatabaseAsync(IServiceProvider serviceProvider)
     {
-        /// <summary>
-        /// Asegura que la base de datos esté lista para tests
-        /// </summary>
-        public static async Task<bool> EnsureDatabaseAsync(IServiceProvider serviceProvider)
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AnalysisDbContext>();
+
+        try
         {
-            using var scope = serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<AnalysisDbContext>();
+            // Verificar si la base de datos existe y tiene conexión
+            var canConnect = await context.Database.CanConnectAsync();
 
-            try
+            if (!canConnect)
             {
-                // Verificar si la base de datos existe y tiene conexión
-                var canConnect = await context.Database.CanConnectAsync();
-
-                if (!canConnect)
-                {
-                    Console.WriteLine("⚠️  No se puede conectar a la base de datos");
-                    return false;
-                }
-
-                // Verificar si hay migraciones pendientes
-                var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-
-                if (pendingMigrations.Any())
-                {
-                    Console.WriteLine($"🔄 Aplicando {pendingMigrations.Count()} migraciones pendientes...");
-                    await context.Database.MigrateAsync();
-                    Console.WriteLine("✅ Migraciones aplicadas correctamente");
-                }
-                else
-                {
-                    Console.WriteLine("✅ Base de datos actualizada, no hay migraciones pendientes");
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ Error configurando base de datos: {ex.Message}");
+                Console.WriteLine("⚠️  No se puede conectar a la base de datos");
                 return false;
             }
+
+            // Verificar si hay migraciones pendientes
+            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+
+            if (pendingMigrations.Any())
+            {
+                Console.WriteLine($"🔄 Aplicando {pendingMigrations.Count()} migraciones pendientes...");
+                await context.Database.MigrateAsync();
+                Console.WriteLine("✅ Migraciones aplicadas correctamente");
+            }
+            else
+            {
+                Console.WriteLine("✅ Base de datos actualizada, no hay migraciones pendientes");
+            }
+
+            return true;
         }
-
-        /// <summary>
-        /// Limpia datos de test manteniendo la estructura
-        /// </summary>
-        public static async Task CleanTestDataAsync(IServiceProvider serviceProvider)
+        catch (Exception ex)
         {
-            using var scope = serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<AnalysisDbContext>();
-
-            try
-            {
-                // Limpiar en orden correcto para evitar problemas de FK
-                var errors = await context.Errors.ToListAsync();
-                context.Errors.RemoveRange(errors);
-
-                var results = await context.Results.ToListAsync();
-                context.Results.RemoveRange(results);
-
-                var analyses = await context.Analyses.ToListAsync();
-                context.Analyses.RemoveRange(analyses);
-
-                await context.SaveChangesAsync();
-                Console.WriteLine("🧹 Datos de test limpiados correctamente");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"⚠️  Error limpiando datos de test: {ex.Message}");
-            }
+            Console.WriteLine($"❌ Error configurando base de datos: {ex.Message}");
+            return false;
         }
+    }
 
-        /// <summary>
-        /// Verifica el estado de la base de datos
-        /// </summary>
-        public static async Task<DatabaseStatus> GetDatabaseStatusAsync(IServiceProvider serviceProvider)
+    /// <summary>
+    /// Limpia datos de test manteniendo la estructura
+    /// </summary>
+    public static async Task CleanTestDataAsync(IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AnalysisDbContext>();
+
+        try
         {
-            using var scope = serviceProvider.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<AnalysisDbContext>();
+            // Limpiar en orden correcto para evitar problemas de FK
+            var errors = await context.Errors.ToListAsync();
+            context.Errors.RemoveRange(errors);
 
-            try
-            {
-                var canConnect = await context.Database.CanConnectAsync();
-                if (!canConnect)
-                    return DatabaseStatus.NotAccessible;
+            var results = await context.Results.ToListAsync();
+            context.Results.RemoveRange(results);
 
-                var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
-                if (pendingMigrations.Any())
-                    return DatabaseStatus.MigrationsPending;
+            var analyses = await context.Analyses.ToListAsync();
+            context.Analyses.RemoveRange(analyses);
 
-                // Verificar si hay datos
-                var hasData = await context.Analyses.AnyAsync();
-                return hasData ? DatabaseStatus.ReadyWithData : DatabaseStatus.ReadyEmpty;
-            }
-            catch
+            _ = await context.SaveChangesAsync();
+            Console.WriteLine("🧹 Datos de test limpiados correctamente");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"⚠️  Error limpiando datos de test: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Verifica el estado de la base de datos
+    /// </summary>
+    public static async Task<DatabaseStatus> GetDatabaseStatusAsync(IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AnalysisDbContext>();
+
+        try
+        {
+            var canConnect = await context.Database.CanConnectAsync();
+            if (!canConnect)
             {
                 return DatabaseStatus.NotAccessible;
             }
+
+            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+            if (pendingMigrations.Any())
+            {
+                return DatabaseStatus.MigrationsPending;
+            }
+
+            // Verificar si hay datos
+            var hasData = await context.Analyses.AnyAsync();
+            return hasData ? DatabaseStatus.ReadyWithData : DatabaseStatus.ReadyEmpty;
+        }
+        catch
+        {
+            return DatabaseStatus.NotAccessible;
         }
     }
+}
 
-    public enum DatabaseStatus
-    {
-        NotAccessible,
-        MigrationsPending,
-        ReadyEmpty,
-        ReadyWithData
-    }
+public enum DatabaseStatus
+{
+    NotAccessible,
+    MigrationsPending,
+    ReadyEmpty,
+    ReadyWithData
 }

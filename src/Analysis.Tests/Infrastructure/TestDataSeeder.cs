@@ -1,32 +1,32 @@
 using MySqlConnector;
 
-namespace Analysis.Tests.Infrastructure
+namespace Analysis.Tests.Infrastructure;
+
+public static class TestDataSeeder
 {
-    public static class TestDataSeeder
+    public static async Task SeedTestDatabasesAsync()
     {
-        public static async Task SeedTestDatabasesAsync()
-        {
-            await SeedUsersDatabase();
-            await SeedAnalysisDatabase();
-        }
+        await SeedUsersDatabase();
+        await SeedAnalysisDatabase();
+    }
 
-        private static async Task SeedUsersDatabase()
-        {
-            var connectionString = "Server=localhost;Port=3308;Database=usersdb_test;User=msuser;Password=Y0urs3cretOrA7&;CharSet=utf8mb4;";
+    private static async Task SeedUsersDatabase()
+    {
+        var connectionString = "Server=localhost;Port=3308;Database=usersdb_test;User=msuser;Password=Y0urs3cretOrA7&;CharSet=utf8mb4;";
 
-            using var connection = new MySqlConnection(connectionString);
-            await connection.OpenAsync();
+        using var connection = new MySqlConnection(connectionString);
+        await connection.OpenAsync();
 
-            // Crear la base de datos si no existe
-            var createDbCommand = new MySqlCommand("CREATE DATABASE IF NOT EXISTS usersdb_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;", connection);
-            await createDbCommand.ExecuteNonQueryAsync();
+        // Crear la base de datos si no existe
+        var createDbCommand = new MySqlCommand("CREATE DATABASE IF NOT EXISTS usersdb_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;", connection);
+        _ = await createDbCommand.ExecuteNonQueryAsync();
 
-            // Usar la base de datos
-            var useDbCommand = new MySqlCommand("USE usersdb_test;", connection);
-            await useDbCommand.ExecuteNonQueryAsync();
+        // Usar la base de datos
+        var useDbCommand = new MySqlCommand("USE usersdb_test;", connection);
+        _ = await useDbCommand.ExecuteNonQueryAsync();
 
-            // Crear tabla USERS si no existe
-            var createTableCommand = new MySqlCommand(@"
+        // Crear tabla USERS si no existe
+        var createTableCommand = new MySqlCommand(@"
                 CREATE TABLE IF NOT EXISTS USERS (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     nickname VARCHAR(15) NOT NULL UNIQUE,
@@ -43,40 +43,40 @@ namespace Analysis.Tests.Infrastructure
                     updated_at DATETIME(6) NOT NULL
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
             ", connection);
-            await createTableCommand.ExecuteNonQueryAsync();
+        _ = await createTableCommand.ExecuteNonQueryAsync();
 
-            // Limpiar datos existentes
-            var clearCommand = new MySqlCommand("TRUNCATE TABLE USERS;", connection);
-            await clearCommand.ExecuteNonQueryAsync();
+        // Limpiar datos existentes
+        var clearCommand = new MySqlCommand("TRUNCATE TABLE USERS;", connection);
+        _ = await clearCommand.ExecuteNonQueryAsync();
 
-            // Insertar usuarios de prueba
-            var insertCommand = new MySqlCommand(@"
+        // Insertar usuarios de prueba
+        var insertCommand = new MySqlCommand(@"
                 INSERT INTO USERS (id, nickname, name, lastname, email, password, role, status, email_confirmed, registration_date, created_at, updated_at) 
                 VALUES 
                 (1, 'testuser1', 'Test', 'User1', 'test1@example.com', '$2a$11$hashed_password_here', 'admin', 'active', 1, NOW(), NOW(), NOW()),
                 (2, 'testuser2', 'Test', 'User2', 'test2@example.com', '$2a$11$hashed_password_here', 'user', 'active', 1, NOW(), NOW(), NOW()),
                 (3, 'testuser3', 'Test', 'User3', 'test3@example.com', '$2a$11$hashed_password_here', 'user', 'active', 1, NOW(), NOW(), NOW());
             ", connection);
-            await insertCommand.ExecuteNonQueryAsync();
-        }
+        _ = await insertCommand.ExecuteNonQueryAsync();
+    }
 
-        private static async Task SeedAnalysisDatabase()
-        {
-            var connectionString = "Server=localhost;Port=3308;Database=analysisdb_test;User=msuser;Password=Y0urs3cretOrA7&;CharSet=utf8mb4;";
+    private static async Task SeedAnalysisDatabase()
+    {
+        var connectionString = "Server=localhost;Port=3308;Database=analysisdb_test;User=msuser;Password=Y0urs3cretOrA7&;CharSet=utf8mb4;";
 
-            using var connection = new MySqlConnection(connectionString);
-            await connection.OpenAsync();
+        using var connection = new MySqlConnection(connectionString);
+        await connection.OpenAsync();
 
-            // Crear la base de datos si no existe
-            var createDbCommand = new MySqlCommand("CREATE DATABASE IF NOT EXISTS analysisdb_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;", connection);
-            await createDbCommand.ExecuteNonQueryAsync();
+        // Crear la base de datos si no existe
+        var createDbCommand = new MySqlCommand("CREATE DATABASE IF NOT EXISTS analysisdb_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;", connection);
+        _ = await createDbCommand.ExecuteNonQueryAsync();
 
-            // Usar la base de datos
-            var useDbCommand = new MySqlCommand("USE analysisdb_test;", connection);
-            await useDbCommand.ExecuteNonQueryAsync();
+        // Usar la base de datos
+        var useDbCommand = new MySqlCommand("USE analysisdb_test;", connection);
+        _ = await useDbCommand.ExecuteNonQueryAsync();
 
-            // Crear la FK constraint hacia usersdb_test
-            var addFkCommand = new MySqlCommand(@"
+        // Crear la FK constraint hacia usersdb_test
+        var addFkCommand = new MySqlCommand(@"
                 CREATE TABLE IF NOT EXISTS temp_fk_check AS SELECT 1;
                 DROP TABLE temp_fk_check;
                 
@@ -95,39 +95,38 @@ namespace Analysis.Tests.Infrastructure
                 DEALLOCATE PREPARE stmt;
             ", connection);
 
-            try
-            {
-                await addFkCommand.ExecuteNonQueryAsync();
-            }
-            catch (MySqlException ex) when (ex.Message.Contains("already exists"))
-            {
-                // FK constraint ya existe, continuar
-                Console.WriteLine("FK constraint already exists, continuing...");
-            }
-        }
-
-        public static async Task CleanupTestDatabasesAsync()
+        try
         {
-            await CleanupDatabase("analysisdb_test");
-            await CleanupDatabase("usersdb_test");
+            _ = await addFkCommand.ExecuteNonQueryAsync();
         }
-
-        private static async Task CleanupDatabase(string databaseName)
+        catch (MySqlException ex) when (ex.Message.Contains("already exists"))
         {
-            var connectionString = $"Server=localhost;Port=3308;User=msuser;Password=Y0urs3cretOrA7&;";
+            // FK constraint ya existe, continuar
+            Console.WriteLine("FK constraint already exists, continuing...");
+        }
+    }
 
-            using var connection = new MySqlConnection(connectionString);
-            await connection.OpenAsync();
+    public static async Task CleanupTestDatabasesAsync()
+    {
+        await CleanupDatabase("analysisdb_test");
+        await CleanupDatabase("usersdb_test");
+    }
 
-            try
-            {
-                var dropCommand = new MySqlCommand($"DROP DATABASE IF EXISTS {databaseName};", connection);
-                await dropCommand.ExecuteNonQueryAsync();
-            }
-            catch (MySqlException)
-            {
-                // Ignorar errores si la base de datos no existe
-            }
+    private static async Task CleanupDatabase(string databaseName)
+    {
+        var connectionString = $"Server=localhost;Port=3308;User=msuser;Password=Y0urs3cretOrA7&;";
+
+        using var connection = new MySqlConnection(connectionString);
+        await connection.OpenAsync();
+
+        try
+        {
+            var dropCommand = new MySqlCommand($"DROP DATABASE IF EXISTS {databaseName};", connection);
+            _ = await dropCommand.ExecuteNonQueryAsync();
+        }
+        catch (MySqlException)
+        {
+            // Ignorar errores si la base de datos no existe
         }
     }
 }

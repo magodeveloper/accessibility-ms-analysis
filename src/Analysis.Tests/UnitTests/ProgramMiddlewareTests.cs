@@ -1,10 +1,6 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using FluentAssertions;
 using System.Text.Json;
-using Xunit;
-using Microsoft.AspNetCore.Builder;
+using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 
 namespace Analysis.Tests.UnitTests;
 
@@ -25,8 +21,8 @@ public class ProgramMiddlewareTests
         var errorMessage = Analysis.Application.Localization.Get("Error_InternalServer", "es");
 
         // Act & Assert
-        errorMessage.Should().NotBeNullOrEmpty();
-        errorMessage.Should().Be("Error interno del servidor");
+        _ = errorMessage.Should().NotBeNullOrEmpty();
+        _ = errorMessage.Should().Be("Error interno del servidor");
     }
 
     [Fact]
@@ -42,9 +38,9 @@ public class ProgramMiddlewareTests
         var errorMessage = Analysis.Application.Localization.Get("Error_InternalServer", lang);
 
         // Act & Assert
-        lang.Should().Be("en-US");
-        errorMessage.Should().NotBeNullOrEmpty();
-        errorMessage.Should().Be("Internal server error");
+        _ = lang.Should().Be("en-US");
+        _ = errorMessage.Should().NotBeNullOrEmpty();
+        _ = errorMessage.Should().Be("Internal server error");
     }
 
     [Fact]
@@ -60,8 +56,8 @@ public class ProgramMiddlewareTests
         var errorMessage = Analysis.Application.Localization.Get("Error_InternalServer", lang);
 
         // Act & Assert
-        lang.Should().Be("fr-FR");
-        errorMessage.Should().NotBeNullOrEmpty();
+        _ = lang.Should().Be("fr-FR");
+        _ = errorMessage.Should().NotBeNullOrEmpty();
     }
 
     [Fact]
@@ -74,8 +70,8 @@ public class ProgramMiddlewareTests
         var result = JsonSerializer.Serialize(errorObject);
 
         // Assert
-        result.Should().NotBeNullOrEmpty();
-        result.Should().Contain("\"error\":\"Test error message\"");
+        _ = result.Should().NotBeNullOrEmpty();
+        _ = result.Should().Contain("\"error\":\"Test error message\"");
     }
 
     [Theory]
@@ -88,15 +84,15 @@ public class ProgramMiddlewareTests
         var errorMessage = Analysis.Application.Localization.Get("Error_InternalServer", language);
 
         // Assert
-        errorMessage.Should().NotBeNullOrEmpty();
+        _ = errorMessage.Should().NotBeNullOrEmpty();
 
         if (language == "es")
         {
-            errorMessage.Should().Be("Error interno del servidor");
+            _ = errorMessage.Should().Be("Error interno del servidor");
         }
         else if (language == "en")
         {
-            errorMessage.Should().Be("Internal server error");
+            _ = errorMessage.Should().Be("Internal server error");
         }
     }
 
@@ -107,9 +103,9 @@ public class ProgramMiddlewareTests
         var expectedCultures = new[] { "es", "en" };
 
         // Act & Assert
-        expectedCultures.Should().Contain("es");
-        expectedCultures.Should().Contain("en");
-        expectedCultures.Should().HaveCount(2);
+        _ = expectedCultures.Should().Contain("es");
+        _ = expectedCultures.Should().Contain("en");
+        _ = expectedCultures.Should().HaveCount(2);
     }
 
     [Fact]
@@ -125,13 +121,13 @@ public class ProgramMiddlewareTests
             (header: null, expected: "es")
         };
 
-        foreach (var testCase in testCases)
+        foreach (var (header, expected) in testCases)
         {
             // Act
-            var result = string.IsNullOrWhiteSpace(testCase.header) ? "es" : testCase.header.Split(',')[0];
+            var result = string.IsNullOrWhiteSpace(header) ? "es" : header.Split(',')[0];
 
             // Assert
-            result.Should().Be(testCase.expected);
+            _ = result.Should().Be(expected);
         }
     }
 
@@ -148,8 +144,8 @@ public class ProgramMiddlewareTests
         var userAgent = context.Request.Headers["User-Agent"].FirstOrDefault();
 
         // Assert
-        acceptLanguage.Should().Be("en-US,en;q=0.9");
-        userAgent.Should().Be("TestAgent");
+        _ = acceptLanguage.Should().Be("en-US,en;q=0.9");
+        _ = userAgent.Should().Be("TestAgent");
     }
 
     [Fact]
@@ -161,9 +157,9 @@ public class ProgramMiddlewareTests
         // Assert
         foreach (var env in testEnvironments)
         {
-            env.Should().NotBeNullOrEmpty();
-            var isTestEnv = env == "Test" || env == "TestEnvironment";
-            (isTestEnv || !isTestEnv).Should().BeTrue();
+            _ = env.Should().NotBeNullOrEmpty();
+            var isTestEnv = env is "Test" or "TestEnvironment";
+            _ = (isTestEnv || !isTestEnv).Should().BeTrue();
         }
     }
 
@@ -175,10 +171,10 @@ public class ProgramMiddlewareTests
     public void Environment_TestCheck_ShouldWorkCorrectly(string environment, bool isTestEnvironment)
     {
         // Act
-        var result = environment == "Test" || environment == "TestEnvironment";
+        var result = environment is "Test" or "TestEnvironment";
 
         // Assert
-        result.Should().Be(isTestEnvironment);
+        _ = result.Should().Be(isTestEnvironment);
     }
 
     [Fact]
@@ -191,7 +187,7 @@ public class ProgramMiddlewareTests
         context.Response.ContentType = "application/json";
 
         // Assert
-        context.Response.ContentType.Should().Be("application/json");
+        _ = context.Response.ContentType.Should().Be("application/json");
     }
 
     [Fact]
@@ -204,6 +200,6 @@ public class ProgramMiddlewareTests
         context.Response.StatusCode = 500;
 
         // Assert
-        context.Response.StatusCode.Should().Be(500);
+        _ = context.Response.StatusCode.Should().Be(500);
     }
 }

@@ -16,7 +16,7 @@ namespace Analysis.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ANALYSIS",
+                name: "analysis",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -59,12 +59,12 @@ namespace Analysis.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ANALYSIS", x => x.Id);
+                    table.PrimaryKey("PK_analysis", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "RESULTS",
+                name: "results",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -84,18 +84,18 @@ namespace Analysis.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RESULTS", x => x.Id);
+                    table.PrimaryKey("PK_results", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RESULTS_ANALYSIS_analysis_id",
+                        name: "FK_results_analysis_analysis_id",
                         column: x => x.analysis_id,
-                        principalTable: "ANALYSIS",
+                        principalTable: "analysis",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ERRORS",
+                name: "errors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -113,11 +113,11 @@ namespace Analysis.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ERRORS", x => x.Id);
+                    table.PrimaryKey("PK_errors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ERRORS_RESULTS_result_id",
+                        name: "FK_errors_results_result_id",
                         column: x => x.result_id,
-                        principalTable: "RESULTS",
+                        principalTable: "results",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -125,32 +125,32 @@ namespace Analysis.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "idx_analysis_date",
-                table: "ANALYSIS",
+                table: "analysis",
                 column: "date_analysis");
 
             migrationBuilder.CreateIndex(
                 name: "idx_analysis_status",
-                table: "ANALYSIS",
+                table: "analysis",
                 column: "status");
 
             migrationBuilder.CreateIndex(
                 name: "idx_analysis_user",
-                table: "ANALYSIS",
+                table: "analysis",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "idx_errors_result",
-                table: "ERRORS",
+                table: "errors",
                 column: "result_id");
 
             migrationBuilder.CreateIndex(
                 name: "idx_results_analysis",
-                table: "RESULTS",
+                table: "results",
                 column: "analysis_id");
 
             migrationBuilder.CreateIndex(
                 name: "idx_results_severity",
-                table: "RESULTS",
+                table: "results",
                 column: "severity");
         }
 
@@ -158,13 +158,13 @@ namespace Analysis.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ERRORS");
+                name: "errors");
 
             migrationBuilder.DropTable(
-                name: "RESULTS");
+                name: "results");
 
             migrationBuilder.DropTable(
-                name: "ANALYSIS");
+                name: "analysis");
         }
     }
 }

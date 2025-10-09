@@ -1,11 +1,9 @@
 using System.Net;
 using System.Text;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using Moq.Protected;
-using Xunit;
 using FluentAssertions;
 using Analysis.Infrastructure.Services;
 
@@ -26,7 +24,7 @@ public class UserValidationServiceTests
 
         // Create real configuration with in-memory data
         var configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+        _ = configurationBuilder.AddInMemoryCollection(new Dictionary<string, string?>
         {
             ["ExternalServices:UsersApi:BaseUrl"] = "https://api.users.com",
             ["ASPNETCORE_ENVIRONMENT"] = "Production",
@@ -42,7 +40,7 @@ public class UserValidationServiceTests
         var service = new UserValidationService(_httpClient, _mockLogger.Object, _configuration);
 
         // Assert
-        service.Should().NotBeNull();
+        _ = service.Should().NotBeNull();
     }
 
     [Fact]
@@ -50,12 +48,12 @@ public class UserValidationServiceTests
     {
         // Arrange
         var configBuilder = new ConfigurationBuilder();
-        configBuilder.AddInMemoryCollection(new Dictionary<string, string?>()!);
+        _ = configBuilder.AddInMemoryCollection(new Dictionary<string, string?>()!);
         var config = configBuilder.Build();
 
         // Act & Assert
         Action act = () => new UserValidationService(_httpClient, _mockLogger.Object, config);
-        act.Should().Throw<InvalidOperationException>()
+        _ = act.Should().Throw<InvalidOperationException>()
             .WithMessage("*Users API base URL is not configured*");
     }
 
@@ -64,7 +62,7 @@ public class UserValidationServiceTests
     {
         // Arrange
         var configBuilder = new ConfigurationBuilder();
-        configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+        _ = configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
         {
             ["ExternalServices:UsersApi:BaseUrl"] = "https://api.users.com",
             ["ASPNETCORE_ENVIRONMENT"] = "Test"
@@ -77,7 +75,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserExistsAsync(1);
 
         // Assert
-        result.Should().BeTrue();
+        _ = result.Should().BeTrue();
         VerifyLogContains("Test environment detected");
     }
 
@@ -86,7 +84,7 @@ public class UserValidationServiceTests
     {
         // Arrange
         var configBuilder = new ConfigurationBuilder();
-        configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+        _ = configBuilder.AddInMemoryCollection(new Dictionary<string, string?>
         {
             ["ExternalServices:UsersApi:BaseUrl"] = "https://api.users.com",
             ["ASPNETCORE_ENVIRONMENT"] = "Development",
@@ -100,7 +98,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserExistsAsync(1);
 
         // Assert
-        result.Should().BeTrue();
+        _ = result.Should().BeTrue();
         VerifyLogContains("Test environment detected");
     }
 
@@ -115,7 +113,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserExistsAsync(1);
 
         // Assert
-        result.Should().BeTrue();
+        _ = result.Should().BeTrue();
         VerifyHttpRequest("https://api.users.com/api/users/1");
     }
 
@@ -130,7 +128,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserExistsAsync(1);
 
         // Assert
-        result.Should().BeFalse();
+        _ = result.Should().BeFalse();
         VerifyLogContains("User 1 not found");
     }
 
@@ -145,7 +143,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserExistsAsync(1);
 
         // Assert
-        result.Should().BeFalse();
+        _ = result.Should().BeFalse();
         VerifyLogContains("Failed to validate user 1");
     }
 
@@ -153,7 +151,7 @@ public class UserValidationServiceTests
     public async Task ValidateUserExistsAsync_NetworkError_ShouldReturnTrue()
     {
         // Arrange
-        _mockHttpMessageHandler
+        _ = _mockHttpMessageHandler
             .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
@@ -167,7 +165,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserExistsAsync(1);
 
         // Assert
-        result.Should().BeTrue(); // En caso de error de red, permitir la operación
+        _ = result.Should().BeTrue(); // En caso de error de red, permitir la operación
         VerifyLogContains("Network error validating user 1");
     }
 
@@ -175,7 +173,7 @@ public class UserValidationServiceTests
     public async Task ValidateUserExistsAsync_Timeout_ShouldReturnFalse()
     {
         // Arrange
-        _mockHttpMessageHandler
+        _ = _mockHttpMessageHandler
             .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
@@ -189,7 +187,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserExistsAsync(1);
 
         // Assert
-        result.Should().BeFalse();
+        _ = result.Should().BeFalse();
         VerifyLogContains("Timeout validating user 1");
     }
 
@@ -197,7 +195,7 @@ public class UserValidationServiceTests
     public async Task ValidateUserExistsAsync_UnexpectedError_ShouldReturnFalse()
     {
         // Arrange
-        _mockHttpMessageHandler
+        _ = _mockHttpMessageHandler
             .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
@@ -211,7 +209,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserExistsAsync(1);
 
         // Assert
-        result.Should().BeFalse();
+        _ = result.Should().BeFalse();
         VerifyLogContains("Unexpected error validating user 1");
     }
 
@@ -226,7 +224,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserCanAccessAnalysisAsync(1, 100);
 
         // Assert
-        result.Should().BeTrue();
+        _ = result.Should().BeTrue();
     }
 
     [Fact]
@@ -240,14 +238,14 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserCanAccessAnalysisAsync(1, 100);
 
         // Assert
-        result.Should().BeFalse();
+        _ = result.Should().BeFalse();
     }
 
     [Fact]
     public async Task ValidateUserCanAccessAnalysisAsync_Exception_ShouldReturnFalse()
     {
         // Arrange
-        _mockHttpMessageHandler
+        _ = _mockHttpMessageHandler
             .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
@@ -261,7 +259,7 @@ public class UserValidationServiceTests
         var result = await service.ValidateUserCanAccessAnalysisAsync(1, 100);
 
         // Assert
-        result.Should().BeFalse();
+        _ = result.Should().BeFalse();
         VerifyLogContains("Unexpected error validating user 1");
     }
 
@@ -277,10 +275,10 @@ public class UserValidationServiceTests
         var result = await service.ValidateMultipleUsersAsync(userIds);
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().HaveCount(3);
-        result.Keys.Should().Contain(userIds);
-        result.Values.Should().AllSatisfy(v => v.Should().BeTrue());
+        _ = result.Should().NotBeNull();
+        _ = result.Should().HaveCount(3);
+        _ = result.Keys.Should().Contain(userIds);
+        _ = result.Values.Should().AllSatisfy(v => v.Should().BeTrue());
     }
 
     [Fact]
@@ -294,8 +292,8 @@ public class UserValidationServiceTests
         var result = await service.ValidateMultipleUsersAsync(userIds);
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().BeEmpty();
+        _ = result.Should().NotBeNull();
+        _ = result.Should().BeEmpty();
     }
 
     [Fact]
@@ -303,7 +301,7 @@ public class UserValidationServiceTests
     {
         // Arrange
         var responseCount = 0;
-        _mockHttpMessageHandler
+        _ = _mockHttpMessageHandler
             .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
@@ -326,10 +324,10 @@ public class UserValidationServiceTests
         var result = await service.ValidateMultipleUsersAsync(userIds);
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().HaveCount(2);
-        result.Should().ContainKey(1);
-        result.Should().ContainKey(2);
+        _ = result.Should().NotBeNull();
+        _ = result.Should().HaveCount(2);
+        _ = result.Should().ContainKey(1);
+        _ = result.Should().ContainKey(2);
     }
 
     private void SetupHttpResponse(HttpStatusCode statusCode, string content)
@@ -339,7 +337,7 @@ public class UserValidationServiceTests
             Content = new StringContent(content, Encoding.UTF8, "application/json")
         };
 
-        _mockHttpMessageHandler
+        _ = _mockHttpMessageHandler
             .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Analysis.Infrastructure.Migrations
 {
     [DbContext(typeof(AnalysisDbContext))]
-    [Migration("20250823160302_InitialCreate")]
+    [Migration("20251009233601_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -184,7 +184,7 @@ namespace Analysis.Infrastructure.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("idx_analysis_user");
 
-                    b.ToTable("ANALYSIS", (string)null);
+                    b.ToTable("analysis", (string)null);
                 });
 
             modelBuilder.Entity("Analysis.Domain.Entities.Error", b =>
@@ -231,7 +231,7 @@ namespace Analysis.Infrastructure.Migrations
                     b.HasIndex("ResultId")
                         .HasDatabaseName("idx_errors_result");
 
-                    b.ToTable("ERRORS", (string)null);
+                    b.ToTable("errors", (string)null);
                 });
 
             modelBuilder.Entity("Analysis.Domain.Entities.Result", b =>
@@ -288,7 +288,7 @@ namespace Analysis.Infrastructure.Migrations
                     b.HasIndex("Severity")
                         .HasDatabaseName("idx_results_severity");
 
-                    b.ToTable("RESULTS", (string)null);
+                    b.ToTable("results", (string)null);
                 });
 
             modelBuilder.Entity("Analysis.Domain.Entities.Error", b =>

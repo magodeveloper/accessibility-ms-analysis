@@ -1,5 +1,3 @@
-using Analysis.Domain.Entities;
-
 namespace Analysis.Domain.Services;
 
 /// <summary>

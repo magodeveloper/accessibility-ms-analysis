@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Analysis.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
@@ -9,24 +8,16 @@ namespace Analysis.Infrastructure.Services;
 /// Implementación del servicio de validación de usuarios
 /// Se comunica con el microservicio Users API para validar usuarios
 /// </summary>
-public class UserValidationService : IUserValidationService
+public class UserValidationService(
+    HttpClient httpClient,
+    ILogger<UserValidationService> logger,
+    IConfiguration configuration) : IUserValidationService
 {
-    private readonly HttpClient _httpClient;
-    private readonly ILogger<UserValidationService> _logger;
-    private readonly IConfiguration _configuration;
-    private readonly string _usersApiBaseUrl;
-
-    public UserValidationService(
-        HttpClient httpClient,
-        ILogger<UserValidationService> logger,
-        IConfiguration configuration)
-    {
-        _httpClient = httpClient;
-        _logger = logger;
-        _configuration = configuration;
-        _usersApiBaseUrl = configuration.GetValue<string>("ExternalServices:UsersApi:BaseUrl")
+    private readonly HttpClient _httpClient = httpClient;
+    private readonly ILogger<UserValidationService> _logger = logger;
+    private readonly IConfiguration _configuration = configuration;
+    private readonly string _usersApiBaseUrl = configuration.GetValue<string>("ExternalServices:UsersApi:BaseUrl")
             ?? throw new InvalidOperationException("Users API base URL is not configured. Please set 'ExternalServices:UsersApi:BaseUrl' in your configuration.");
-    }
 
     /// <inheritdoc />
     public async Task<bool> ValidateUserExistsAsync(int userId, CancellationToken cancellationToken = default)

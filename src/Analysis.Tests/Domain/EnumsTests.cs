@@ -1,4 +1,3 @@
-using Xunit;
 using FluentAssertions;
 using Analysis.Domain.Entities;
 
@@ -9,43 +8,61 @@ public class EnumsTests
     [Fact]
     public void AnalysisStatus_ShouldHaveExpectedValues()
     {
+        // Arrange
+        string[] expected = ["pending", "success", "error"];
+
         // Assert
-        Enum.GetNames(typeof(AnalysisStatus)).Should().Contain(new[] { "pending", "success", "error" });
+        Enum.GetNames<AnalysisStatus>().Should().Contain(expected);
     }
 
     [Fact]
     public void ContentType_ShouldHaveExpectedValues()
     {
+        // Arrange
+        string[] expected = ["html", "url"];
+
         // Assert
-        Enum.GetNames(typeof(ContentType)).Should().Contain(new[] { "html", "url" });
+        Enum.GetNames<ContentType>().Should().Contain(expected);
     }
 
     [Fact]
     public void ToolUsed_ShouldHaveExpectedValues()
     {
+        // Arrange
+        string[] expected = ["axecore", "equalaccess"];
+
         // Assert
-        Enum.GetNames(typeof(ToolUsed)).Should().Contain(new[] { "axecore", "equalaccess" });
+        Enum.GetNames<ToolUsed>().Should().Contain(expected);
     }
 
     [Fact]
     public void ResultLevel_ShouldHaveExpectedValues()
     {
+        // Arrange
+        string[] expected = ["violation", "recommendation"];
+
         // Assert
-        Enum.GetNames(typeof(ResultLevel)).Should().Contain(new[] { "violation", "recommendation" });
+        Enum.GetNames<ResultLevel>().Should().Contain(expected);
     }
 
     [Fact]
     public void Severity_ShouldHaveExpectedValues()
     {
+        // Arrange
+        string[] expected = ["high", "medium", "low"];
+
         // Assert
-        Enum.GetNames(typeof(Severity)).Should().Contain(new[] { "high", "medium", "low" });
+        Enum.GetNames<Severity>().Should().Contain(expected);
     }
 
     [Fact]
     public void WcagLevel_ShouldHaveExpectedValues()
     {
+        // Arrange
+        string[] expected = ["A", "AA", "AAA"];
+
         // Assert
-        Enum.GetNames(typeof(WcagLevel)).Should().Contain(new[] { "A", "AA", "AAA" });
+        Enum.GetNames<WcagLevel>().Should().Contain(expected);
     }
 
     [Theory]
@@ -58,7 +75,7 @@ public class EnumsTests
         var result = status.ToString();
 
         // Assert
-        result.Should().Be(expected);
+        _ = result.Should().Be(expected);
     }
 
     [Theory]
@@ -70,7 +87,7 @@ public class EnumsTests
         var result = contentType.ToString();
 
         // Assert
-        result.Should().Be(expected);
+        _ = result.Should().Be(expected);
     }
 
     [Theory]
@@ -82,7 +99,7 @@ public class EnumsTests
         var result = toolUsed.ToString();
 
         // Assert
-        result.Should().Be(expected);
+        _ = result.Should().Be(expected);
     }
 
     [Theory]
@@ -94,7 +111,7 @@ public class EnumsTests
         var result = level.ToString();
 
         // Assert
-        result.Should().Be(expected);
+        _ = result.Should().Be(expected);
     }
 
     [Theory]
@@ -107,7 +124,7 @@ public class EnumsTests
         var result = severity.ToString();
 
         // Assert
-        result.Should().Be(expected);
+        _ = result.Should().Be(expected);
     }
 
     [Theory]
@@ -120,6 +137,6 @@ public class EnumsTests
         var result = level.ToString();
 
         // Assert
-        result.Should().Be(expected);
+        _ = result.Should().Be(expected);
     }
 }

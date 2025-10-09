@@ -1,7 +1,7 @@
-using Analysis.Infrastructure.Data;
-using Analysis.Infrastructure.Services;
 using Analysis.Domain.Services;
+using Analysis.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Analysis.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,10 +14,10 @@ public static class ServiceRegistration
         // Detectar si estamos en entorno de tests
         var environmentName = config["ASPNETCORE_ENVIRONMENT"] ?? config["Environment"];
 
-        if (environmentName == "Test" || environmentName == "TestEnvironment")
+        if (environmentName is "Test" or "TestEnvironment")
         {
             // Para tests, usar InMemory database
-            services.AddDbContext<AnalysisDbContext>(options =>
+            _ = services.AddDbContext<AnalysisDbContext>(options =>
                 options.UseInMemoryDatabase("TestDatabase"));
         }
         else
@@ -26,9 +26,9 @@ public static class ServiceRegistration
             var cs = config.GetConnectionString("Default")
                      ?? "server=127.0.0.1;port=3306;database=analysisdb;user=msuser;password=msapass;TreatTinyAsBoolean=false";
 
-            services.AddDbContext<AnalysisDbContext>(opt =>
+            _ = services.AddDbContext<AnalysisDbContext>(opt =>
                     {
-                        opt.UseMySql(
+                        _ = opt.UseMySql(
                             cs,
                             ServerVersion.AutoDetect(cs),
                             o => o.EnableRetryOnFailure(
@@ -41,10 +41,10 @@ public static class ServiceRegistration
         }
 
         // Registrar servicios de dominio
-        services.AddScoped<IUserValidationService, UserValidationService>();
+        _ = services.AddScoped<IUserValidationService, UserValidationService>();
 
         // Configurar HttpClient para comunicación con otros microservicios
-        services.AddHttpClient<UserValidationService>(client =>
+        _ = services.AddHttpClient<UserValidationService>(client =>
         {
             // Configuración por defecto - puede ser sobrescrita por configuración
             client.Timeout = TimeSpan.FromSeconds(30);

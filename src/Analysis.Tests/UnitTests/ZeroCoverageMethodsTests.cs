@@ -1,13 +1,13 @@
+using Moq;
+using FluentAssertions;
 using Analysis.Api.Controllers;
-using Analysis.Application.Services.Analysis;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Analysis.Application.Dtos;
 using Analysis.Application.Services.Error;
 using Analysis.Application.Services.Result;
-using Analysis.Application.Dtos;
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Xunit;
+using Analysis.Application.Services.Analysis;
+using Analysis.Application.Services.UserContext;
 
 namespace Analysis.Tests.UnitTests;
 
@@ -37,14 +37,14 @@ public class ZeroCoverageMethodsTests
         var userId = 1;
         var toolUsed = "TestTool";
 
-        _mockAnalysisService.Setup(s => s.GetByToolAsync(userId, toolUsed))
+        _ = _mockAnalysisService.Setup(s => s.GetByToolAsync(userId, toolUsed))
             .ReturnsAsync(new List<AnalysisDto>());
 
         // Act
         var result = await controller.GetByTool(userId, toolUsed);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
+        _ = result.Should().BeOfType<OkObjectResult>();
         _mockAnalysisService.Verify(s => s.GetByToolAsync(userId, toolUsed), Times.Once);
     }
 
@@ -56,14 +56,14 @@ public class ZeroCoverageMethodsTests
         var userId = 1;
         string toolUsed = ""; // En lugar de null para evitar warnings
 
-        _mockAnalysisService.Setup(s => s.GetByToolAsync(userId, toolUsed))
+        _ = _mockAnalysisService.Setup(s => s.GetByToolAsync(userId, toolUsed))
             .ReturnsAsync(new List<AnalysisDto>());
 
         // Act
         var result = await controller.GetByTool(userId, toolUsed);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
+        _ = result.Should().BeOfType<OkObjectResult>();
         _mockAnalysisService.Verify(s => s.GetByToolAsync(userId, toolUsed), Times.Once);
     }
 
@@ -75,11 +75,11 @@ public class ZeroCoverageMethodsTests
         var userId = 1;
         var toolUsed = "TestTool";
 
-        _mockAnalysisService.Setup(s => s.GetByToolAsync(userId, toolUsed))
+        _ = _mockAnalysisService.Setup(s => s.GetByToolAsync(userId, toolUsed))
             .ThrowsAsync(new Exception("Service error"));
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => controller.GetByTool(userId, toolUsed));
+        _ = await Assert.ThrowsAsync<Exception>(() => controller.GetByTool(userId, toolUsed));
         _mockAnalysisService.Verify(s => s.GetByToolAsync(userId, toolUsed), Times.Once);
     }
 
@@ -95,14 +95,14 @@ public class ZeroCoverageMethodsTests
         var userId = 1;
         var status = "Completed";
 
-        _mockAnalysisService.Setup(s => s.GetByStatusAsync(userId, status))
+        _ = _mockAnalysisService.Setup(s => s.GetByStatusAsync(userId, status))
             .ReturnsAsync(new List<AnalysisDto>());
 
         // Act
         var result = await controller.GetByStatus(userId, status);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
+        _ = result.Should().BeOfType<OkObjectResult>();
         _mockAnalysisService.Verify(s => s.GetByStatusAsync(userId, status), Times.Once);
     }
 
@@ -114,14 +114,14 @@ public class ZeroCoverageMethodsTests
         var userId = 1;
         string status = ""; // En lugar de null para evitar warnings
 
-        _mockAnalysisService.Setup(s => s.GetByStatusAsync(userId, status))
+        _ = _mockAnalysisService.Setup(s => s.GetByStatusAsync(userId, status))
             .ReturnsAsync(new List<AnalysisDto>());
 
         // Act
         var result = await controller.GetByStatus(userId, status);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
+        _ = result.Should().BeOfType<OkObjectResult>();
         _mockAnalysisService.Verify(s => s.GetByStatusAsync(userId, status), Times.Once);
     }
 
@@ -133,11 +133,11 @@ public class ZeroCoverageMethodsTests
         var userId = 1;
         var status = "InProgress";
 
-        _mockAnalysisService.Setup(s => s.GetByStatusAsync(userId, status))
+        _ = _mockAnalysisService.Setup(s => s.GetByStatusAsync(userId, status))
             .ThrowsAsync(new Exception("Service error"));
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => controller.GetByStatus(userId, status));
+        _ = await Assert.ThrowsAsync<Exception>(() => controller.GetByStatus(userId, status));
         _mockAnalysisService.Verify(s => s.GetByStatusAsync(userId, status), Times.Once);
     }
 
@@ -152,14 +152,14 @@ public class ZeroCoverageMethodsTests
         var controller = CreateAnalysisController();
         var id = 1;
 
-        _mockAnalysisService.Setup(s => s.DeleteAsync(id))
+        _ = _mockAnalysisService.Setup(s => s.DeleteAsync(id))
             .Returns(Task.CompletedTask);
 
         // Act
         var result = await controller.Delete(id);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
+        _ = result.Should().BeOfType<OkObjectResult>();
         _mockAnalysisService.Verify(s => s.DeleteAsync(id), Times.Once);
     }
 
@@ -170,11 +170,11 @@ public class ZeroCoverageMethodsTests
         var controller = CreateAnalysisController();
         var id = 1;
 
-        _mockAnalysisService.Setup(s => s.DeleteAsync(id))
+        _ = _mockAnalysisService.Setup(s => s.DeleteAsync(id))
             .ThrowsAsync(new Exception("Service error"));
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => controller.Delete(id));
+        _ = await Assert.ThrowsAsync<Exception>(() => controller.Delete(id));
         _mockAnalysisService.Verify(s => s.DeleteAsync(id), Times.Once);
     }
 
@@ -189,14 +189,14 @@ public class ZeroCoverageMethodsTests
         var controller = CreateErrorController();
         var id = 1;
 
-        _mockErrorService.Setup(s => s.DeleteAsync(id))
+        _ = _mockErrorService.Setup(s => s.DeleteAsync(id))
             .Returns(Task.CompletedTask);
 
         // Act
         var result = await controller.Delete(id);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
+        _ = result.Should().BeOfType<OkObjectResult>();
         _mockErrorService.Verify(s => s.DeleteAsync(id), Times.Once);
     }
 
@@ -207,11 +207,11 @@ public class ZeroCoverageMethodsTests
         var controller = CreateErrorController();
         var id = 1;
 
-        _mockErrorService.Setup(s => s.DeleteAsync(id))
+        _ = _mockErrorService.Setup(s => s.DeleteAsync(id))
             .ThrowsAsync(new Exception("Service error"));
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => controller.Delete(id));
+        _ = await Assert.ThrowsAsync<Exception>(() => controller.Delete(id));
         _mockErrorService.Verify(s => s.DeleteAsync(id), Times.Once);
     }
 
@@ -226,14 +226,14 @@ public class ZeroCoverageMethodsTests
         var controller = CreateResultController();
         var id = 1;
 
-        _mockResultService.Setup(s => s.DeleteAsync(id))
+        _ = _mockResultService.Setup(s => s.DeleteAsync(id))
             .Returns(Task.CompletedTask);
 
         // Act
         var result = await controller.Delete(id);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
+        _ = result.Should().BeOfType<OkObjectResult>();
         _mockResultService.Verify(s => s.DeleteAsync(id), Times.Once);
     }
 
@@ -244,11 +244,11 @@ public class ZeroCoverageMethodsTests
         var controller = CreateResultController();
         var id = 1;
 
-        _mockResultService.Setup(s => s.DeleteAsync(id))
+        _ = _mockResultService.Setup(s => s.DeleteAsync(id))
             .ThrowsAsync(new Exception("Service error"));
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => controller.Delete(id));
+        _ = await Assert.ThrowsAsync<Exception>(() => controller.Delete(id));
         _mockResultService.Verify(s => s.DeleteAsync(id), Times.Once);
     }
 
@@ -276,14 +276,14 @@ public class ZeroCoverageMethodsTests
             UpdatedAt: DateTime.UtcNow
         );
 
-        _mockResultService.Setup(s => s.GetByIdAsync(id))
+        _ = _mockResultService.Setup(s => s.GetByIdAsync(id))
             .ReturnsAsync(resultDto);
 
         // Act
         var result = await controller.GetById(id);
 
         // Assert
-        result.Should().BeOfType<OkObjectResult>();
+        _ = result.Should().BeOfType<OkObjectResult>();
         _mockResultService.Verify(s => s.GetByIdAsync(id), Times.Once);
     }
 
@@ -294,14 +294,14 @@ public class ZeroCoverageMethodsTests
         var controller = CreateResultController();
         var id = 999;
 
-        _mockResultService.Setup(s => s.GetByIdAsync(id))
+        _ = _mockResultService.Setup(s => s.GetByIdAsync(id))
             .ReturnsAsync((ResultDto?)null);
 
         // Act
         var result = await controller.GetById(id);
 
         // Assert
-        result.Should().BeOfType<NotFoundObjectResult>();
+        _ = result.Should().BeOfType<NotFoundObjectResult>();
         _mockResultService.Verify(s => s.GetByIdAsync(id), Times.Once);
     }
 
@@ -312,11 +312,11 @@ public class ZeroCoverageMethodsTests
         var controller = CreateResultController();
         var id = 1;
 
-        _mockResultService.Setup(s => s.GetByIdAsync(id))
+        _ = _mockResultService.Setup(s => s.GetByIdAsync(id))
             .ThrowsAsync(new Exception("Service error"));
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => controller.GetById(id));
+        _ = await Assert.ThrowsAsync<Exception>(() => controller.GetById(id));
         _mockResultService.Verify(s => s.GetByIdAsync(id), Times.Once);
     }
 
@@ -326,12 +326,21 @@ public class ZeroCoverageMethodsTests
 
     private AnalysisController CreateAnalysisController()
     {
-        var controller = new AnalysisController(_mockAnalysisService.Object);
+        var mockUserContext = new Mock<IUserContext>();
+        _ = mockUserContext.Setup(x => x.UserId).Returns(1);
+        _ = mockUserContext.Setup(x => x.Email).Returns("test@test.com");
+        _ = mockUserContext.Setup(x => x.Role).Returns("user");
+        _ = mockUserContext.Setup(x => x.UserName).Returns("Test User");
+        _ = mockUserContext.Setup(x => x.IsAuthenticated).Returns(true);
+        _ = mockUserContext.Setup(x => x.IsAdmin).Returns(false);
 
-        // Configurar HttpContext
-        controller.ControllerContext = new ControllerContext
+        var controller = new AnalysisController(_mockAnalysisService.Object, mockUserContext.Object)
         {
-            HttpContext = new DefaultHttpContext()
+            // Configurar HttpContext
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            }
         };
 
         controller.HttpContext.Request.Headers["Accept-Language"] = "es";
@@ -341,12 +350,21 @@ public class ZeroCoverageMethodsTests
 
     private ErrorController CreateErrorController()
     {
-        var controller = new ErrorController(_mockErrorService.Object);
+        var mockUserContext = new Mock<IUserContext>();
+        _ = mockUserContext.Setup(x => x.UserId).Returns(1);
+        _ = mockUserContext.Setup(x => x.Email).Returns("test@test.com");
+        _ = mockUserContext.Setup(x => x.Role).Returns("user");
+        _ = mockUserContext.Setup(x => x.UserName).Returns("Test User");
+        _ = mockUserContext.Setup(x => x.IsAuthenticated).Returns(true);
+        _ = mockUserContext.Setup(x => x.IsAdmin).Returns(false);
 
-        // Configurar HttpContext
-        controller.ControllerContext = new ControllerContext
+        var controller = new ErrorController(_mockErrorService.Object, mockUserContext.Object)
         {
-            HttpContext = new DefaultHttpContext()
+            // Configurar HttpContext
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            }
         };
 
         controller.HttpContext.Request.Headers["Accept-Language"] = "es";
@@ -356,12 +374,21 @@ public class ZeroCoverageMethodsTests
 
     private ResultController CreateResultController()
     {
-        var controller = new ResultController(_mockResultService.Object);
+        var mockUserContext = new Mock<IUserContext>();
+        _ = mockUserContext.Setup(x => x.UserId).Returns(1);
+        _ = mockUserContext.Setup(x => x.Email).Returns("test@test.com");
+        _ = mockUserContext.Setup(x => x.Role).Returns("user");
+        _ = mockUserContext.Setup(x => x.UserName).Returns("Test User");
+        _ = mockUserContext.Setup(x => x.IsAuthenticated).Returns(true);
+        _ = mockUserContext.Setup(x => x.IsAdmin).Returns(false);
 
-        // Configurar HttpContext
-        controller.ControllerContext = new ControllerContext
+        var controller = new ResultController(_mockResultService.Object, mockUserContext.Object)
         {
-            HttpContext = new DefaultHttpContext()
+            // Configurar HttpContext
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext()
+            }
         };
 
         controller.HttpContext.Request.Headers["Accept-Language"] = "es";

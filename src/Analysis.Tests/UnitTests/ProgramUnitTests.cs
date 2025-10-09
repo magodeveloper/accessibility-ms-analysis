@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Xunit;
 
 namespace Analysis.Tests.UnitTests;
 
@@ -12,7 +11,7 @@ public class ProgramUnitTests
         var program = new Analysis.Api.Program();
 
         // Assert
-        program.Should().NotBeNull();
+        _ = program.Should().NotBeNull();
     }
 
     [Fact]
@@ -22,9 +21,9 @@ public class ProgramUnitTests
         var programType = typeof(Analysis.Api.Program);
 
         // Act & Assert
-        programType.Should().NotBeNull();
-        programType.IsPublic.Should().BeTrue();
-        programType.IsClass.Should().BeTrue();
+        _ = programType.Should().NotBeNull();
+        _ = programType.IsPublic.Should().BeTrue();
+        _ = programType.IsClass.Should().BeTrue();
     }
 
     [Theory]
@@ -37,7 +36,7 @@ public class ProgramUnitTests
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", environment);
 
         // Act & Assert - Just verify the environment variable is set
-        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").Should().Be(environment);
+        _ = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").Should().Be(environment);
 
         // Reset
         Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", null);
@@ -50,9 +49,9 @@ public class ProgramUnitTests
         var assembly = typeof(Analysis.Api.Program).Assembly;
 
         // Act & Assert
-        assembly.Should().NotBeNull();
-        assembly.GetTypes().Should().Contain(t => t.Name == "Program");
-        assembly.GetTypes().Should().Contain(t => t.Name.Contains("Controller"));
+        _ = assembly.Should().NotBeNull();
+        _ = assembly.GetTypes().Should().Contain(t => t.Name == "Program");
+        _ = assembly.GetTypes().Should().Contain(t => t.Name.Contains("Controller"));
     }
 
     [Fact]
@@ -62,7 +61,7 @@ public class ProgramUnitTests
         var programType = typeof(Analysis.Api.Program);
 
         // Act & Assert
-        programType.Namespace.Should().Be("Analysis.Api");
+        _ = programType.Namespace.Should().Be("Analysis.Api");
     }
 
     [Fact]
@@ -75,8 +74,8 @@ public class ProgramUnitTests
         var referencedAssemblies = assembly.GetReferencedAssemblies();
 
         // Assert
-        referencedAssemblies.Should().Contain(ra => ra.Name!.Contains("Microsoft.AspNetCore"));
-        referencedAssemblies.Should().Contain(ra => ra.Name!.Contains("Microsoft.Extensions"));
+        _ = referencedAssemblies.Should().Contain(ra => ra.Name!.Contains("Microsoft.AspNetCore"));
+        _ = referencedAssemblies.Should().Contain(ra => ra.Name!.Contains("Microsoft.Extensions"));
     }
 
     [Fact]
@@ -86,9 +85,9 @@ public class ProgramUnitTests
         var programType = typeof(Analysis.Api.Program);
 
         // Act & Assert
-        programType.IsAbstract.Should().BeFalse();
-        programType.IsSealed.Should().BeFalse();
-        programType.IsInterface.Should().BeFalse();
-        programType.IsValueType.Should().BeFalse();
+        _ = programType.IsAbstract.Should().BeFalse();
+        _ = programType.IsSealed.Should().BeFalse();
+        _ = programType.IsInterface.Should().BeFalse();
+        _ = programType.IsValueType.Should().BeFalse();
     }
 }

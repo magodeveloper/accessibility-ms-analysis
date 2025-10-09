@@ -1,8 +1,7 @@
-using Analysis.Api.Helpers;
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using System.Text.Json;
-using Xunit;
+using FluentAssertions;
+using Analysis.Api.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace Analysis.Tests.UnitTests;
 
@@ -32,14 +31,18 @@ public class AnalysisApiProgramTests
         {
             // Act
             if (header != null)
+            {
                 request.Headers["Accept-Language"] = header;
+            }
             else
-                request.Headers.Remove("Accept-Language");
+            {
+                _ = request.Headers.Remove("Accept-Language");
+            }
 
             var result = LanguageHelper.GetRequestLanguage(request);
 
             // Assert
-            result.Should().StartWith(expectedLang);
+            _ = result.Should().StartWith(expectedLang);
         }
     }
 
@@ -52,9 +55,9 @@ public class AnalysisApiProgramTests
         var alternateLang = "en";
 
         // Assert
-        defaultLang.Should().NotBeNullOrEmpty();
-        alternateLang.Should().NotBeNullOrEmpty();
-        defaultLang.Should().NotBe(alternateLang);
+        _ = defaultLang.Should().NotBeNullOrEmpty();
+        _ = alternateLang.Should().NotBeNullOrEmpty();
+        _ = defaultLang.Should().NotBe(alternateLang);
     }
 
     [Fact]
@@ -67,9 +70,9 @@ public class AnalysisApiProgramTests
         var jsonResult = JsonSerializer.Serialize(errorObject);
 
         // Assert
-        jsonResult.Should().NotBeNullOrEmpty();
-        jsonResult.Should().Contain("\"error\":");
-        jsonResult.Should().Contain("Test error message");
+        _ = jsonResult.Should().NotBeNullOrEmpty();
+        _ = jsonResult.Should().Contain("\"error\":");
+        _ = jsonResult.Should().Contain("Test error message");
     }
 
     [Fact]
@@ -83,8 +86,8 @@ public class AnalysisApiProgramTests
         context.Response.StatusCode = 500;
 
         // Assert
-        context.Response.ContentType.Should().Be("application/json");
-        context.Response.StatusCode.Should().Be(500);
+        _ = context.Response.ContentType.Should().Be("application/json");
+        _ = context.Response.StatusCode.Should().Be(500);
     }
 
     [Fact]
@@ -95,10 +98,10 @@ public class AnalysisApiProgramTests
         var defaultCulture = "es";
 
         // Act & Assert
-        supportedCultures.Should().Contain("es");
-        supportedCultures.Should().Contain("en");
-        supportedCultures.Should().HaveCount(2);
-        defaultCulture.Should().Be("es");
+        _ = supportedCultures.Should().Contain("es");
+        _ = supportedCultures.Should().Contain("en");
+        _ = supportedCultures.Should().HaveCount(2);
+        _ = defaultCulture.Should().Be("es");
     }
 
     [Theory]
@@ -111,8 +114,8 @@ public class AnalysisApiProgramTests
         var firstLanguage = headerValue.Split(',')[0];
 
         // Assert
-        firstLanguage.Should().NotBeNullOrEmpty();
-        firstLanguage.Should().NotContain(";");
+        _ = firstLanguage.Should().NotBeNullOrEmpty();
+        _ = firstLanguage.Should().NotContain(";");
     }
 
     [Fact]
@@ -126,16 +129,16 @@ public class AnalysisApiProgramTests
         foreach (var env in environments)
         {
             // Act
-            var shouldMigrate = env != "Test" && env != "TestEnvironment";
+            var shouldMigrate = env is not "Test" and not "TestEnvironment";
 
             // Assert
-            if (env == "Test" || env == "TestEnvironment")
+            if (env is "Test" or "TestEnvironment")
             {
-                shouldMigrate.Should().BeFalse();
+                _ = shouldMigrate.Should().BeFalse();
             }
             else
             {
-                shouldMigrate.Should().BeTrue();
+                _ = shouldMigrate.Should().BeTrue();
             }
         }
     }
@@ -148,8 +151,8 @@ public class AnalysisApiProgramTests
     {
         // Test que simula la lógica de localización
         // Act & Assert
-        language.Should().NotBeNullOrEmpty();
-        language.Should().HaveLength(2);
+        _ = language.Should().NotBeNullOrEmpty();
+        _ = language.Should().HaveLength(2);
     }
 
     [Fact]
@@ -164,7 +167,7 @@ public class AnalysisApiProgramTests
         var result = LanguageHelper.GetRequestLanguage(request);
 
         // Assert
-        result.Should().StartWith("es");
+        _ = result.Should().StartWith("es");
     }
 
     [Fact]
@@ -179,6 +182,6 @@ public class AnalysisApiProgramTests
         var result = LanguageHelper.GetRequestLanguage(request);
 
         // Assert
-        result.Should().StartWith("es"); // Default language
+        _ = result.Should().StartWith("es"); // Default language
     }
 }

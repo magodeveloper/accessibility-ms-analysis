@@ -1,8 +1,5 @@
-using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using Xunit;
+using FluentAssertions;
 
 namespace Analysis.Tests.UnitTests;
 
@@ -17,15 +14,15 @@ public class ProgramSpecificLinesTests
         // Este test simula la línea 89 del Program.cs: string Get(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
 
         // Arrange
-        string GetLocalFunction(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
+        static string GetLocalFunction(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
 
         // Act
         var spanishResult = GetLocalFunction("Error_InternalServer", "es");
         var englishResult = GetLocalFunction("Error_InternalServer", "en");
 
         // Assert
-        spanishResult.Should().Be("Error interno del servidor");
-        englishResult.Should().Be("Internal server error");
+        _ = spanishResult.Should().Be("Error interno del servidor");
+        _ = englishResult.Should().Be("Internal server error");
     }
 
     [Fact]
@@ -35,15 +32,16 @@ public class ProgramSpecificLinesTests
 
         // Arrange
         var lang = "es";
-        string GetLocalFunction(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
+
+        static string GetLocalFunction(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
 
         // Act
         var result = JsonSerializer.Serialize(new { error = GetLocalFunction("Error_InternalServer", lang) });
 
         // Assert
-        result.Should().NotBeNullOrEmpty();
-        result.Should().Contain("\"error\":");
-        result.Should().Contain("Error interno del servidor");
+        _ = result.Should().NotBeNullOrEmpty();
+        _ = result.Should().Contain("\"error\":");
+        _ = result.Should().Contain("Error interno del servidor");
     }
 
     [Theory]
@@ -59,7 +57,7 @@ public class ProgramSpecificLinesTests
         var lang = string.IsNullOrWhiteSpace(headerValue) ? "es" : headerValue.Split(',')[0];
 
         // Assert
-        lang.Should().Be(expectedLang);
+        _ = lang.Should().Be(expectedLang);
     }
 
     [Fact]
@@ -72,13 +70,14 @@ public class ProgramSpecificLinesTests
 
         // Act
         var lang = acceptLanguageHeader?.Split(',')[0] ?? "es";
-        string Get(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
+
+        static string Get(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
         var result = JsonSerializer.Serialize(new { error = Get("Error_InternalServer", lang) });
 
         // Assert
-        lang.Should().Be("en-US");
-        result.Should().Contain("Internal server error");
-        result.Should().Contain("\"error\":");
+        _ = lang.Should().Be("en-US");
+        _ = result.Should().Contain("Internal server error");
+        _ = result.Should().Contain("\"error\":");
     }
 
     [Fact]
@@ -87,16 +86,16 @@ public class ProgramSpecificLinesTests
         // Test específico para la función local Get en Program.cs línea 89
 
         // Arrange & Act
-        string SimulateLocalGetFunction(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
+        static string SimulateLocalGetFunction(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
 
         var result1 = SimulateLocalGetFunction("Error_InternalServer", "es");
         var result2 = SimulateLocalGetFunction("Error_InternalServer", "en");
         var result3 = SimulateLocalGetFunction("Error_InternalServer", "fr");
 
         // Assert
-        result1.Should().Be("Error interno del servidor");
-        result2.Should().Be("Internal server error");
-        result3.Should().NotBeNullOrEmpty(); // Debería usar el fallback
+        _ = result1.Should().Be("Error interno del servidor");
+        _ = result2.Should().Be("Internal server error");
+        _ = result3.Should().NotBeNullOrEmpty(); // Debería usar el fallback
     }
 
     [Fact]
@@ -118,14 +117,15 @@ public class ProgramSpecificLinesTests
         {
             // Act
             var lang = header?.Split(',')[0] ?? "es";
-            string Get(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
+
+            static string Get(string key, string lang) => Analysis.Application.Localization.Get(key, lang);
             var errorMessage = Get("Error_InternalServer", lang);
             var jsonResponse = JsonSerializer.Serialize(new { error = errorMessage });
 
             // Assert
-            jsonResponse.Should().NotBeNullOrEmpty();
-            jsonResponse.Should().Contain("\"error\":");
-            errorMessage.Should().NotBeNullOrEmpty();
+            _ = jsonResponse.Should().NotBeNullOrEmpty();
+            _ = jsonResponse.Should().Contain("\"error\":");
+            _ = errorMessage.Should().NotBeNullOrEmpty();
         }
     }
 
@@ -139,8 +139,8 @@ public class ProgramSpecificLinesTests
         var statusCode = 500;
 
         // Act & Assert
-        contentType.Should().Be("application/json");
-        statusCode.Should().Be(500);
+        _ = contentType.Should().Be("application/json");
+        _ = statusCode.Should().Be(500);
     }
 
     [Theory]
@@ -154,6 +154,6 @@ public class ProgramSpecificLinesTests
         var result = Analysis.Application.Localization.Get(key, lang);
 
         // Assert
-        result.Should().Be(expected);
+        _ = result.Should().Be(expected);
     }
 }
