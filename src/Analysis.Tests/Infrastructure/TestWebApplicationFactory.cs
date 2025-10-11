@@ -26,7 +26,7 @@ public class TestWebApplicationFactory<TStartup> : WebApplicationFactory<TStartu
 
         // Configurar las opciones de JWT directamente en el builder ANTES de que se construya
         builder.UseSetting("JwtSettings:SecretKey", "KvAuy4?q6DwCSl9Mn+7patFUeX-I^&x5@8%G1d!zkW0iQb2oEhTsP#RYfZNOJ=rc");
-        builder.UseSetting("JwtSettings:Issuer", "https://api.accessibility.company.com/users");
+        builder.UseSetting("JwtSettings:Issuer", "https://api.accessibility.company.com/analysis");
         builder.UseSetting("JwtSettings:Audience", "https://accessibility.company.com");
         builder.UseSetting("JwtSettings:ExpiryHours", "24");
 
@@ -45,7 +45,7 @@ public class TestWebApplicationFactory<TStartup> : WebApplicationFactory<TStartu
                 ["ExternalServices:ReportsApi:BaseUrl"] = "http://localhost:8083/api",
                 // Configuración JWT completa
                 ["JwtSettings:SecretKey"] = "KvAuy4?q6DwCSl9Mn+7patFUeX-I^&x5@8%G1d!zkW0iQb2oEhTsP#RYfZNOJ=rc",
-                ["JwtSettings:Issuer"] = "https://api.accessibility.company.com/users",
+                ["JwtSettings:Issuer"] = "https://api.accessibility.company.com/analysis",
                 ["JwtSettings:Audience"] = "https://accessibility.company.com",
                 ["JwtSettings:ExpiryHours"] = "24"
             });
