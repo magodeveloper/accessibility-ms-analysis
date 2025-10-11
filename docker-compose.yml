@@ -42,7 +42,7 @@ services:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       ConnectionStrings__Default: "server=mysql;port=3306;database=${DB_NAME:-analysisdb};user=${DB_USER:-msuser};password=${DB_PASSWORD:-AnlApp2025SecurePass};TreatTinyAsBoolean=false"
       JwtSettings__SecretKey: ${JwtSettings__SecretKey}
-      JwtSettings__Issuer: ${JwtSettings__Issuer:-AccessibilityUsersAPI}
+      JwtSettings__Issuer: ${JwtSettings__Issuer:-AccessibilityAnalysisAPI}
       JwtSettings__Audience: ${JwtSettings__Audience:-AccessibilityClients}
       JwtSettings__ExpiryHours: ${JwtSettings__ExpiryHours:-24}
     ports:

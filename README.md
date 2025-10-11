@@ -1,7 +1,7 @@
 # 🔬 Accessibility Analysis Service
 
 [![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
-[![Tests](https://img.shields.io/badge/tests-444%2F444-brightgreen)](test-dashboard.html)
+[![Tests](https://img.shields.io/badge/tests-388%2F388-brightgreen)](test-dashboard.html)
 [![Coverage](https://img.shields.io/badge/coverage-95.6%25-brightgreen)](coverage-report/index.html)
 [![License](https://img.shields.io/badge/license-Proprietary-red)](LICENSE)
 
