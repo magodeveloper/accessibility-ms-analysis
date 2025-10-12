@@ -22,7 +22,7 @@ public class ServiceRegistrationTests
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ASPNETCORE_ENVIRONMENT"] = "Test"
+                ["ASPNETCORE_ENVIRONMENT"] = "TestEnvironment"
             })
             .Build();
 
@@ -68,7 +68,7 @@ public class ServiceRegistrationTests
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ASPNETCORE_ENVIRONMENT"] = "Test"
+                ["ASPNETCORE_ENVIRONMENT"] = "TestEnvironment"
             })
             .Build();
 
@@ -94,7 +94,7 @@ public class ServiceRegistrationTests
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ASPNETCORE_ENVIRONMENT"] = "Test"
+                ["ASPNETCORE_ENVIRONMENT"] = "TestEnvironment"
             })
             .Build();
 
@@ -114,7 +114,7 @@ public class ServiceRegistrationTests
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ASPNETCORE_ENVIRONMENT"] = "Test"
+                ["ASPNETCORE_ENVIRONMENT"] = "TestEnvironment"
             })
             .Build();
 
@@ -133,7 +133,7 @@ public class ServiceRegistrationTests
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ASPNETCORE_ENVIRONMENT"] = "Test"
+                ["ASPNETCORE_ENVIRONMENT"] = "TestEnvironment"
             })
             .Build();
 
@@ -147,7 +147,6 @@ public class ServiceRegistrationTests
     }
 
     [Theory]
-    [InlineData("Test")]
     [InlineData("TestEnvironment")]
     public void AddInfrastructure_WithTestEnvironments_ShouldUseInMemoryDatabase(string environment)
     {
@@ -201,7 +200,7 @@ public class ServiceRegistrationTests
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                ["ASPNETCORE_ENVIRONMENT"] = "Test"
+                ["ASPNETCORE_ENVIRONMENT"] = "TestEnvironment"
             })
             .Build();
 

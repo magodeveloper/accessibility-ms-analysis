@@ -14,10 +14,10 @@ public static class ServiceRegistration
         // Detectar si estamos en entorno de tests
         var environmentName = config["ASPNETCORE_ENVIRONMENT"] ?? config["Environment"];
 
-        if (environmentName is "Test" or "TestEnvironment")
+        if (environmentName == "TestEnvironment")
         {
             // Para tests, usar InMemory database
-            _ = services.AddDbContext<AnalysisDbContext>(options =>
+            services.AddDbContext<AnalysisDbContext>(options =>
                 options.UseInMemoryDatabase("TestDatabase"));
         }
         else
@@ -26,25 +26,25 @@ public static class ServiceRegistration
             var cs = config.GetConnectionString("Default")
                      ?? "server=127.0.0.1;port=3306;database=analysisdb;user=msuser;password=msapass;TreatTinyAsBoolean=false";
 
-            _ = services.AddDbContext<AnalysisDbContext>(opt =>
-                    {
-                        _ = opt.UseMySql(
-                            cs,
-                            ServerVersion.AutoDetect(cs),
-                            o => o.EnableRetryOnFailure(
-                                maxRetryCount: 5,
-                                maxRetryDelay: System.TimeSpan.FromSeconds(10),
-                                errorNumbersToAdd: null
-                            )
-                        );
-                    });
+            services.AddDbContext<AnalysisDbContext>(opt =>
+            {
+                opt.UseMySql(
+                    cs,
+                    new MySqlServerVersion(new Version(8, 4, 6)),
+                    o => o.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: System.TimeSpan.FromSeconds(10),
+                        errorNumbersToAdd: null
+                    )
+                );
+            });
         }
 
         // Registrar servicios de dominio
-        _ = services.AddScoped<IUserValidationService, UserValidationService>();
+        services.AddScoped<IUserValidationService, UserValidationService>();
 
         // Configurar HttpClient para comunicación con otros microservicios
-        _ = services.AddHttpClient<UserValidationService>(client =>
+        services.AddHttpClient<UserValidationService>(client =>
         {
             // Configuración por defecto - puede ser sobrescrita por configuración
             client.Timeout = TimeSpan.FromSeconds(30);
