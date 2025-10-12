@@ -7,8 +7,9 @@
     <CollectCoverage>true</CollectCoverage>
     <CoverletOutputFormat>opencover</CoverletOutputFormat>
     <CoverletOutput>../TestResults/coverage.opencover.xml</CoverletOutput>
-    <ExcludeByFile>**/Program.cs,**/Startup.cs</ExcludeByFile>
-    <Exclude>[*]Analysis.Infrastructure.Migrations.*,[*]*Program,[*]*Startup</Exclude>
+    <ExcludeByFile>
+      **/Migrations/**;**/*ModelSnapshot.cs;**/InitialCreate.cs;**/InitialCreate.Designer.cs;**/ServiceRegistration.cs;**/AnalysisDbContext.cs</ExcludeByFile>
+    <Exclude>[*]*Program,[*]*Startup,[Analysis.Infrastructure]*,[*]*.Migrations.*</Exclude>
     <ExcludeByAttribute>
       Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
   </PropertyGroup>

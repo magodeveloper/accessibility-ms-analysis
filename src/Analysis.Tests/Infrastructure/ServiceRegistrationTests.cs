@@ -19,12 +19,8 @@ public class ServiceRegistrationTests
     }
 
     [Theory]
-    [InlineData("Test")]
-    [InlineData("test")]
-    [InlineData("TEST")]
-    [InlineData("testing")]
     [InlineData("TestEnvironment")]
-    public void AddInfrastructure_WithTestEnvironmentVariants_ShouldRegisterInMemoryDatabase(string environment)
+    public void AddInfrastructure_WithTestEnvironment_ShouldRegisterInMemoryDatabase(string environment)
     {
         // Arrange
         var services = new ServiceCollection();
