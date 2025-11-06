@@ -175,14 +175,18 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     [ProducesResponseType(400)]
     public async Task<IActionResult> Create([FromBody] AnalysisCreateDto dto)
     {
-        // Validar autenticación
+        // NOTA: La autenticación ya fue validada por el Gateway
+        // El Gateway agrega X-User-* headers que el UserContext usa
         if (!_userContext.IsAuthenticated)
         {
             return Unauthorized(new { message = "Authentication required" });
         }
 
         // Override userId con el del contexto autenticado (ignorar el del body)
-        var dtoWithAuthUserId = dto with { UserId = _userContext.UserId };
+        // Si no hay usuario autenticado, usar el del DTO
+        var dtoWithAuthUserId = _userContext.IsAuthenticated
+            ? dto with { UserId = _userContext.UserId }
+            : dto;
 
         using (AnalysisMetrics.MeasureAnalysis(dtoWithAuthUserId.ToolUsed.ToString()))
         {

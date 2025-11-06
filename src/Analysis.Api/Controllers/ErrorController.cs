@@ -73,7 +73,8 @@ public class ErrorController(IErrorService service, IUserContext userContext) : 
     [ProducesResponseType(400)]
     public async Task<IActionResult> Create([FromBody] ErrorCreateDto dto)
     {
-        // Validar autenticación
+        // NOTA: La autenticación ya fue validada por el Gateway
+        // El middleware necesita poder guardar errores a través del Gateway
         if (!_userContext.IsAuthenticated)
         {
             return Unauthorized(new { message = "Authentication required" });

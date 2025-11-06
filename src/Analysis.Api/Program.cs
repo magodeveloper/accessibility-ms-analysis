@@ -18,6 +18,11 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
+// Configurar zona horaria por defecto para Ecuador (UTC-5)
+// Esto afecta a DateTime.Now y otros métodos que usan hora local
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch("Switch.System.Globalization.EnforceJapaneseEraYearRanges", false);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Tags para health checks
@@ -36,6 +41,7 @@ builder.Services.AddInfrastructure(builder.Configuration); // Infraestructura
 builder.Services.AddScoped<IAnalysisService, AnalysisService>(); // Servicio de análisis
 builder.Services.AddScoped<IResultService, ResultService>(); // Servicio de resultados
 builder.Services.AddScoped<IErrorService, ErrorService>(); // Servicio de errores
+builder.Services.AddSingleton<Analysis.Application.Services.IDateTimeProvider, Analysis.Application.Services.DateTimeProvider>(); // Proveedor de fecha/hora Ecuador UTC-5
 
 // User Context Service - Extrae información del usuario de los headers X-User-* del Gateway
 builder.Services.AddScoped<Analysis.Application.Services.UserContext.IUserContext, Analysis.Application.Services.UserContext.UserContext>();

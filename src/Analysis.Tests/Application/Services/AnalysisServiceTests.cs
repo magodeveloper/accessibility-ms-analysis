@@ -6,6 +6,7 @@ using Analysis.Application.Dtos;
 using Microsoft.Extensions.Logging;
 using Analysis.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Analysis.Application.Services;
 using Analysis.Application.Services.Analysis;
 
 namespace Analysis.Tests.Application.Services;
@@ -14,6 +15,7 @@ public class AnalysisServiceTests : IDisposable
 {
     private readonly AnalysisDbContext _context;
     private readonly Mock<IUserValidationService> _mockUserValidationService;
+    private readonly Mock<IDateTimeProvider> _mockDateTimeProvider;
     private readonly Mock<ILogger<AnalysisService>> _mockLogger;
     private readonly AnalysisService _service;
     private bool _disposed;
@@ -26,9 +28,10 @@ public class AnalysisServiceTests : IDisposable
 
         _context = new AnalysisDbContext(options);
         _mockUserValidationService = new Mock<IUserValidationService>();
+        _mockDateTimeProvider = new Mock<IDateTimeProvider>();
         _mockLogger = new Mock<ILogger<AnalysisService>>();
 
-        _service = new AnalysisService(_context, _mockUserValidationService.Object, _mockLogger.Object);
+        _service = new AnalysisService(_context, _mockUserValidationService.Object, _mockDateTimeProvider.Object, _mockLogger.Object);
 
         // Setup default user validation to return true
         _ = _mockUserValidationService

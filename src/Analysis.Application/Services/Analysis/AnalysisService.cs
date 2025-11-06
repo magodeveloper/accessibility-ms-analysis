@@ -11,10 +11,12 @@ namespace Analysis.Application.Services.Analysis;
 public class AnalysisService(
     AnalysisDbContext db,
     IUserValidationService userValidationService,
+    IDateTimeProvider dateTimeProvider,
     ILogger<AnalysisService> logger) : IAnalysisService
 {
     private readonly AnalysisDbContext _db = db;
     private readonly IUserValidationService _userValidationService = userValidationService;
+    private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
     private readonly ILogger<AnalysisService> _logger = logger;
 
     public async Task<IEnumerable<AnalysisDto>> GetAllAsync()
@@ -111,7 +113,7 @@ public class AnalysisService(
         var entity = new AnalysisEntity
         {
             UserId = dto.UserId,
-            DateAnalysis = dto.DateAnalysis,
+            DateAnalysis = _dateTimeProvider.Now, // Usar hora local de Ecuador en lugar de la fecha del middleware
             ContentType = Enum.TryParse<ContentType>(dto.ContentType, true, out var ct) ? ct : ContentType.url,
             ContentInput = dto.ContentInput,
             SourceUrl = dto.SourceUrl,
@@ -134,8 +136,8 @@ public class AnalysisService(
             EaPasses = dto.EaPasses,
             EaIncomplete = dto.EaIncomplete,
             EaInapplicable = dto.EaInapplicable,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
+            CreatedAt = _dateTimeProvider.Now,
+            UpdatedAt = _dateTimeProvider.Now,
             Results = []
         };
 

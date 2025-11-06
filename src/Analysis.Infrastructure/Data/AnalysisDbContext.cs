@@ -12,6 +12,24 @@ public class AnalysisDbContext(DbContextOptions<AnalysisDbContext> options) : Db
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Convertidor de DateTime para forzar DateTimeKind.Local
+        var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+            v => DateTime.SpecifyKind(v, DateTimeKind.Local),
+            v => DateTime.SpecifyKind(v, DateTimeKind.Local)
+        );
+
+        // Aplicar el convertidor a todas las propiedades DateTime
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            foreach (var property in entityType.GetProperties())
+            {
+                if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                {
+                    property.SetValueConverter(dateTimeConverter);
+                }
+            }
+        }
+
         // ANALYSIS
         _ = modelBuilder.Entity<Analysis.Domain.Entities.Analysis>(entity =>
         {

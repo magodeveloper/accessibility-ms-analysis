@@ -102,7 +102,8 @@ public class ResultController(IResultService service, IUserContext userContext) 
     [ProducesResponseType(400)]
     public async Task<IActionResult> Create([FromBody] ResultCreateDto dto)
     {
-        // Validar autenticación
+        // NOTA: La autenticación ya fue validada por el Gateway
+        // El Gateway agrega X-User-* headers que el UserContext usa
         if (!_userContext.IsAuthenticated)
         {
             return Unauthorized(new { message = "Authentication required" });
