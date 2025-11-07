@@ -1,5 +1,6 @@
 using Moq;
 using FluentAssertions;
+using Analysis.Tests.Helpers;
 using Analysis.Domain.Services;
 using Analysis.Domain.Entities;
 using Analysis.Application.Dtos;
@@ -138,15 +139,19 @@ public class AnalysisServiceTests : IDisposable
     public async Task GetByDateAsync_WithValidDate_ShouldReturnMatchingAnalyses()
     {
         // Arrange
-        var testDate = DateTime.UtcNow.Date;
-        await SeedTestDataWithSpecificDate(testDate);
+        // Usar UTC directo para que el interceptor lo convierta correctamente a Ecuador
+        var testDateUtc = DateTime.UtcNow.Date;
+        await SeedTestDataWithSpecificDate(testDateUtc);
+
+        // El interceptor habrá convertido la fecha a Ecuador, así que buscamos por la fecha convertida
+        var testDateEcuador = DateTimeHelper.ToEcuadorTime(testDateUtc).Date;
 
         // Act
-        var result = await _service.GetByDateAsync(1, testDate);
+        var result = await _service.GetByDateAsync(1, testDateEcuador);
 
         // Assert
         _ = result.Should().HaveCount(1);
-        _ = result.First().DateAnalysis.Date.Should().Be(testDate);
+        _ = result.First().DateAnalysis.Date.Should().Be(testDateEcuador);
     }
 
     [Fact]
