@@ -1,8 +1,12 @@
 using Moq;
 using System.Net;
+using System.Text;
 using Analysis.Api;
 using System.Text.Json;
+using System.Security.Claims;
 using FluentAssertions;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Analysis.Tests.Infrastructure;
@@ -10,6 +14,38 @@ namespace Analysis.Tests.Infrastructure;
 public class MiddlewareTests(TestWebApplicationFactory<Program> factory) : IClassFixture<TestWebApplicationFactory<Program>>
 {
     private readonly TestWebApplicationFactory<Program> _factory = factory;
+
+    /// <summary>
+    /// Genera un token JWT válido para pruebas de middleware.
+    /// </summary>
+    private static string GenerateJwtToken(int userId = 1, string email = "test@example.com", string role = "admin", string userName = "Test User")
+    {
+        var secretKey = "KvAuy4?q6DwCSl9Mn+7patFUeX-I^&x5@8%G1d!zkW0iQb2oEhTsP#RYfZNOJ=rc";
+        var issuer = "https://api.accessibility.company.com/analysis";
+        var audience = "https://accessibility.company.com";
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, email),
+            new Claim(ClaimTypes.Role, role),
+            new Claim(ClaimTypes.Name, userName),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+        var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(24),
+            signingCredentials: credentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
 
     [Theory]
     [InlineData("es", "Error interno del servidor")]
@@ -34,7 +70,9 @@ public class MiddlewareTests(TestWebApplicationFactory<Program> factory) : IClas
             });
         }).CreateClient();
 
-        // Agregar headers de autenticación (X-Gateway-Secret y X-User-*)
+        // Agregar token JWT y headers de autenticación (X-Gateway-Secret y X-User-*)
+        var token = GenerateJwtToken();
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
         client.DefaultRequestHeaders.Add("X-Gateway-Secret", "test-gateway-secret-key");
         client.DefaultRequestHeaders.Add("X-User-Id", "1");
         client.DefaultRequestHeaders.Add("X-User-Email", "test@example.com");
@@ -75,7 +113,9 @@ public class MiddlewareTests(TestWebApplicationFactory<Program> factory) : IClas
             });
         }).CreateClient();
 
-        // Agregar headers de autenticación pero NO Accept-Language
+        // Agregar token JWT y headers de autenticación pero NO Accept-Language
+        var token = GenerateJwtToken();
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
         client.DefaultRequestHeaders.Add("X-Gateway-Secret", "test-gateway-secret-key");
         client.DefaultRequestHeaders.Add("X-User-Id", "1");
         client.DefaultRequestHeaders.Add("X-User-Email", "test@example.com");
@@ -113,7 +153,9 @@ public class MiddlewareTests(TestWebApplicationFactory<Program> factory) : IClas
             });
         }).CreateClient();
 
-        // Agregar headers de autenticación y Accept-Language complejo
+        // Agregar token JWT, headers de autenticación y Accept-Language complejo
+        var token = GenerateJwtToken();
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
         client.DefaultRequestHeaders.Add("X-Gateway-Secret", "test-gateway-secret-key");
         client.DefaultRequestHeaders.Add("X-User-Id", "1");
         client.DefaultRequestHeaders.Add("X-User-Email", "test@example.com");

@@ -41,6 +41,7 @@ builder.Services.AddInfrastructure(builder.Configuration); // Infraestructura
 builder.Services.AddScoped<IAnalysisService, AnalysisService>(); // Servicio de análisis
 builder.Services.AddScoped<IResultService, ResultService>(); // Servicio de resultados
 builder.Services.AddScoped<IErrorService, ErrorService>(); // Servicio de errores
+builder.Services.AddScoped<Analysis.Application.Services.Composite.ICompositeAnalysisService, Analysis.Application.Services.Composite.CompositeAnalysisService>(); // Servicio compuesto
 builder.Services.AddSingleton<Analysis.Application.Services.IDateTimeProvider, Analysis.Application.Services.DateTimeProvider>(); // Proveedor de fecha/hora Ecuador UTC-5
 
 // User Context Service - Extrae información del usuario de los headers X-User-* del Gateway

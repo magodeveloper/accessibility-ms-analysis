@@ -3,6 +3,7 @@ using Analysis.Api.Helpers;
 using Analysis.Application;
 using Microsoft.AspNetCore.Mvc;
 using Analysis.Application.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Analysis.Application.Services.Analysis;
 using Analysis.Application.Services.UserContext;
 
@@ -21,6 +22,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// <response code="200">Lista de análisis</response>
     /// <response code="404">No se encontraron análisis</response>
     [HttpGet]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
     public async Task<IActionResult> GetAll()
     {
@@ -46,6 +48,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// <response code="200">Lista de análisis encontrados</response>
     /// <response code="404">No se encontraron análisis</response>
     [HttpGet("by-user")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
     public async Task<IActionResult> GetByUser([FromQuery] int userId)
     {
@@ -76,6 +79,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// <response code="200">Lista de análisis encontrados</response>
     /// <response code="404">No se encontraron análisis</response>
     [HttpGet("by-date")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
     public async Task<IActionResult> GetByDate(
         [FromQuery] int userId,
@@ -108,6 +112,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// <response code="200">Lista de análisis encontrados</response>
     /// <response code="404">No se encontraron análisis</response>
     [HttpGet("by-tool")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
     public async Task<IActionResult> GetByTool([FromQuery] int userId, [FromQuery] string toolUsed)
     {
@@ -126,6 +131,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// <response code="200">Lista de análisis encontrados</response>
     /// <response code="404">No se encontraron análisis</response>
     [HttpGet("by-status")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<AnalysisDto>), 200)]
     public async Task<IActionResult> GetByStatus([FromQuery] int userId, [FromQuery] string status)
     {
@@ -145,6 +151,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// <response code="404">No se encontró el análisis</response>
     /// <response code="400">ID inválido</response>
     [HttpGet("{id}")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(AnalysisDto), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById(int id)
@@ -171,6 +178,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// <response code="400">Datos inválidos</response>
     /// <response code="404">No se encontró el análisis</response>
     [HttpPost]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(AnalysisDto), 201)]
     [ProducesResponseType(400)]
     public async Task<IActionResult> Create([FromBody] AnalysisCreateDto dto)
@@ -221,6 +229,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// <response code="200">Análisis eliminado</response>
     /// <response code="404">No se encontró el análisis</response>
     [HttpDelete("{id}")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(object), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> Delete(int id)
@@ -243,6 +252,7 @@ public class AnalysisController(IAnalysisService service, IUserContext userConte
     /// </summary>
     /// <response code="200">Todos los análisis eliminados exitosamente</response>
     [HttpDelete("all")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(object), 200)]
     public async Task<IActionResult> DeleteAll()
     {

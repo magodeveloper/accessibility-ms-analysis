@@ -95,7 +95,7 @@ public class TestWebApplicationFactory<TStartup> : WebApplicationFactory<TStartu
     private static string GenerateJwtToken(int userId, string email, string role, string userName)
     {
         var secretKey = "KvAuy4?q6DwCSl9Mn+7patFUeX-I^&x5@8%G1d!zkW0iQb2oEhTsP#RYfZNOJ=rc";
-        var issuer = "https://api.accessibility.company.com/users";
+        var issuer = "https://api.accessibility.company.com/analysis";
         var audience = "https://accessibility.company.com";
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));

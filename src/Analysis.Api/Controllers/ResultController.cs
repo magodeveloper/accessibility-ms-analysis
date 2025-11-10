@@ -2,6 +2,7 @@ using Analysis.Application;
 using Analysis.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Analysis.Application.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Analysis.Application.Services.Result;
 using Analysis.Application.Services.UserContext;
 
@@ -20,6 +21,7 @@ public class ResultController(IResultService service, IUserContext userContext) 
     /// <response code="200">Lista de resultados filtrados por nivel</response>
     /// <response code="404">No se encontraron resultados</response>
     [HttpGet("by-level")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
     public async Task<IActionResult> GetByLevel([FromQuery] string level)
     {
@@ -34,6 +36,7 @@ public class ResultController(IResultService service, IUserContext userContext) 
     /// <response code="200">Lista de resultados filtrados por severidad</response>
     /// <response code="404">No se encontraron resultados</response>
     [HttpGet("by-severity")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
     public async Task<IActionResult> GetBySeverity([FromQuery] string severity)
     {
@@ -49,6 +52,7 @@ public class ResultController(IResultService service, IUserContext userContext) 
     /// <response code="404">No se encontró el resultado</response>
     /// <response code="400">ID inválido</response>
     [HttpGet("{id}")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(ResultDto), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById(int id)
@@ -69,6 +73,7 @@ public class ResultController(IResultService service, IUserContext userContext) 
     /// <response code="200">Lista de resultados</response>
     /// <response code="404">No se encontraron resultados</response>
     [HttpGet("by-analysis")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
     public async Task<IActionResult> GetByAnalysisId([FromQuery] int analysisId)
     {
@@ -83,6 +88,7 @@ public class ResultController(IResultService service, IUserContext userContext) 
     /// <response code="200">Lista de todos los resultados</response>
     /// <response code="404">No se encontraron resultados</response>
     [HttpGet]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<ResultDto>), 200)]
     public async Task<IActionResult> GetAll()
     {
@@ -98,6 +104,7 @@ public class ResultController(IResultService service, IUserContext userContext) 
     /// <response code="400">Datos inválidos</response>
     /// <response code="404">No se encontró el resultado</response>
     [HttpPost]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(ResultDto), 201)]
     [ProducesResponseType(400)]
     public async Task<IActionResult> Create([FromBody] ResultCreateDto dto)
@@ -120,6 +127,7 @@ public class ResultController(IResultService service, IUserContext userContext) 
     /// <response code="200">Resultado eliminado</response>
     /// <response code="404">No se encontró el resultado</response>
     [HttpDelete("{id}")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(object), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> Delete(int id)
@@ -141,6 +149,7 @@ public class ResultController(IResultService service, IUserContext userContext) 
     /// </summary>
     /// <response code="200">Todos los resultados eliminados exitosamente</response>
     [HttpDelete("all")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(object), 200)]
     public async Task<IActionResult> DeleteAll()
     {

@@ -2,6 +2,7 @@ using Analysis.Application;
 using Analysis.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Analysis.Application.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Analysis.Application.Services.Error;
 using Analysis.Application.Services.UserContext;
 
@@ -20,6 +21,7 @@ public class ErrorController(IErrorService service, IUserContext userContext) : 
     /// <response code="200">Error encontrado</response>
     /// <response code="404">No se encontró el error</response>
     [HttpGet("{id}")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(ErrorDto), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById(int id)
@@ -40,6 +42,7 @@ public class ErrorController(IErrorService service, IUserContext userContext) : 
     /// <response code="200">Lista de errores</response>
     /// <response code="404">No se encontraron errores</response>
     [HttpGet("by-result")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<ErrorDto>), 200)]
     public async Task<IActionResult> GetByResultId([FromQuery] int resultId)
     {
@@ -54,6 +57,7 @@ public class ErrorController(IErrorService service, IUserContext userContext) : 
     /// <response code="200">Lista de todos los errores</response>
     /// <response code="404">No se encontraron errores</response>
     [HttpGet]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(IEnumerable<ErrorDto>), 200)]
     public async Task<IActionResult> GetAll()
     {
@@ -69,6 +73,7 @@ public class ErrorController(IErrorService service, IUserContext userContext) : 
     /// <response code="400">Datos inválidos</response>
     /// <response code="404">No se encontró el error</response>
     [HttpPost]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(ErrorDto), 201)]
     [ProducesResponseType(400)]
     public async Task<IActionResult> Create([FromBody] ErrorCreateDto dto)
@@ -91,6 +96,7 @@ public class ErrorController(IErrorService service, IUserContext userContext) : 
     /// <response code="200">Error eliminado</response>
     /// <response code="404">No se encontró el error</response>
     [HttpDelete("{id}")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(object), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> Delete(int id)
@@ -112,6 +118,7 @@ public class ErrorController(IErrorService service, IUserContext userContext) : 
     /// </summary>
     /// <response code="200">Todos los errores eliminados exitosamente</response>
     [HttpDelete("all")]
+    [Authorize] // Requiere autenticación
     [ProducesResponseType(typeof(object), 200)]
     public async Task<IActionResult> DeleteAll()
     {
